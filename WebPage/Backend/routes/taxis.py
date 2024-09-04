@@ -7,7 +7,8 @@ taxis = APIRouter()
 
 @taxis.get("/taxis")
 def get_from_taxis():
-    return conn.execute(taxisTB.select()).fetchall()
-
-
+    results=conn.execute(taxisTB.select()).fetchall()
+    # Convertir cada fila a un diccionario
+    data = [dict(row) for row in results]
+    return data
 
