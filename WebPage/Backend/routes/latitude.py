@@ -13,15 +13,11 @@ def get_last_latitude():
         result = session.execute(stmt).fetchone()
         if result:
             return result[taxisTB.c.Latitude]
-        else:
-            return None
         
 
 @latitudeRoute.get("/latitude")
 async def read_last_latitude():
     last_latitude = get_last_latitude()
     if last_latitude is not None:
-        return {"last_latitude": last_latitude}
-    else:
-        raise HTTPException(status_code=404, detail="No data found")
-    
+        return {"latitude": last_latitude}
+    raise HTTPException(status_code=404, detail="No data found")

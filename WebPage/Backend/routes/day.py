@@ -13,15 +13,12 @@ def get_last_day():
         result = session.execute(stmt).fetchone()
         if result:
             return result[taxisTB.c.Day]
-        else:
-            return None
+       
         
 
 @dayRoute.get("/day")
-async def read_last_latitude():
+async def read_last_day():
     last_day = get_last_day()
     if last_day is not None:
-        return {"last_day": last_day}
-    else:
-        raise HTTPException(status_code=404, detail="No data found")
-    
+        return {"day": last_day}
+    raise HTTPException(status_code=404, detail="No data found")
