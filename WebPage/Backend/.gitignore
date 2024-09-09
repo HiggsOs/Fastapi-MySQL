@@ -5,3 +5,4 @@ routes/__pycache__
 schemas/__pycache__
 snifer/__pycache__
 static/__pycache__
+config/credentials.py
