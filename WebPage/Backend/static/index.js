@@ -22,6 +22,8 @@ async function fetchData() {
         // Limpiar el mensaje de error si se actualizan correctamente los datos
         document.getElementById('error').textContent = '';
 
+        const nuevaPosicion = [data3.latitude, data4.longitude];
+
         // Actualizar la posición del marcador en el mapa
         if (marcador) {
             marcador.setLatLng([data3.latitude, data4.longitude]);
@@ -31,6 +33,8 @@ async function fetchData() {
 
         // Actualizar el popup del marcador con la nueva hora y fecha
         marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup();
+
+        mapa.setView(nuevaPosicion, 13);
 
     } catch (error) {
         console.error('Error al obtener los datos:', error);
