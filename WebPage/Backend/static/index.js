@@ -36,7 +36,7 @@ setInterval(fetchData, 10000);
 window.onload = function() {
     fetchData()
 
-    var mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 11);
+    var mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
 
     var marcador = L.marker([11.0190513, -74.8511425]).addTo(mapa)
