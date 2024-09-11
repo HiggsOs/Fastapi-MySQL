@@ -1,8 +1,9 @@
-let marcador
+let marcador;  // Variable global para el marcador
+let mapa;  // Variable global para el mapa
 
 async function fetchData() {
     try {
-        // Hacer la solicitud al endpoint combinado
+        // Hacer las solicitudes a los endpoints
         const response = await fetch('/hour');
         const data = await response.json();
         const response2 = await fetch('/day');
@@ -18,11 +19,17 @@ async function fetchData() {
         document.getElementById('day').textContent = data2.day || 'No disponible';
         document.getElementById('hour').textContent = data.hour || 'No disponible';
 
+        // Limpiar el mensaje de error si se actualizan correctamente los datos
+        document.getElementById('error').textContent = '';
+
+        // Actualizar la posición del marcador en el mapa
         if (marcador) {
             marcador.setLatLng([data3.latitude, data4.longitude]);
         } else {
             marcador = L.marker([data3.latitude, data4.longitude]).addTo(mapa);
         }
+
+        // Actualizar el popup del marcador con la nueva hora y fecha
         marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup();
 
     } catch (error) {
@@ -31,15 +38,16 @@ async function fetchData() {
     }
 }
 
+// Actualización periódica de los datos
 setInterval(fetchData, 10000);
+
 // Ejecutar fetchData cuando la página se haya cargado completamente
 window.onload = function() {
-    fetchData()
-
-    var mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
+    // Inicializar el mapa solo una vez
+    mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
 
-    var marcador = L.marker([11.0190513, -74.8511425]).addTo(mapa)
-    marcador.bindPopup("coordenadas")
+    // Ejecutar fetchData al cargar la página
+    fetchData();
 };
 
