@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine,MetaData
 from sqlalchemy.orm import sessionmaker
-from credentials import db_credential
+from config.credentials import db_credential
 
 engine=create_engine(db_credential)
 meta =MetaData()
