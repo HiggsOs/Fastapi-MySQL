@@ -34,7 +34,7 @@ async function fetchData() {
         // Actualizar el popup del marcador con la nueva hora y fecha
         marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup();
 
-        mapa.setView(nuevaPosicion, 13);
+        mapa.setView(nuevaPosicion, 15);
 
     } catch (error) {
         console.error('Error al obtener los datos:', error);
