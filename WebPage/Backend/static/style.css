@@ -1,0 +1,14 @@
+.flexbox-align {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
+#contenedor-mapa {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%; 
+    height: 500px;
+}

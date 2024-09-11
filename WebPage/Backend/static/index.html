@@ -3,44 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <title>Datos de Taxis</title>
-    <script>
-        async function fetchData() {
-            try {
-                // Hacer la solicitud al endpoint combinado
-                const response = await fetch('/hour');
-                const data = await response.json();
-                const response2 = await fetch('/day');
-                const data2 = await response2.json();
-                const response3 = await fetch('/latitude');
-                const data3 = await response3.json();
-                const response4 = await fetch('/longitude');
-                const data4 = await response4.json();
-                
-                // Actualizar el contenido de la página con los datos obtenidos
-                document.getElementById('latitude').textContent = data3.latitude || 'No disponible';
-                document.getElementById('longitude').textContent = data4.longitude || 'No disponible';
-                document.getElementById('day').textContent = data2.day || 'No disponible';
-                document.getElementById('hour').textContent = data.hour || 'No disponible';
-            } catch (error) {
-                console.error('Error al obtener los datos:', error);
-                document.getElementById('error').textContent = 'Error al obtener los datos.';
-            }
-        }
-        
-        setInterval(fetchData, 10000);
-        // Ejecutar fetchData cuando la página se haya cargado completamente
-        window.onload = fetchData;
-    </script>
+    <script src="index.js"></script>
 </head>
 <body>
-    <h1>Últimos Datos de Taxis</h1>
-    <div>
-        <p><strong>Latitud:</strong> <span id="latitude">Cargando...</span></p>
-        <p><strong>Longitud:</strong> <span id="longitude">Cargando...</span></p>
-        <p><strong>Día:</strong> <span id="day">Cargando...</span></p>
-        <p><strong>Hora:</strong> <span id="hour">Cargando...</span></p>
-        <p id="error" style="color: red;"></p>
+    <div class="contenedor">
+        <h1>Últimos Datos de Taxis</h1>
+        <div>
+            <p><strong>Latitud:</strong> <span id="latitude">Cargando...</span></p>
+            <p><strong>Longitud:</strong> <span id="longitude">Cargando...</span></p>
+            <p><strong>Día:</strong> <span id="day">Cargando...</span></p>
+            <p><strong>Hora:</strong> <span id="hour">Cargando...</span></p>
+            <p id="error" style="color: red;"></p>
+        </div>
+        <div class="flexbox-align">
+            <div id="contenedor-mapa">
+            </div>
+        </div>
     </div>
 </body>
 </html>
