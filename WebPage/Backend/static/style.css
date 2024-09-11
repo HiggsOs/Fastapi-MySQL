@@ -1,0 +1,31 @@
+.contenedor {
+    display: flex;
+}
+
+
+
+#contenedor-data {
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: column;  
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}   
+  
+
+.flexbox-align {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+#contenedor-mapa {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%; 
+    height: 500px;
+    border-radius: 5%;
+}
