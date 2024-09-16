@@ -29,12 +29,13 @@ async function fetchData() {
             marcador.setLatLng([data3.latitude, data4.longitude]);
         } else {
             marcador = L.marker([data3.latitude, data4.longitude]).addTo(mapa);
+            mapa.setView(nuevaPosicion, 100);
         }
 
         // Actualizar el popup del marcador con la nueva hora y fecha
         marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup();
 
-        mapa.setView(nuevaPosicion, 100);
+        mapa.setView(nuevaPosicion);
 
     } catch (error) {
         console.error('Error al obtener los datos:', error);
