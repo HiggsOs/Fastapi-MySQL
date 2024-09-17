@@ -12,7 +12,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
+    - name: Check git status
+      run: |
+        cd ../Fastapi-MySQL/WebPage
+        git status
 
     - name: Deploy application
       run: |
