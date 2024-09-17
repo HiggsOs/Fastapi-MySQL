@@ -12,23 +12,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Check git status
-      run: |
-        cd ../Fastapi-MySQL
-        git status
-    - name: Fetch and Reset to Latest
-      run: |
-        cd ../Fastapi-MySQL/WebPage
-        git fetch origin
-        git reset --hard origin/main
-    - name: Verify Latest Commit
-      run: |
-        cd ../Fastapi-MySQL/WebPage
-        git log -1
+    
     - name: Deploy application
       run: |
         # Comandos para desplegar tu aplicación
-        cd ../Fastapi-MySQL/WebPage
-        git pull 
-        pm2 reload Webpage
+        cd ../Fastapi-MySQL/WebPage/Backend
+        chmod +x refresh.sh
+        ./refresh.sh
          
