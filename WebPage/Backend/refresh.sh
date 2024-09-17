@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Cambia al directorio del repositorio
-cd /ruta/al/directorio/del/repositorio || { echo "No se pudo cambiar al directo>
 
 # Ejecuta git pull para actualizar el repositorio
 git pull origin main
