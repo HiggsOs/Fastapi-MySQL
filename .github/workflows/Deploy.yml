@@ -17,6 +17,6 @@ jobs:
     - name: Deploy application
       run: |
         # Comandos para desplegar tu aplicación
-        cd /Fastapi-MySQL/WebPage
+        cd ../Fastapi-MySQL/WebPage
         git pull origin main
          
