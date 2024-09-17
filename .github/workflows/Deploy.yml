@@ -16,7 +16,7 @@ jobs:
     - name: Setup environment
       run: |
         # Navegar al directorio del proyecto
-        cd /path/to/your/app
+        cd /Fastapi-MySQL
         
         # Instalar dependencias y preparar el entorno (ajusta según tu necesidad)
         sudo apt-get update
