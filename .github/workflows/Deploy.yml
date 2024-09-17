@@ -16,6 +16,11 @@ jobs:
       run: |
         cd ../Fastapi-MySQL/WebPage
         git status
+    - name: Fetch and Reset to Latest
+      run: |
+        cd ../Fastapi-MySQL/WebPage
+        git fetch origin
+        git reset --hard origin/main
 
     - name: Deploy application
       run: |
