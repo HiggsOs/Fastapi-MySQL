@@ -18,6 +18,6 @@ jobs:
       run: |
         # Comandos para desplegar tu aplicación
         cd ../Fastapi-MySQL/WebPage
-        git pull origin main
+        git pull 
         pm2 reload Webpage
          
