@@ -2,7 +2,7 @@
 
 
 # Ejecuta git pull para actualizar el repositorio
-git pull origin main
+git pull 
 
 # Verifica si el comando git pull fue exitoso
 if [ $? -eq 0 ]; then
