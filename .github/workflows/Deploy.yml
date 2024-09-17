@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, linux]  # Usa el runner auto-hospedado
+    runs-on: self-hosted  # Usa el runner auto-hospedado
 
     steps:
     - name: Checkout code
