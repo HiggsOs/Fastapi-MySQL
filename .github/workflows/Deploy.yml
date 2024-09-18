@@ -13,7 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Deploy application
+    - name: Deploy application #comentrai
       run: |
         # Comandos para desplegar tu aplicación
         cd ../Fastapi-MySQL/WebPage/Backend
