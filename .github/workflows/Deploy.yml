@@ -16,7 +16,5 @@ jobs:
     - name: Deploy application #comentrai
       run: |
         # Comandos para desplegar tu aplicación
-        cd ../actions-runner/_work/Fastapi-MySQL/Fastapi-MySQL/WebPage/Backend
-        chmod +x refresh.sh
-        ./refresh.sh
+        pm2 reload WebPage
          
