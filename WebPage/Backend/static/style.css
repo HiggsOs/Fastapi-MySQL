@@ -42,7 +42,7 @@
 
     #contenedor-mapa {
         width: 100%;  /* Ancho completo para el mapa en celulares */
-        height: 200px; /* Ajusta la altura del mapa en móviles pequeños */
+        height: 400px; /* Ajusta la altura del mapa en móviles pequeños */
     }
 
     /* Cambia el tamaño de fuente si es necesario */
