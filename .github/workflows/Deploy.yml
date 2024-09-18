@@ -7,8 +7,10 @@ on:
 
 jobs:
   deploy:
-    runs-on: ["self-hosted","dev"]  # Usa el runner auto-hospedado
-
+    runs-on: self-hosted  # Usa el runner auto-hospedado
+    strategy:
+      matrix:
+        runner: ["samir","jesus"]
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -17,4 +19,4 @@ jobs:
       run: |
         # Comandos para desplegar tu aplicación
         pm2 reload WebPage
-         
+        
