@@ -5,7 +5,7 @@ let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
 
 async function fetchData() {
     try {
-        // Hacer las solicitudes a los endpoints
+        // Hacer las solicitudes a los endpointsx.
         const response = await fetch('/hour');
         const data = await response.json();
         const response2 = await fetch('/day');
