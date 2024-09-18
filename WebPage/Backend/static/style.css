@@ -1,18 +1,17 @@
+/* Diseño original para computadoras */
 .contenedor {
     display: flex;
+    flex-direction: row; /* Uno al lado del otro en PC */
 }
-
-
 
 #contenedor-data {
     font-size: 1.2em;
     display: flex;
-    flex-direction: column;  
+    flex-direction: row;  
     justify-content: center;
     align-items: center;
     width: 50%;
 }   
-  
 
 .flexbox-align {
     display: flex;
@@ -28,5 +27,27 @@
     width: 80%; 
     height: 500px;
     border-radius: 5%;
+}
+
+/* Estilos solo para pantallas pequeñas (celulares) */
+@media (max-width: 480px) {
+    .contenedor {
+        flex-direction: column; /* Uno encima del otro en celulares */
+    }
+
+    #contenedor-data,
+    .flexbox-align {
+        width: 100%;  /* Ancho completo en celulares */
+    }
+
+    #contenedor-mapa {
+        width: 100%;  /* Ancho completo para el mapa en celulares */
+        height: 200px; /* Ajusta la altura del mapa en móviles pequeños */
+    }
+
+    /* Cambia el tamaño de fuente si es necesario */
+    #contenedor-data {
+        font-size: 0.9em; /* Ajusta el tamaño de la fuente en celulares */
+    }
 }
 
