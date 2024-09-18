@@ -7,7 +7,7 @@ from routes.latitude import latitudeRoute
 from routes.longitude import longitudeRoute
 from routes.hour import hourRoute
 
-#hola
+
 app = FastAPI()
 app.include_router(taxis)
 app.include_router(receive_data)
