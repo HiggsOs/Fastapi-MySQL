@@ -1,5 +1,7 @@
 let marcador;  // Variable global para el marcador
 let mapa;  // Variable global para el mapa
+let polyline;  // Variable global para la polilínea
+let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
 
 async function fetchData() {
     try {
@@ -24,18 +26,26 @@ async function fetchData() {
 
         const nuevaPosicion = [data3.latitude, data4.longitude];
 
+        // Añadir la nueva posición al arreglo de coordenadas de la ruta
+        routeCoords.push(nuevaPosicion);
+
         // Actualizar la posición del marcador en el mapa
         if (marcador) {
-            marcador.setLatLng([data3.latitude, data4.longitude]);
+            marcador.setLatLng(nuevaPosicion);
         } else {
-            marcador = L.marker([data3.latitude, data4.longitude]).addTo(mapa);
-            mapa.setView(nuevaPosicion, 100);
+            marcador = L.marker(nuevaPosicion).addTo(mapa);
+            mapa.setView(nuevaPosicion, 12);
         }
 
         // Actualizar el popup del marcador con la nueva hora y fecha
         marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup();
 
-        mapa.setView(nuevaPosicion);
+        // Si ya existe la polilínea, se actualiza. Si no, se crea.
+        if (polyline) {
+            polyline.setLatLngs(routeCoords);  // Actualizar la polilínea con las nuevas coordenadas
+        } else {
+            polyline = L.polyline(routeCoords, { color: 'blue' }).addTo(mapa);  // Crear la polilínea con la ruta
+        }
 
     } catch (error) {
         console.error('Error al obtener los datos:', error);
