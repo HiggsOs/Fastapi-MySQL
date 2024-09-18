@@ -32,7 +32,7 @@
 /* Estilos solo para pantallas pequeñas (celulares) */
 @media (max-width: 480px) {
     .contenedor {
-        flex-direction: column; /* Uno encima del otro en celulares */
+        flex-direction: row; /* Uno encima del otro en celulares */
     }
 
     #contenedor-data,
