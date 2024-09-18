@@ -1,7 +1,8 @@
-/* Diseño original para computadoras */
 .contenedor {
     display: flex;
 }
+
+
 
 #contenedor-data {
     font-size: 1.2em;
@@ -11,6 +12,7 @@
     align-items: center;
     width: 50%;
 }   
+  
 
 .flexbox-align {
     display: flex;
@@ -26,34 +28,5 @@
     width: 80%; 
     height: 500px;
     border-radius: 5%;
-}
-
-/* Estilos para pantallas más pequeñas (tablets y móviles) */
-@media (max-width: 768px) {
-    #contenedor-data,
-    .flexbox-align {
-        width: 100%;  /* Ancho completo en tablets y móviles */
-    }
-
-    #contenedor-mapa {
-        width: 100%;  /* Ancho completo para el mapa en pantallas pequeñas */
-        height: 300px; /* Ajusta la altura del mapa en dispositivos móviles */
-    }
-
-    /* Cambia el tamaño de fuente si es necesario */
-    #contenedor-data {
-        font-size: 1em;
-    }
-}
-
-/* Estilos para pantallas muy pequeñas (como teléfonos) */
-@media (max-width: 480px) {
-    #contenedor-mapa {
-        height: 200px; /* Altura más pequeña para móviles muy pequeños */
-    }
-
-    #contenedor-data {
-        font-size: 0.9em; /* Ajusta el tamaño de la fuente para pantallas pequeñas */
-    }
 }
 
