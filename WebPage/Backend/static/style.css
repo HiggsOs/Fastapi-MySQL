@@ -1,13 +1,13 @@
 /* Diseño original para computadoras */
 .contenedor {
     display: flex;
-    flex-direction: row; /* Uno al lado del otro en PC */
+    flex-direction:row;
 }
 
 #contenedor-data {
     font-size: 1.2em;
     display: flex;
-    flex-direction: row;  
+    flex-direction: column;  
     justify-content: center;
     align-items: center;
     width: 50%;
@@ -29,25 +29,35 @@
     border-radius: 5%;
 }
 
-/* Estilos solo para pantallas pequeñas (celulares) */
-@media (max-width: 480px) {
+/* Estilos para pantallas más pequeñas (tablets y móviles) */
+@media (max-width: 768px) {
     .contenedor {
-        flex-direction: column; /* Uno encima del otro en celulares */
+        flex-direction: column; /* Uno encima del otro en móviles */
     }
-
     #contenedor-data,
     .flexbox-align {
-        width: 100%;  /* Ancho completo en celulares */
+        width: 100%;  /* Ancho completo en tablets y móviles */
     }
 
     #contenedor-mapa {
-        width: 100%;  /* Ancho completo para el mapa en celulares */
-        height: 400px; /* Ajusta la altura del mapa en móviles pequeños */
+        width: 100%;  /* Ancho completo para el mapa en pantallas pequeñas */
+        height: 500px; /* Ajusta la altura del mapa en dispositivos móviles */
     }
 
     /* Cambia el tamaño de fuente si es necesario */
     #contenedor-data {
-        font-size: 0.9em; /* Ajusta el tamaño de la fuente en celulares */
+        font-size: 1em;
+    }
+}
+
+/* Estilos para pantallas muy pequeñas (como teléfonos) */
+@media (max-width: 480px) {
+    #contenedor-mapa {
+        height: 400px; /* Altura más pequeña para móviles muy pequeños */
+    }
+
+    #contenedor-data {
+        font-size: 0.9em; /* Ajusta el tamaño de la fuente para pantallas pequeñas */
     }
 }
 
