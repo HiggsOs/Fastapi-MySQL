@@ -7,11 +7,26 @@
 #contenedor-data {
     font-size: 1.2em;
     display: flex;
-    flex-direction: row;  
+    flex-direction: column;  
     justify-content: center;
     align-items: center;
     width: 50%;
 }   
+
+.fechas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.boton {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 .flexbox-align {
     display: flex;

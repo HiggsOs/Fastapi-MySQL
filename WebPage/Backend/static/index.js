@@ -66,3 +66,20 @@ window.onload = function() {
     fetchData();
 };
 
+document.getElementById('enviar').addEventListener('click', function() {
+
+    const fechaInicio = document.getElementById('start').value;
+    const fechaFin = document.getElementById('end').value;
+
+
+    if (!fechaInicio || !fechaFin) {
+        alert('Por favor ingresa tanto la fecha y hora inicial como la final.');
+    } else {
+        console.log("Fecha y hora inicial:", fechaInicio);
+        console.log("Fecha y hora final:", fechaFin);
+
+        // Aquí puedes agregar el código para procesar los valores, como enviarlos a un servidor
+        alert('Valores guardados correctamente.');
+    }
+});
+
