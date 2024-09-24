@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted  # Usa el runner auto-hospedado
     strategy:
       matrix:
-        runner: ["samir","Jesus","cristian"]
+        runner: ["samir","Jesus","cristian","andy"]
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
