@@ -5,7 +5,7 @@ let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
 
 async function fetchData() {
     try {
-        // Hacer las solicitudes a los endpointsx.
+        // Hacer las solicitudes a los endpoints
         const response = await fetch('/hour');
         const data = await response.json();
         const response2 = await fetch('/day');
@@ -21,13 +21,10 @@ async function fetchData() {
         document.getElementById('day').textContent = data2.day || 'No disponible';
         document.getElementById('hour').textContent = data.hour || 'No disponible';
 
-        // Limpiar el mensaje de error si se actualizan correctamente los datos
-        document.getElementById('error').textContent = '';
+        document.getElementById('error').textContent = ''; // Limpiar el mensaje de error si se actualizan correctamente los datos
 
         const nuevaPosicion = [data3.latitude, data4.longitude];
-
-        // Añadir la nueva posición al arreglo de coordenadas de la ruta
-        routeCoords.push(nuevaPosicion);
+        routeCoords.push(nuevaPosicion); // Añadir la nueva posición al arreglo de coordenadas de la ruta
 
         // Actualizar la posición del marcador en el mapa
         if (marcador) {
@@ -37,14 +34,13 @@ async function fetchData() {
             mapa.setView(nuevaPosicion, 12);
         }
 
-        // Actualizar el popup del marcador con la nueva hora y fecha
-        marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup();
+        marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup(); // Actualizar el popup del marcador
 
-        // Si ya existe la polilínea, se actualiza. Si no, se crea.
+        // Actualizar o crear la polilínea
         if (polyline) {
-            polyline.setLatLngs(routeCoords);  // Actualizar la polilínea con las nuevas coordenadas
+            polyline.setLatLngs(routeCoords);
         } else {
-            polyline = L.polyline(routeCoords, { color: 'blue' }).addTo(mapa);  // Crear la polilínea con la ruta
+            polyline = L.polyline(routeCoords, { color: 'blue' }).addTo(mapa);
         }
 
     } catch (error) {
@@ -62,24 +58,23 @@ window.onload = function() {
     mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
 
-    // Ejecutar fetchData al cargar la página
-    fetchData();
+    fetchData(); // Ejecutar fetchData al cargar la página
+
+    // Manejo de las pestañas
+    const tabs = document.querySelectorAll('.tab_btn');
+    const all_content = document.querySelectorAll('.datos');
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+            // Quitar la clase 'active' de todas las pestañas y el contenido
+            tabs.forEach(tab => tab.classList.remove('active'));
+            all_content.forEach(content => content.classList.remove('active'));
+            
+            // Agregar la clase 'active' a la pestaña y mostrar el contenido correspondiente
+            tab.classList.add('active');
+            all_content[index].classList.add('active');
+        });
+    });
 };
 
-document.getElementById('enviar').addEventListener('click', function() {
-
-    const fechaInicio = document.getElementById('start').value;
-    const fechaFin = document.getElementById('end').value;
-
-
-    if (!fechaInicio || !fechaFin) {
-        alert('Por favor ingresa tanto la fecha y hora inicial como la final.');
-    } else {
-        console.log("Fecha y hora inicial:", fechaInicio);
-        console.log("Fecha y hora final:", fechaFin);
-
-        // Aquí puedes agregar el código para procesar los valores, como enviarlos a un servidor
-        alert('Valores guardados correctamente.');
-    }
-});
 

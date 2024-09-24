@@ -4,44 +4,76 @@
     flex-direction:row;
 }
 
-#contenedor-data {
-    font-size: 1.2em;
-    display: flex;
-    flex-direction: column;  
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-}   
-
-.fechas {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.contenedor .datos {
+    display: none;
 }
 
-.boton {
-    padding: 10px 20px;
+.contenedor .datos.active {
+    display: block;
+}
+
+/*.info {
+    display: flex;
+    flex-direction: row;
+}*/
+
+.datos {
+    display: flex;
+    flex-direction: row;
     background-color: #4CAF50;
-    color: white;
+    width: 50%;
+    flex: 1;
+}
+
+.tab_box {
+    /*background-color: #4CAF50;*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.tab_btn {
+    padding: 15px 15px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: sans-serif;   
+    color: #7c7c7c;
+    background: none;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 
+.tab_btn.active{
+    color: #7360ff;
+}
+
+.contenedor-data {
+    display: flex;
+    flex-direction: row; /* Organizar los elementos en fila */
+    gap: 20px; /* Añadir espacio entre los elementos */
+    width: 100%;
+}
+
+
+.datos .datos-especifico {
+    display: flex;
+    flex-direction: row;
+}
+
+
 .flexbox-align {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
     width: 50%;
 }
 
 #contenedor-mapa {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%; 
+    width: 100%; /* El mapa ocupará el 50% del espacio disponible */
     height: 500px;
-    border-radius: 5%;
+    border-radius: 10px;
+    flex: 1; /* El mapa también ocupará el espacio restante */
 }
 
 /* Estilos para pantallas más pequeñas (tablets y móviles) */
