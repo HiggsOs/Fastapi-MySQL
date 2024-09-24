@@ -44,7 +44,13 @@
             <!-- Contenido para la pestaña "Históricos" -->
             <div class="datos">
                 <h1>Histórico de Datos</h1>
-                <p>Aquí puedes ver datos históricos...</p>
+                 <div class="fechas">
+                    <label for="start">Fecha y hora inicial:</label>
+                    <input type="datetime-local" id="start date" step="900"/>
+                    <label for="end">Fecha y hora final:</label>
+                    <input type="datetime-local" id="end date" step="900"/>
+                    <button type="submit" class="boton" id="enviar">Enviar</button>
+                </div>
             </div>
         </div>
     </div>
