@@ -1,63 +1,98 @@
 /* Diseño original para computadoras */
 .contenedor {
     display: flex;
-    flex-direction:row;
+    flex-direction: column;
 }
 
-#contenedor-data {
-    font-size: 1.2em;
+.tab_box {
     display: flex;
-    flex-direction: column;  
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    width: 50%;
-}   
+    margin-bottom: 20px;
+}
 
-.flexbox-align {
+.tab_btn {
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: sans-serif;   
+    color: #7c7c7c;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.tab_btn.active {
+    color: #7360ff;
+    border-bottom: 2px solid #7360ff; /* Resaltar la pestaña activa */
+}
+
+.contenedor-data {
     display: flex;
-    justify-content: center;
+    flex-direction: row; /* Alinear elementos en una fila */
+    gap: 20px;
+    width: 100%;
+}
+
+.datos {
+    display: none; /* Ocultar contenido por defecto */
+    flex: 1; /* Asegurar que los datos ocupen el espacio necesario */
+}
+
+.datos.active {
+    display: flex; /* Mostrar el contenido activo */
+    flex-direction: row; /* Asegurar que los elementos se alineen en fila */
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    width: 50%;
+    width: 50%; /* Ancho del contenedor de datos */
 }
 
 #contenedor-mapa {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%; 
+    width: 90%; /* El mapa ocupa la mitad del ancho disponible */
     height: 500px;
-    border-radius: 5%;
+    border-radius: 10px;
+}
+
+.datos-especifico {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 1.1em;
 }
 
 /* Estilos para pantallas más pequeñas (tablets y móviles) */
 @media (max-width: 768px) {
-    .contenedor {
-        flex-direction: column; /* Uno encima del otro en móviles */
-    }
-    #contenedor-data,
-    .flexbox-align {
-        width: 100%;  /* Ancho completo en tablets y móviles */
+    .contenedor-data {
+        flex-direction: column; /* Cambiar disposición a columna en pantallas pequeñas */
     }
 
     #contenedor-mapa {
-        width: 100%;  /* Ancho completo para el mapa en pantallas pequeñas */
-        height: 500px; /* Ajusta la altura del mapa en dispositivos móviles */
-    }
-
-    /* Cambia el tamaño de fuente si es necesario */
-    #contenedor-data {
-        font-size: 1em;
+        width: 100%;
+        height: 400px; /* Ajustar altura del mapa en pantallas pequeñas */
     }
 }
 
 /* Estilos para pantallas muy pequeñas (como teléfonos) */
 @media (max-width: 480px) {
-    #contenedor-mapa {
-        height: 400px; /* Altura más pequeña para móviles muy pequeños */
+    .tab_btn {
+        font-size: 14px;
+        padding: 10px;
     }
 
-    #contenedor-data {
-        font-size: 0.9em; /* Ajusta el tamaño de la fuente para pantallas pequeñas */
+    .contenedor-data {
+        font-size: 0.9em;
+    }
+
+    .datos-especifico {
+        font-size: 0.9em;
+    }
+
+    #contenedor-mapa {
+        height: 350px; /* Reducir altura del mapa para teléfonos */
     }
 }
-

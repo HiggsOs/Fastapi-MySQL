@@ -11,20 +11,49 @@
 </head>
 <body>
     <div class="contenedor">
-        <div id="contenedor-data">
-            <h1 class="titulo">Últimos Datos </h1>
-            <div class="datos">
-                <p><strong>Latitud:</strong> <span id="latitude">Cargando...</span></p>
-                <p><strong>Longitud:</strong> <span id="longitude">Cargando...</span></p>
-                <p><strong>Día:</strong> <span id="day">Cargando...</span></p>
-                <p><strong>Hora:</strong> <span id="hour">Cargando...</span></p>
-                <p id="error" style="color: red;"></p>
-            </div>
+        <div class="tab_box">
+            <button class="tab_btn active">Tiempo real</button>  <!-- Pestaña activa por defecto -->
+            <button class="tab_btn">Históricos</button>
         </div>
-        <div class="flexbox-align">
-            <div id="contenedor-mapa">
+    
+        <div class="contenedor-data">
+            <!-- Contenido para la pestaña "Tiempo real" -->
+            <div class="datos active">
+                <div class="info">
+                    <h1 class="titulo">Últimos Datos</h1>
+                    <div class="datos-especifico">
+                        <p><strong>Latitud:</strong> <span id="latitude">Cargando...</span></p>
+                    </div>
+                    <div class="datos-especifico">
+                        <p><strong>Longitud:</strong> <span id="longitude">Cargando...</span></p>
+                    </div>
+                    <div class="datos-especifico">
+                        <p><strong>Día:</strong> <span id="day">Cargando...</span></p>
+                    </div>
+                    <div class="datos-especifico">
+                        <p><strong>Hora:</strong> <span id="hour">Cargando...</span></p>
+                    </div>
+                    <div class="datos-especifico">
+                        <p id="error" style="color: red;"></p>
+                    </div>
+                </div>
+                
+                <div id="contenedor-mapa"></div> <!-- El mapa tiene su propio contenedor -->
+            </div>
+    
+            <!-- Contenido para la pestaña "Históricos" -->
+            <div class="datos">
+                <h1>Histórico de Datos</h1>
+                 <div class="fechas">
+                    <label for="start">Fecha y hora inicial:</label>
+                    <input type="datetime-local" id="start date" step="900"/>
+                    <label for="end">Fecha y hora final:</label>
+                    <input type="datetime-local" id="end date" step="900"/>
+                    <button type="submit" class="boton" id="enviar">Enviar</button>
+                </div>
             </div>
         </div>
     </div>
+    
 </body>
 </html>
