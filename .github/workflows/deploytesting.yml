@@ -1,0 +1,21 @@
+name: Deploy to EC2 testing
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  deploy:
+    runs-on: self-hosted  # Usa el runner auto-hospedado
+    strategy:
+      matrix:
+        runner: ["testing"]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy application #comentrai
+      run: |
+        # Comandos para desplegar tu aplicación
+        pm2 reload test
