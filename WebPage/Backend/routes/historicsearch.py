@@ -35,7 +35,7 @@ async def read_Days(start_day: str = Query(..., description="start day in format
         return {"resultados": result}
     raise HTTPException(status_code=404, detail="No data was found for the range requested")
 
-#Search a range with 4 parameters start_day, end_day start_hour, end_hour.
+#Search a range with 4 parameters start_day, end_day start_hour, end_hour__.
 
 
 @historicSearch.get("/days-hours/",description="GET /days-hours/?start_day=2024-09-01&end_day=2024-09-05&start_hour=08:00&end_hour=18:00")
@@ -47,5 +47,5 @@ async def read_Days_Hours(
 ):
     result = get_Days_Hours(start_day=start_day, end_day=end_day, start_hour=start_hour, end_hour=end_hour)
     if result is not None:
-        return {"resultados": result}
+        return {"results": result}
     raise HTTPException(status_code=404, detail="No data was found for the range requested")
