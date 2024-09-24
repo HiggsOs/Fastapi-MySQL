@@ -8,9 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted  # Usa el runner auto-hospedado
-    strategy:
-      matrix:
-        runner: ["testing"]
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
