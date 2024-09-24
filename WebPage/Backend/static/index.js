@@ -58,8 +58,6 @@ window.onload = function() {
     mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
 
-    fetchData(); // Ejecutar fetchData al cargar la página
-
     // Manejo de las pestañas
     const tabs = document.querySelectorAll('.tab_btn');
     const all_content = document.querySelectorAll('.datos');
@@ -75,6 +73,10 @@ window.onload = function() {
             all_content[index].classList.add('active');
         });
     });
+
+    fetchData(); // Ejecutar fetchData al cargar la página
+
+
 };
 
 
