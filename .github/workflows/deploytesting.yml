@@ -18,4 +18,4 @@ jobs:
     - name: Deploy application #comentrai
       run: |
         # Comandos para desplegar tu aplicación
-        pm2 reload WebPage
+        pm2 reload test
