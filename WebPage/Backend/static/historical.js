@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
     // Función para validar al enviar
-    submitButton.addEventListener("click", function (event) {
+    submitButton.addEventListener("click", function (event) {   //
         if (endDateInput.value < startDateInput.value) {
             event.preventDefault();
             alert("La fecha final no puede ser anterior a la fecha de inicio.");
