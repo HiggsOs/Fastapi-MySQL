@@ -4,6 +4,20 @@ document.addEventListener("DOMContentLoaded", function() {
     const submitButton = document.getElementById("enviar");
     let mapa_2;
 
+    const indexBtn = document.getElementById("index-btn");
+
+    // Agregar evento de clic
+    indexBtn.addEventListener("click", function() {
+        // Obtener la URL actual
+        const currentURL = window.location.href;
+
+        // Crear la nueva URL reemplazando el complemento
+        const newURL = currentURL.replace(/[^/]*$/, "index.html");
+
+        // Redirigir a la nueva URL
+        window.location.href = newURL;
+    });
+
     // Función que se ejecuta cuando cambia la fecha de inicio
     startDateInput.addEventListener("change", function () {
         endDateInput.min = startDateInput.value;
@@ -79,3 +93,7 @@ window.onload = function() {
     mapa_2 = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa_2);
 };
+
+document.getElementById('redirectBtn').addEventListener('click', function() {
+    window.location.href = ''; // 
+});
