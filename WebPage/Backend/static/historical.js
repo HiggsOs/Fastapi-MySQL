@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const startDateTime = startDateInput.value;
         const endDateTime = endDateInput.value;
-
+        //split de los datos
         const startDate = startDateTime.split("T")[0];
         const startTime = startDateTime.split("T")[1];
         const endDate = endDateTime.split("T")[0];
