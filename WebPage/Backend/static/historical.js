@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
         endDateInput.min = startDateInput.value;
     });
     
+    
     // Función para validar al enviar
     submitButton.addEventListener("click", function (event) {
         if (endDateInput.value < startDateInput.value) {
