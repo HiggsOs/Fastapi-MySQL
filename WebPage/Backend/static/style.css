@@ -2,6 +2,7 @@
 .contenedor {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .tab_box {
@@ -23,10 +24,6 @@
     transition: color 0.3s ease;
 }
 
-.tab_btn.active {
-    color: #7360ff;
-    border-bottom: 2px solid #7360ff; /* Resaltar la pestaña activa */
-}
 
 .contenedor-data {
     display: flex;
@@ -35,14 +32,11 @@
     width: 100%;
 }
 
-.datos {
-    display: none; /* Ocultar contenido por defecto */
-    flex: 1; /* Asegurar que los datos ocupen el espacio necesario */
-}
 
-.datos.active {
+.datos {
     display: flex; /* Mostrar el contenido activo */
     flex-direction: row; /* Asegurar que los elementos se alineen en fila */
+    width: 100%;
 }
 
 .info {
@@ -53,7 +47,7 @@
 }
 
 #contenedor-mapa {
-    width: 90%; /* El mapa ocupa la mitad del ancho disponible */
+    width: 100%; /* El mapa ocupa la mitad del ancho disponible */
     height: 500px;
     border-radius: 10px;
 }
