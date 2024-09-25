@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.onload = function() {
         mapa_2 = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa_2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapa_2);
     };
 });
 
