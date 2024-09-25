@@ -58,35 +58,3 @@
     gap: 10px;
     font-size: 1.1em;
 }
-
-/* Estilos para pantallas más pequeñas (tablets y móviles) */
-@media (max-width: 768px) {
-    .contenedor-data {
-        flex-direction: column; /* Cambiar disposición a columna en pantallas pequeñas */
-    }
-
-    #contenedor-mapa {
-        width: 100%;
-        height: 400px; /* Ajustar altura del mapa en pantallas pequeñas */
-    }
-}
-
-/* Estilos para pantallas muy pequeñas (como teléfonos) */
-@media (max-width: 480px) {
-    .tab_btn {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    .contenedor-data {
-        font-size: 0.9em;
-    }
-
-    .datos-especifico {
-        font-size: 0.9em;
-    }
-
-    #contenedor-mapa {
-        height: 350px; /* Reducir altura del mapa para teléfonos */
-    }
-}
