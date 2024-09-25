@@ -68,7 +68,7 @@ window.onload = function() {
         const currentURL = window.location.href;
         
         // Crear la nueva URL reemplazando el complemento
-        const newURL = currentURL.replace(/[^/]*$/, "historicos.html");
+        const newURL = currentURL.replace(/[^/]*$/, "historical.html");
         
         // Redirigir a la nueva URL
         window.location.href = newURL;
