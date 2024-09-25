@@ -52,6 +52,12 @@
     border-radius: 10px;
 }
 
+#contenedor-mapa-2 {
+    width: 100%; /* El mapa ocupa la mitad del ancho disponible */
+    height: 500px;
+    border-radius: 10px;
+}
+
 .datos-especifico {
     display: flex;
     flex-direction: row;
