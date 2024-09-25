@@ -25,9 +25,5 @@ app.include_router(hourRoute)
 app.include_router(historicSearch)
 
 # Montar archivos estáticos
-app.mount("/static", StaticFiles(directory="./static"), name="static")
+app.mount("/", StaticFiles(directory="./static"), name="static")
 
-# Endpoint raíz que devuelve el archivo HTML desde la carpeta static
-@app.get("/", response_class=HTMLResponse)
-async def get(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})

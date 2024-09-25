@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <title>Históricos de Taxis</title>
-    <script src="index.js"></script>
+    <script src="historical.js"></script>
 </head>
 <body>
     <div class="tab_box">
@@ -17,9 +17,9 @@
         <h1>Histórico de Datos</h1>
         <div class="fechas">
             <label for="start">Fecha y hora inicial:</label>
-            <input type="datetime-local" id="start date" step="900"/>
+            <input type="datetime-local" id="start-date" step="900"/>
             <label for="end">Fecha y hora final:</label>
-            <input type="datetime-local" id="end date" step="900"/>
+            <input type="datetime-local" id="end-date" step="900"/>
             <button type="submit" class="boton" id="enviar">Enviar</button>
         </div>
         <div id="contenedor-mapa"></div>
