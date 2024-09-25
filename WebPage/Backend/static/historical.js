@@ -2,7 +2,7 @@
 const startDateInput = document.getElementById("start-date");
 const endDateInput = document.getElementById("end-date");
 const submitButton = document.getElementById("enviar");
-let mapa; // Aquí se define la variable del mapa
+let mapa_2; // Aquí se define la variable del mapa
 
 // Función que se ejecuta cuando cambia la fecha de inicio
 startDateInput.addEventListener("change", function () {
@@ -81,7 +81,7 @@ submitButton.addEventListener("click", function (event) {
         const route = L.polyline(coordinates, { color: 'blue' }).addTo(mapa); // Usar 'mapa' en lugar de 'map'
     
         // Ajustar la vista del mapa para que se ajuste a la ruta
-        mapa.fitBounds(route.getBounds()); // Usar 'mapa' en lugar de 'map'
+        mapa_2.fitBounds(route.getBounds()); // Usar 'mapa' en lugar de 'map'
     }
 
     fetchAndDrawRoute(); // Ejecutar la función fetchAndDrawRoute al hacer clic en enviar
@@ -89,6 +89,6 @@ submitButton.addEventListener("click", function (event) {
 
 window.onload = function() {
     // Inicializar el mapa solo una vez
-    mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
+    mapa = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
 };
