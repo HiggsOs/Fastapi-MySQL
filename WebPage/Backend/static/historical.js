@@ -96,5 +96,5 @@ window.onload = function() {
 };
 
 document.getElementById('redirectBtn').addEventListener('click', function() {
-    window.location.href = ''; // 
+    window.location.href = ''; // a
 });
