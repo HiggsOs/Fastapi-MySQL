@@ -60,18 +60,19 @@ window.onload = function() {
 
     fetchData(); // Ejecutar fetchData al cargar la página
 
+    const historicosBtn = document.getElementById("historicos-btn");
+    
+    // Agregar evento de clic
+    historicosBtn.addEventListener("click", function() {
+        // Obtener la URL actual
+        const currentURL = window.location.href;
+        
+        // Crear la nueva URL reemplazando el complemento
+        const newURL = currentURL.replace(/[^/]*$/, "historicos.html");
+        
+        // Redirigir a la nueva URL
+        window.location.href = newURL;
+    });
 };
 
-const historicosBtn = document.getElementById("historicos-btn");
-    
-// Agregar evento de clic
-historicosBtn.addEventListener("click", function() {
-    // Obtener la URL actual
-    const currentURL = window.location.href;
-    
-    // Crear la nueva URL reemplazando el complemento
-    const newURL = currentURL.replace(/[^/]*$/, "historicos.html");
-    
-    // Redirigir a la nueva URL
-    window.location.href = newURL;
-});
+
