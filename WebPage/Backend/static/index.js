@@ -58,22 +58,6 @@ window.onload = function() {
     mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
 
-    // Manejo de las pestañas
-    const tabs = document.querySelectorAll('.tab_btn');
-    const all_content = document.querySelectorAll('.datos');
-
-    tabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => {
-            // Quitar la clase 'active' de todas las pestañas y el contenido
-            tabs.forEach(tab => tab.classList.remove('active'));
-            all_content.forEach(content => content.classList.remove('active'));
-            
-            // Agregar la clase 'active' a la pestaña y mostrar el contenido correspondiente
-            tab.classList.add('active');
-            all_content[index].classList.add('active');
-        });
-    });
-
     fetchData(); // Ejecutar fetchData al cargar la página
 
 
