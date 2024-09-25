@@ -2,6 +2,7 @@
 const startDateInput = document.getElementById("start-date");
 const endDateInput = document.getElementById("end-date");
 const submitButton = document.getElementById("enviar");
+let mapa; // Aquí se define la variable del mapa
 
 // Función que se ejecuta cuando cambia la fecha de inicio
 startDateInput.addEventListener("change", function () {
@@ -17,7 +18,8 @@ submitButton.addEventListener("click", function (event) {
         alert("La fecha final no puede ser anterior a la fecha de inicio.");
         return;
     }
-        // Obtener los valores de los inputs
+
+    // Obtener los valores de los inputs
     const startDateTime = startDateInput.value;
     const endDateTime = endDateInput.value;
 
@@ -30,8 +32,8 @@ submitButton.addEventListener("click", function (event) {
     const endTime = endDateTime.split("T")[1]; // Hora en formato HH:MM
 
     // Guardar o manipular los valores obtenidos
-    console.log("days-hour/?start_day=", startDate, ""); //yyyy-mm-dd
-    console.log("Hora de inicio:", startTime); //00:00
+    console.log("days-hour/?start_day=", startDate, ""); // yyyy-mm-dd
+    console.log("Hora de inicio:", startTime); // 00:00
     console.log("Fecha final:", endDate);
     console.log("Hora final:", endTime);
     
@@ -75,19 +77,18 @@ submitButton.addEventListener("click", function (event) {
     }
     
     function drawRouteOnMap(coordinates) {
-        // Crear el mapa de Leaflet (asegúrate de que tengas un contenedor para el mapa)
-        const map = L.map('contenedor-mapa').setView(coordinates[0], 13); // Centra el mapa en la primera coordenada
-    
-        // Añadir un tile layer al mapa
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-    
         // Dibujar la ruta en el mapa usando las coordenadas
-        const route = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+        const route = L.polyline(coordinates, { color: 'blue' }).addTo(mapa); // Usar 'mapa' en lugar de 'map'
     
         // Ajustar la vista del mapa para que se ajuste a la ruta
-        map.fitBounds(route.getBounds());
-    }    
+        mapa.fitBounds(route.getBounds()); // Usar 'mapa' en lugar de 'map'
+    }
+
+    fetchAndDrawRoute(); // Ejecutar la función fetchAndDrawRoute al hacer clic en enviar
 });
+
+window.onload = function() {
+    // Inicializar el mapa solo una vez
+    mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
+};
