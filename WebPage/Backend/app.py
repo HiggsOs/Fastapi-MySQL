@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 from routes.taxis import taxis
 from routes.receive_data import receive_data
 from routes.day import dayRoute
@@ -8,9 +10,10 @@ from routes.longitude import longitudeRoute
 from routes.hour import hourRoute
 from routes.historicsearch import historicSearch
 
-
-
 app = FastAPI()
+
+# Usar la carpeta 'static' para las plantillas HTML
+templates = Jinja2Templates(directory="static")
 
 # Incluir las rutas
 app.include_router(taxis)
@@ -22,4 +25,9 @@ app.include_router(hourRoute)
 app.include_router(historicSearch)
 
 # Montar archivos estáticos
-app.mount("/", StaticFiles(directory="./static"), name="static")
+app.mount("/static", StaticFiles(directory="./static"), name="static")
+
+# Endpoint raíz que devuelve el archivo HTML desde la carpeta static
+@app.get("/", response_class=HTMLResponse)
+async def get(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
