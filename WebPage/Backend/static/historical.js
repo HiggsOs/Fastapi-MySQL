@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let mapa_2;
 
     const indexBtn = document.getElementById("index-btn");
-
+    const positionBtn = document.getElementById("position-btn");
     // Agregar evento de clic
     indexBtn.addEventListener("click", function() {
         // Obtener la URL actual
@@ -15,6 +15,12 @@ document.addEventListener("DOMContentLoaded", function() {
         const newURL = currentURL.replace(/[^/]*$/, "index.html");
 
         // Redirigir a la nueva URL
+        window.location.href = newURL;
+    });
+
+    positionBtn.addEventListener("click", function() {
+        const currentURL = window.location.href
+        const newURL = currentURL.replace(/[^/]*$/, "position.html");
         window.location.href = newURL;
     });
 
@@ -87,14 +93,4 @@ document.addEventListener("DOMContentLoaded", function() {
         mapa_2 = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa_2);
     };
-});
-
-window.onload = function() {
-    // Inicializar el mapa solo una vez
-    mapa_2 = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa_2);
-};
-
-document.getElementById('redirectBtn').addEventListener('click', function() {
-    window.location.href = ''; // 
 });

@@ -9,7 +9,8 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    flex-direction: row;
 }
 
 .tab_btn {
@@ -17,7 +18,7 @@
     font-size: 16px;
     font-weight: 600;
     font-family: sans-serif;   
-    color: #fff;
+    color: #444444;
     background: none;
     border: none;
     cursor: pointer;
@@ -27,7 +28,7 @@
 
 .contenedor-data {
     display: flex;
-    flex-direction: row; /* Alinear elementos en una fila */
+    flex-direction: column; /* Alinear elementos en una columna */
     gap: 20px;
     width: 100%;
 }
@@ -35,15 +36,16 @@
 
 .datos {
     display: flex; /* Mostrar el contenido activo */
-    flex-direction: row; /* Asegurar que los elementos se alineen en fila */
+    flex-direction: column; /* Asegurar que los elementos se alineen en fila */
+    align-items: center;
     width: 100%;
 }
 
 .info {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    width: 50%; /* Ancho del contenedor de datos */
+    width: 100%; /* Ancho del contenedor de datos */
 }
 
 #contenedor-mapa {
