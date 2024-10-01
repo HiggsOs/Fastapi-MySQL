@@ -64,6 +64,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%; /* Ancho del contenedor de datos */
+    gap: 20px;
 }
 
 #contenedor-mapa {
