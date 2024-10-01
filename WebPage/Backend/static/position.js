@@ -20,7 +20,7 @@ window.onload = function () {
         window.location.href = newURL;
     });
     
-    mapa_3 = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
+    mapa_3 = L.map("contenedor-mapa-3").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa_3);
 };
 

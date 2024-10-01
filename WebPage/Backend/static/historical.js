@@ -28,6 +28,11 @@ document.addEventListener("DOMContentLoaded", function() {
     startDateInput.addEventListener("change", function () {
         endDateInput.min = startDateInput.value;
     });
+
+    // Función que se ejecuta cuando cambia la fecha de final
+    endDateInput.addEventListener("change", function () {
+        startDateInput.max = endDateInput.value
+    });
     
     
     // Función para validar al enviar
@@ -36,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault();
             alert("La fecha final no puede ser anterior a la fecha de inicio.");
             return;
-        }
+        } 
 
         const startDateTime = startDateInput.value;
         const endDateTime = endDateInput.value;

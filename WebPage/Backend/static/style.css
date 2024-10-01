@@ -5,24 +5,41 @@
     width: 100%;
 }
 
-.tab_box {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 5px;
-    flex-direction: row;
-}
-
 .tab_btn {
     padding: 15px 20px;
     font-size: 16px;
     font-weight: 600;
     font-family: sans-serif;   
-    color: #444444;
+    color: white;
     background: none;
     border: none;
     cursor: pointer;
     transition: color 0.3s ease;
+}
+
+#general-header {
+    display: flex;
+    justify-content: space-around;
+    background: #333;
+    color: white;
+    height: 50px;
+    width: 100%;
+    left: 0;
+    right: 0;
+    position: fixed;
+    top: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    padding-top: 50px;
+}
+
+
+
+.tab_btn:hover {
+    color: yellow;
 }
 
 
@@ -44,19 +61,26 @@
 .info {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
     width: 100%; /* Ancho del contenedor de datos */
 }
 
 #contenedor-mapa {
     width: 100%; /* El mapa ocupa la mitad del ancho disponible */
-    height: 500px;
+    height: 452px;
     border-radius: 10px;
 }
 
 #contenedor-mapa-2 {
     width: 100%; /* El mapa ocupa la mitad del ancho disponible */
-    height: 500px;
+    height: 487px;
+    border-radius: 10px;
+}
+
+#contenedor-mapa-3 {
+    width: 100%; /* El mapa ocupa la mitad del ancho disponible */
+    height: 490px;
     border-radius: 10px;
 }
 
@@ -65,4 +89,26 @@
     flex-direction: row;
     gap: 10px;
     font-size: 1.1em;
+}
+
+.titulo {
+    font-size: 1.5em;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.historical {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.position {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
