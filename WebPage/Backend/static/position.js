@@ -88,31 +88,38 @@ window.onload = function () {
                 try {
                     const response = await fetch(url);
                     const data = await response.json();
+                    console.log(data); // Agrega este log para verificar la respuesta
                     const resultados = data.resultados;
-        
-                    // Vaciar el selector de polilíneas
-                    selectPolyline.innerHTML = '';
-        
-                    resultados.forEach((resultado, index) => {
-                        const option = document.createElement('option');
-                        option.value = index;
-                        option.text = `Polilínea ${index + 1}`;
-                        selectPolyline.appendChild(option);
-                    });
-        
-                    selectPolyline.addEventListener('change', function () {
-                        const selectedPolylineIndex = selectPolyline.value;
-                        graficarPolilinea(resultados[selectedPolylineIndex].poliline);
-                    });
-        
-                    // Graficar la primera polilínea por defecto
-                    if (resultados.length > 0) {
-                        graficarPolilinea(resultados[0].poliline);
+            
+                    // Comprobar si resultados es un array
+                    if (Array.isArray(resultados)) {
+                        // Vaciar el selector de polilíneas
+                        selectPolyline.innerHTML = '';
+            
+                        resultados.forEach((resultado, index) => {
+                            const option = document.createElement('option');
+                            option.value = index;
+                            option.text = `Polilínea ${index + 1}`;
+                            selectPolyline.appendChild(option);
+                        });
+            
+                        selectPolyline.addEventListener('change', function () {
+                            const selectedPolylineIndex = selectPolyline.value;
+                            graficarPolilinea(resultados[selectedPolylineIndex].poliline);
+                        });
+            
+                        // Graficar la primera polilínea por defecto
+                        if (resultados.length > 0) {
+                            graficarPolilinea(resultados[0].poliline);
+                        }
+                    } else {
+                        console.error('resultados no es un array:', resultados);
                     }
                 } catch (error) {
                     console.error('Error al obtener las polilíneas:', error);
                 }
             }
+            
         
             // Función para graficar una polilínea
             function graficarPolilinea(coordinates) {
