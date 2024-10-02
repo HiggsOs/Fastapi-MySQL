@@ -50,7 +50,7 @@ async function fetchData() {
 }
 
 // Actualización periódica de los datos
-setInterval(fetchData, 10000);
+setInterval(fetchData, 2000);
 
 // Ejecutar fetchData cuando la página se haya cargado completamente
 window.onload = function() {
