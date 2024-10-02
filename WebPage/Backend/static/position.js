@@ -2,6 +2,7 @@ window.onload = function () {
     const historicosBtn = document.getElementById("historicos-btn");
     const indexBtn = document.getElementById("index-btn");
     const radioInput = document.getElementById("radio"); // Obtener el input range
+    const extractCoordsBtn = document.getElementById("extract-coords-btn");
     let lastMarker = null; // Variable para almacenar el último marcador
     let lastCircle = null; // Variable para almacenar el último círculo
     const value = document.querySelector("#value");
@@ -61,5 +62,41 @@ window.onload = function () {
     value.textContent = radioInput.value;
     radio.addEventListener("input", (event) => {
         value.textContent = event.target.value;
+    });
+
+    extractCoordsBtn.addEventListener("click", function() {
+        if (lastCircle) {
+            const bounds = lastCircle.getBounds(); // Obtener los límites del círculo
+            const latMin = bounds.getSouth(); // Latitud mínima
+            const latMax = bounds.getNorth(); // Latitud máxima
+            const lngMin = bounds.getWest();  // Longitud mínima
+            const lngMax = bounds.getEast();  // Longitud máxima
+
+            // Mostrar los valores en la consola
+            console.log(`Latitud mínima: ${latMin}, Latitud máxima: ${latMax}`);
+            console.log(`Longitud mínima: ${lngMin}, Longitud máxima: ${lngMax}`);
+
+            // Construir la URL de la query GET
+            const url = `/api/position?lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}`;
+            console.log(`URL generada: ${url}`);
+
+            // Hacer la petición GET usando fetch
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error en la solicitud: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Procesar los datos recibidos
+                    console.log("Datos recibidos:", data);
+                })
+                .catch(error => {
+                    console.error("Error al realizar la solicitud:", error);
+                });
+        } else {
+            console.log("No se ha creado un círculo aún.");
+        }
     });
 };
