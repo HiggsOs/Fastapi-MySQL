@@ -6,10 +6,8 @@ window.onload = function () {
     let lastMarker = null; // Variable para almacenar el último marcador
     let lastCircle = null; // Variable para almacenar el último círculo
     const value = document.querySelector("#value");
-    const input = document.querySelector("#radio");
     const polylines = []; // Almacenar polilíneas en el mapa
     const selectPolyline = document.getElementById('polyline-select'); // Usar el selector ya existente
-
 
     historicosBtn.addEventListener("click", function() {
         const currentURL = window.location.href;
@@ -90,33 +88,31 @@ window.onload = function () {
                     const data = await response.json();
                     console.log(data); // Agrega este log para verificar la respuesta
                     const resultados = data.resultados;
-
-                    // Comprobar si resultados es un objeto
-                    if (resultados && typeof resultados === 'object') {
+            
+                    // Comprobar si resultados es un array
+                    if (Array.isArray(resultados)) {
                         // Vaciar el selector de polilíneas
                         selectPolyline.innerHTML = '';
-                        
-                        for (const key in resultados) {
-                            if (resultados.hasOwnProperty(key)) {
-                                const polyline = resultados[key];
-                                const option = document.createElement('option');
-                                option.value = key; // Usar el key del objeto como valor
-                                option.text = `Polilínea ${parseInt(key) + 1}`; // Mostrar el número de la polilínea
-                                selectPolyline.appendChild(option);
-                            }
-                        }
-
+            
+                        resultados.forEach((resultado, index) => {
+                            const option = document.createElement('option');
+                            option.value = index;
+                            option.text = `Polilínea ${index + 1}`;
+                            selectPolyline.appendChild(option);
+                        });
+            
+                        // Añadir el evento de cambio al selector después de llenar las opciones
                         selectPolyline.addEventListener('change', function () {
                             const selectedPolylineIndex = selectPolyline.value;
                             graficarPolilinea(resultados[selectedPolylineIndex].poliline);
                         });
-
-                        // Graficar la primera polilínea por defecto
-                        if (Object.keys(resultados).length > 0) {
-                            graficarPolilinea(resultados[Object.keys(resultados)[0]].poliline);
+            
+                        // Graficar la primera polilínea por defecto si hay resultados
+                        if (resultados.length > 0) {
+                            graficarPolilinea(resultados[0].poliline);
                         }
                     } else {
-                        console.error('resultados no es un objeto o está vacío:', resultados);
+                        console.error('resultados no es un array:', resultados);
                     }
                 } catch (error) {
                     console.error('Error al obtener las polilíneas:', error);
@@ -129,19 +125,19 @@ window.onload = function () {
                 polylines.forEach(polyline => {
                     mapa_3.removeLayer(polyline);
                 });
-
+        
                 // Crear una nueva polilínea con las coordenadas recibidas
-                const latLngs = coordinates.map(coord => [parseFloat(coord.Latitude.trim()), parseFloat(coord.Longitude.trim())]);
+                const latLngs = coordinates.map(coord => [parseFloat(coord.Latitude), parseFloat(coord.Longitude)]);
                 const polyline = L.polyline(latLngs, { color: 'blue' }).addTo(mapa_3);
-
+        
                 // Añadir la nueva polilínea a la lista de polilíneas
                 polylines.push(polyline);
-
+        
                 // Ajustar la vista del mapa para que se ajuste a la polilínea
                 mapa_3.fitBounds(polyline.getBounds());
             }
-
+        
             obtenerYGraficarPolilineas(); // Llamar a la función para obtener y graficar polilíneas
-        }
+        };
     });
 };
