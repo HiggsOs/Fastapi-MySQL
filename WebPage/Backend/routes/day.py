@@ -16,7 +16,7 @@ def get_last_day():
        
         
 
-@dayRoute.get("/day")
+@dayRoute.get("/day",tags=["Basic info from database"])
 async def read_last_day():
     last_day = get_last_day()
     if last_day is not None:
