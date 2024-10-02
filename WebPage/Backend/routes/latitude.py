@@ -15,7 +15,7 @@ def get_last_latitude():
             return result[taxisTB.c.Latitude]
         
 
-@latitudeRoute.get("/latitude")
+@latitudeRoute.get("/latitude",tags=["Basic info from database"])
 async def read_last_latitude():
     last_latitude = get_last_latitude()
     if last_latitude is not None:

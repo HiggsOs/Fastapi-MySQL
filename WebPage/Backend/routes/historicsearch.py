@@ -29,7 +29,7 @@ def get_Days_Hours(start_day, end_day, start_hour, end_hour):
 
 
 # Search a range with 2 parameters start_day, end_day.
-@historicSearch.get("/search_days")
+@historicSearch.get("/search_days",tags=["Complex info from database"])
 async def read_Days(start_day: str = Query(..., description="start day in format YYYY-MM-DD"),
                     end_day: str = Query(..., description="End day in format YYYY-MM-DD")):
     result = get_Days(start_day=start_day, end_day=end_day)
@@ -40,7 +40,7 @@ async def read_Days(start_day: str = Query(..., description="start day in format
 #Search a range with 4 parameters start_day, end_day start_hour, end_hour.
 
 
-@historicSearch.get("/days-hours/",description="GET /days-hours/?start_day=2024-09-01&end_day=2024-09-05&start_hour=08:00&end_hour=18:00")
+@historicSearch.get("/days-hours/",description="GET /days-hours/?start_day=2024-09-01&end_day=2024-09-05&start_hour=08:00&end_hour=18:00",tags=["Complex info from database"])
 async def read_Days_Hours(
     start_day: str = Query(..., description="start day in format YYYY-MM-DD"),
     end_day: str = Query(..., description="End day in format YYYY-MM-DD"),

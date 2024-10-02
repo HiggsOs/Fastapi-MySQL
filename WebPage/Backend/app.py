@@ -25,16 +25,16 @@ app.include_router(longitudeRoute)
 app.include_router(hourRoute)
 app.include_router(historicSearch)
 app.include_router(position)
-
+app.title="Host-Gps"
 # Montar archivos estáticos
 app.mount("/static", StaticFiles(directory="./static"), name="static")
 
-@app.get("/")
+@app.get("/",tags=["Htmls in WebPage"])
 async def read_index():
     return FileResponse("static/index.html")
-@app.get("/position")
+@app.get("/position",tags=["Htmls in WebPage"])
 async def read_index():
     return FileResponse("static/position.html")
-@app.get("/historical")
+@app.get("/historical",tags=["Htmls in WebPage"])
 async def read_index():
     return FileResponse("static/historical.html")

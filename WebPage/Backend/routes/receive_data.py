@@ -5,7 +5,7 @@ from schemas.data import Data
 
 receive_data = APIRouter()
 
-@receive_data.post("/receive_data")
+@receive_data.post("/receive_data",tags=["Insert info to database"])
 def funreceive_data(data:Data):
     new_data={"Latitude":data.latitud,
               "Longitude":data.longitud,

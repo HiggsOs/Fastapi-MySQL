@@ -63,7 +63,7 @@ def agrupar_por_tiempo(resultados):
     logger.info(f"Número de polilineas creadas: {len(polilineas)}")
     return polilineas
 
-@position.get("/api/position", description="GET /api/position?lat_min=4.5&lat_max=4.7&long_min=-74.2&long_max=-74.0")
+@position.get("/api/position", description="GET /api/position?lat_min=4.5&lat_max=4.7&long_min=-74.2&long_max=-74.0",tags=["Complex info from database"])
 async def read_geo(lat_min: float = Query(..., description="Minimum latitude"),
                    lat_max: float = Query(..., description="Maximum latitude"),
                    long_min: float = Query(..., description="Minimum longitude"),

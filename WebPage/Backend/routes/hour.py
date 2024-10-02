@@ -15,7 +15,7 @@ def get_last_hour():
         
         
 
-@hourRoute.get("/hour")
+@hourRoute.get("/hour",tags=["Basic info from database"])
 async def read_last_hour():
     last_hour = get_last_hour()
     if last_hour is not None:
