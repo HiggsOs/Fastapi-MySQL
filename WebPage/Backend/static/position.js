@@ -8,8 +8,8 @@ window.onload = function () {
     const value = document.querySelector("#value");
     const input = document.querySelector("#radio");
     const polylines = []; // Almacenar polilíneas en el mapa
-    const selectPolyline = document.createElement('select'); // Selector para polilíneas
-    document.body.appendChild(selectPolyline); // Añadir al cuerpo de la página
+    const selectPolyline = document.getElementById('polyline-select'); // Usar el selector ya existente
+
 
     historicosBtn.addEventListener("click", function() {
         const currentURL = window.location.href;
