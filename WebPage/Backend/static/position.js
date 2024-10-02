@@ -63,7 +63,7 @@ window.onload = function () {
     });
 
     value.textContent = radioInput.value;
-    radio.addEventListener("input", (event) => {
+    radioInput.addEventListener("input", (event) => {
         value.textContent = event.target.value;
     });
 
@@ -90,56 +90,58 @@ window.onload = function () {
                     const data = await response.json();
                     console.log(data); // Agrega este log para verificar la respuesta
                     const resultados = data.resultados;
-            
-                    // Comprobar si resultados es un array
-                    if (Array.isArray(resultados)) {
+
+                    // Comprobar si resultados es un objeto
+                    if (resultados && typeof resultados === 'object') {
                         // Vaciar el selector de polilíneas
                         selectPolyline.innerHTML = '';
-            
-                        resultados.forEach((resultado, index) => {
-                            const option = document.createElement('option');
-                            option.value = index;
-                            option.text = `Polilínea ${index + 1}`;
-                            selectPolyline.appendChild(option);
-                        });
-            
+                        
+                        for (const key in resultados) {
+                            if (resultados.hasOwnProperty(key)) {
+                                const polyline = resultados[key];
+                                const option = document.createElement('option');
+                                option.value = key; // Usar el key del objeto como valor
+                                option.text = `Polilínea ${parseInt(key) + 1}`; // Mostrar el número de la polilínea
+                                selectPolyline.appendChild(option);
+                            }
+                        }
+
                         selectPolyline.addEventListener('change', function () {
                             const selectedPolylineIndex = selectPolyline.value;
                             graficarPolilinea(resultados[selectedPolylineIndex].poliline);
                         });
-            
+
                         // Graficar la primera polilínea por defecto
-                        if (resultados.length > 0) {
-                            graficarPolilinea(resultados[0].poliline);
+                        if (Object.keys(resultados).length > 0) {
+                            graficarPolilinea(resultados[Object.keys(resultados)[0]].poliline);
                         }
                     } else {
-                        console.error('resultados no es un array:', resultados);
+                        console.error('resultados no es un objeto o está vacío:', resultados);
                     }
                 } catch (error) {
                     console.error('Error al obtener las polilíneas:', error);
                 }
             }
-            
-        
+
             // Función para graficar una polilínea
             function graficarPolilinea(coordinates) {
                 // Eliminar las polilíneas anteriores
                 polylines.forEach(polyline => {
                     mapa_3.removeLayer(polyline);
                 });
-        
+
                 // Crear una nueva polilínea con las coordenadas recibidas
-                const latLngs = coordinates.map(coord => [parseFloat(coord.Latitude), parseFloat(coord.Longitude)]);
+                const latLngs = coordinates.map(coord => [parseFloat(coord.Latitude.trim()), parseFloat(coord.Longitude.trim())]);
                 const polyline = L.polyline(latLngs, { color: 'blue' }).addTo(mapa_3);
-        
+
                 // Añadir la nueva polilínea a la lista de polilíneas
                 polylines.push(polyline);
-        
+
                 // Ajustar la vista del mapa para que se ajuste a la polilínea
                 mapa_3.fitBounds(polyline.getBounds());
             }
-        
+
             obtenerYGraficarPolilineas(); // Llamar a la función para obtener y graficar polilíneas
-        };
+        }
     });
 };
