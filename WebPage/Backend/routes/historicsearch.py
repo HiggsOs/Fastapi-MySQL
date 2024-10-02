@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from models.taxis import taxisTB
 from config.db import conn, SessionLocal
-from sqlalchemy import select,and_
+from sqlalchemy import select,and_,func
 
 historicSearch = APIRouter()
 
@@ -14,16 +14,18 @@ def get_Days(start_day, end_day):
 
 #Query by days and by hour
 def get_Days_Hours(start_day, end_day, start_hour, end_hour):
-    with SessionLocal() as session:
-        # Filter by range of days y hours
-        stmt = select(taxisTB).where(
-            and_(
-                taxisTB.c.Day.between(start_day, end_day),
-                taxisTB.c.Hour.between(start_hour, end_hour)
+   with SessionLocal() as session:
+    # Convertir el día y la hora en un solo campo de fecha/hora
+    stmt = select(taxisTB).where(
+        and_(
+            func.concat(taxisTB.c.Day, ' ', taxisTB.c.Hour).between(
+                f'{start_day} {start_hour}',
+                f'{end_day} {end_hour}'
             )
         )
-        result = session.execute(stmt).fetchall()  
-        return result if result else None
+    )
+    result = session.execute(stmt).fetchall()
+    return result if result else None
 
 
 # Search a range with 2 parameters start_day, end_day.
