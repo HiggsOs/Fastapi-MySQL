@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const currentURL = window.location.href;
 
         // Crear la nueva URL reemplazando el complemento
-        const newURL = currentURL.replace(/[^/]*$/, "index.html");
+        const newURL = currentURL.replace(/[^/]*$/, "");
 
         // Redirigir a la nueva URL
         window.location.href = newURL;
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     positionBtn.addEventListener("click", function() {
         const currentURL = window.location.href
-        const newURL = currentURL.replace(/[^/]*$/, "position.html");
+        const newURL = currentURL.replace(/[^/]*$/, "position");
         window.location.href = newURL;
     });
 

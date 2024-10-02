@@ -68,14 +68,14 @@ window.onload = function() {
         const currentURL = window.location.href;
         
         // Crear la nueva URL reemplazando el complemento
-        const newURL = currentURL.replace(/[^/]*$/, "historical.html");
+        const newURL = currentURL.replace(/[^/]*$/, "historical");
         
         // Redirigir a la nueva URL
         window.location.href = newURL;
     });
     positionBtn.addEventListener("click", function() {
         const currentURL = window.location.href;
-        const newURL = currentURL.replace(/[^/]*$/, "position.html");
+        const newURL = currentURL.replace(/[^/]*$/, "position");
         window.location.href = newURL;
     });
 };
