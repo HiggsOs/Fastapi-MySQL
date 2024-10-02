@@ -9,7 +9,7 @@ from routes.latitude import latitudeRoute
 from routes.longitude import longitudeRoute
 from routes.hour import hourRoute
 from routes.historicsearch import historicSearch
-
+from starlette.responses import FileResponse
 app = FastAPI()
 
 # Usar la carpeta 'static' para las plantillas HTML
@@ -25,5 +25,14 @@ app.include_router(hourRoute)
 app.include_router(historicSearch)
 
 # Montar archivos estáticos
-app.mount("/", StaticFiles(directory="./static"), name="static")
+app.mount("/static", StaticFiles(directory="./static"), name="static")
 
+@app.get("/")
+async def read_index():
+    return FileResponse("static/index.html")
+@app.get("/position")
+async def read_index():
+    return FileResponse("static/position.html")
+@app.get("/historical")
+async def read_index():
+    return FileResponse("static/historical.html")
