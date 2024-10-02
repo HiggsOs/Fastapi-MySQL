@@ -9,6 +9,7 @@ from routes.latitude import latitudeRoute
 from routes.longitude import longitudeRoute
 from routes.hour import hourRoute
 from routes.historicsearch import historicSearch
+from routes.position import position
 from starlette.responses import FileResponse
 app = FastAPI()
 
@@ -23,6 +24,7 @@ app.include_router(latitudeRoute)
 app.include_router(longitudeRoute)
 app.include_router(hourRoute)
 app.include_router(historicSearch)
+app.include_router(position)
 
 # Montar archivos estáticos
 app.mount("/static", StaticFiles(directory="./static"), name="static")
