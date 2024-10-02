@@ -7,6 +7,9 @@ window.onload = function () {
     let lastCircle = null; // Variable para almacenar el último círculo
     const value = document.querySelector("#value");
     const input = document.querySelector("#radio");
+    const polylines = []; // Almacenar polilíneas en el mapa
+    const selectPolyline = document.createElement('select'); // Selector para polilíneas
+    document.body.appendChild(selectPolyline); // Añadir al cuerpo de la página
 
     historicosBtn.addEventListener("click", function() {
         const currentURL = window.location.href;
@@ -81,22 +84,55 @@ window.onload = function () {
             console.log(`URL generada: ${url}`);
 
             // Hacer la petición GET usando fetch
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Error en la solicitud: ${response.statusText}`);
+            async function obtenerYGraficarPolilineas() {
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    const resultados = data.resultados;
+        
+                    // Vaciar el selector de polilíneas
+                    selectPolyline.innerHTML = '';
+        
+                    resultados.forEach((resultado, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.text = `Polilínea ${index + 1}`;
+                        selectPolyline.appendChild(option);
+                    });
+        
+                    selectPolyline.addEventListener('change', function () {
+                        const selectedPolylineIndex = selectPolyline.value;
+                        graficarPolilinea(resultados[selectedPolylineIndex].poliline);
+                    });
+        
+                    // Graficar la primera polilínea por defecto
+                    if (resultados.length > 0) {
+                        graficarPolilinea(resultados[0].poliline);
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    // Procesar los datos recibidos
-                    console.log("Datos recibidos:", data);
-                })
-                .catch(error => {
-                    console.error("Error al realizar la solicitud:", error);
+                } catch (error) {
+                    console.error('Error al obtener las polilíneas:', error);
+                }
+            }
+        
+            // Función para graficar una polilínea
+            function graficarPolilinea(coordinates) {
+                // Eliminar las polilíneas anteriores
+                polylines.forEach(polyline => {
+                    mapa_3.removeLayer(polyline);
                 });
-        } else {
-            console.log("No se ha creado un círculo aún.");
-        }
+        
+                // Crear una nueva polilínea con las coordenadas recibidas
+                const latLngs = coordinates.map(coord => [parseFloat(coord.Latitude), parseFloat(coord.Longitude)]);
+                const polyline = L.polyline(latLngs, { color: 'blue' }).addTo(mapa_3);
+        
+                // Añadir la nueva polilínea a la lista de polilíneas
+                polylines.push(polyline);
+        
+                // Ajustar la vista del mapa para que se ajuste a la polilínea
+                mapa_3.fitBounds(polyline.getBounds());
+            }
+        
+            obtenerYGraficarPolilineas(); // Llamar a la función para obtener y graficar polilíneas
+        };
     });
 };
