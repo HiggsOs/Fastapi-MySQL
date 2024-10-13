@@ -45,7 +45,7 @@ window.onload = function () {
         lastCircle = L.circle([lat, lng], { radius }).addTo(mapa_3);
         
         // Opción de mostrar un mensaje en el marcador con las coordenadas y el radio actual
-        lastMarker.bindPopup(`Coordenadas: Latitud = ${lat}, Longitud = ${lng}`).openPopup();
+        //lastMarker.bindPopup(`Coordenadas: Latitud = ${lat}, Longitud = ${lng}`).openPopup();
 
         // Mostrar coordenadas y rango en la consola
         console.log(`Latitud: ${lat}, Longitud: ${lng}, Radio: ${radius} metros`);
@@ -133,18 +133,40 @@ window.onload = function () {
                     mapa_3.removeLayer(polyline);
                 });
 
-                // Crear una nueva polilínea con las coordenadas recibidas
-                const latLngs = coordinates.map(coord => [parseFloat(coord.Latitude.trim()), parseFloat(coord.Longitude.trim())]);
+                // Filtrar solo las coordenadas dentro del círculo
+                const latLngs = coordinates
+                    .map(coord => [parseFloat(coord.Latitude.trim()), parseFloat(coord.Longitude.trim())])
+                    .filter(([lat, lng]) => {
+                        const distancia = calcularDistancia(lastCircle.getLatLng().lat, lastCircle.getLatLng().lng, lat, lng);
+                        return distancia <= lastCircle.getRadius(); // Filtrar solo puntos dentro del círculo
+                    });
+
+                // Crear una nueva polilínea con las coordenadas filtradas
                 const polyline = L.polyline(latLngs, { color: 'blue' }).addTo(mapa_3);
 
                 // Añadir la nueva polilínea a la lista de polilíneas
                 polylines.push(polyline);
 
                 // Ajustar la vista del mapa para que se ajuste a la polilínea
-                mapa_3.fitBounds(polyline.getBounds());
+                if (latLngs.length > 0) {
+                    mapa_3.fitBounds(polyline.getBounds());
+                }
             }
 
             obtenerYGraficarPolilineas(); // Llamar a la función para obtener y graficar polilíneas
         }
     });
+
+    // Función para calcular la distancia entre dos puntos (en metros)
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+        const R = 6371000; // Radio de la Tierra en metros
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distancia = R * c; // Distancia en metros
+        return distancia;
+    }
 };
