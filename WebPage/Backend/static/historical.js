@@ -3,9 +3,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const endDateInput = document.getElementById("end-date");
     const submitButton = document.getElementById("enviar");
     let mapa_2;
-
     const indexBtn = document.getElementById("index-btn");
     const positionBtn = document.getElementById("position-btn");
+    const contenedor_info = document.querySelector('.contenedor-info')
+    const contenedor_btn = document.querySelector('.contenedor-btn')
+    const filtro_posicion= document.getElementById("position-switch")
+
     // Agregar evento de clic
     indexBtn.addEventListener("click", function() {
         // Obtener la URL actual
@@ -34,6 +37,16 @@ document.addEventListener("DOMContentLoaded", function() {
         startDateInput.max = endDateInput.value
     });
     
+    //Funcion para activar el filtro de posición
+    filtro_posicion.addEventListener("change", (event) => {
+        if (event.target.checked){
+            contenedor_info.classList.add('activo')
+            contenedor_btn.classList.add('activo')
+        } else {
+            contenedor_info.classList.remove('activo')
+            contenedor_btn.classList.remove('activo')
+        }        
+    });
     
     // Función para validar al enviar
     submitButton.addEventListener("click", function (event) {   //

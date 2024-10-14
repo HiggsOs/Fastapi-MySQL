@@ -113,3 +113,28 @@ body {
     align-items: center;
     width: 100%;
 }
+
+.contenedor-position{
+    display: flex;
+    flex-direction: row;
+
+}
+.contenedor-position .contenedor-info{
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+}
+
+.contenedor-position .contenedor-info.activo{
+    opacity: 1;
+}
+
+.contenedor-position .contenedor-btn{
+    position: absolute;
+    opacity: 1;
+}
+
+.contenedor-position .contenedor-btn.activo{
+    position: absolute;
+    opacity: 0;
+}

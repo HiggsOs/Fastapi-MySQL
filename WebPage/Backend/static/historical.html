@@ -21,7 +21,30 @@
             <input type="datetime-local" id="start-date" step="900"/>   <!--  -->
             <label for="end">Fecha y hora final:</label>
             <input type="datetime-local" id="end-date" step="900"/>       <!--  -->
-            <button type="submit" class="boton" id="enviar">Enviar</button>
+            <div class="contenedor-position">
+                <div class="contenedor-btn">
+                    <button type="submit" class="boton" id="enviar">Enviar</button>
+                </div>
+                <div class="contenedor-info">
+                    <div class="loction">
+                        <input type="range" id="radio" min="10" max="15000">
+                        <label for="radio">Radio: <output id="value"></output> metros</label>
+                    </div>
+                    <button type="button" id="extract-coords-btn">Obtener coordenadas</button>
+                    <div>
+                        <label for="polyline-select">Selecciona una polilínea:</label>
+                        <select id="polyline-select"></select>
+                    </div>
+                </div>    
+            </div>
+
+            <div class="contenedor-switch">
+                <label class="switch">
+                    <input type="checkbox" id="position-switch">
+                    <span class="slider round"></span>
+                    Filtro por posición
+                </label>
+            </div>
         </div>
         <div id="contenedor-mapa-2"></div>
     </div>    
