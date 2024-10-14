@@ -119,22 +119,25 @@ body {
     flex-direction: row;
 
 }
-.contenedor-position .contenedor-info{
-    display: flex;
-    flex-direction: column;
+
+/* Estado inicial: contenedor-info y el botón no interactuables */
+.contenedor-position .contenedor-info {
     opacity: 0;
+    pointer-events: none; /* Desactiva interacción */
 }
 
-.contenedor-position .contenedor-info.activo{
+.contenedor-position .contenedor-btn {
     opacity: 1;
+    pointer-events: auto; /* Habilita interacción */
 }
 
-.contenedor-position .contenedor-btn{
-    position: absolute;
+/* Mostrar contenedor-info y desactivar el botón "Enviar" */
+.contenedor-position .contenedor-info.activo {
     opacity: 1;
+    pointer-events: auto; /* Habilita interacción */
 }
 
-.contenedor-position .contenedor-btn.activo{
-    position: absolute;
+.contenedor-position .contenedor-btn.activo {
     opacity: 0;
+    pointer-events: none; /* Desactiva interacción del botón */
 }
