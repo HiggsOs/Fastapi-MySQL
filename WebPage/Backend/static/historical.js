@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(`Longitud mínima: ${lngMin}, Longitud máxima: ${lngMax}`);
     
                 // Construir la URL de la query GET
-                const url = `armar nuevo query`;
+                const url = `/api/position?lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}&start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}`;
                 console.log(`URL generada: ${url}`);
     
                 // Hacer la petición GET usando fetch
