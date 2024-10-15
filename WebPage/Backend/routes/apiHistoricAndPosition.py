@@ -24,7 +24,7 @@ def get_DH_Pos(start_day, end_day, start_hour, end_hour,lat_min,lat_max,long_min
     return [dict(row) for row in result]
     
 
-@apiSearch_HAP.get("/apisearch",tags=["Complex info from database"])
+@apiSearch_HAP.get("/apisearch",tags=["Complex info from database"],description="/apisearch?start_day=2024-09-10&end_day=2024-09-12&start_hour=00%3A00&end_hour=00%3A00&lat_min=10.9221615&lat_max=10.9221666&long_min=-75&long_max=-74")
 async def epsearch(
     start_day: str = Query(..., description="start day in format YYYY-MM-DD"),
     end_day: str = Query(..., description="End day in format YYYY-MM-DD"),
