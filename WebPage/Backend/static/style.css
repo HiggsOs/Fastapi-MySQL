@@ -87,9 +87,6 @@ body {
     width: 100%;
 }
 
-
-.contenedor-position {
-
 .position {
     display: flex;
     flex-direction: column;
