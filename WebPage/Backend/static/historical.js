@@ -95,7 +95,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 const resultados = data.resultados;
 
                 if (resultados.length === 0) {
-                    // Si no hay resultados, eliminar la polilínea anterior y mostrar alerta
+                    console.log("No se encontraron datos en este rango de fechas.");
+                    // Si no hay resultados, eliminar la polilínea anterior si existe
                     if (lastRoute) {
                         mapa_2.removeLayer(lastRoute);
                         lastRoute = null; // Resetear la variable
@@ -104,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
 
-                const coordinates = []; 
+                const coordinates = [];
                 resultados.forEach(result => {
                     const lat = parseFloat(result.Latitude.trim());
                     const lng = parseFloat(result.Longitude.trim());
