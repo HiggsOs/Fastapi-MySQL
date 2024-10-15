@@ -222,13 +222,23 @@ document.addEventListener("DOMContentLoaded", function() {
                                         if (resultados.hasOwnProperty(key)) {
                                             const polyline = resultados[key];
             
-                                            // Obtener datetime inicial y final
-                                            const startDatetime = polyline[0].datetime; // Primer elemento
-                                            const endDatetime = polyline[polyline.length - 1].datetime; // Último elemento
+                                            
+                                            const infostartDate =polyline[0].Day;
+                                            const infoendDay=polyline[polyline.length - 1].Day; 
+                                            const infostartTime =polyline[0].Hour.substring(0, 5);;
+                                            const infoendTime=polyline[polyline.length - 1].Hour.substring(0, 5);; 
             
                                             const option = document.createElement('option');
                                             option.value = key; // Usar el key del objeto como valor
-                                            option.text = `Desde: ${startDatetime}, Hasta: ${endDatetime}`; // Mostrar datetime
+                                            if (infoendDay==infostartDate){
+                                            option.text = `El dia ${infostartDate}: desde ${infostartTime}
+                                            ,Hasta: ${infoendTime}`;
+                                            } else
+                                            {
+                                                option.text = `Desde: ${infostartDate} a las ${infostartTime}
+                                                ,Hasta: ${infoendDay} a las ${infoendTime}`; // Mostrar datetime
+                                            }
+                                         
                                             selectPolyline.appendChild(option);
                                         }
                                     }
