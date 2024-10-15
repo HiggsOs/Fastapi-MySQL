@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const endDateInput = document.getElementById("end-date");
     const submitButton = document.getElementById("enviar");
     let mapa_2;
+    let lastRoute = null; // Variable para almacenar la última polilínea
     const indexBtn = document.getElementById("index-btn");
     const positionBtn = document.getElementById("position-btn");
     const contenedor_info = document.querySelector('.contenedor-info')
@@ -108,8 +109,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         function drawRouteOnMap(coordinates) {
-            const route = L.polyline(coordinates, { color: 'blue' }).addTo(mapa_2);
-            mapa_2.fitBounds(route.getBounds());
+            // Eliminar la polilínea anterior si existe
+            if (lastRoute) {
+                mapa_2.removeLayer(lastRoute);
+            }
+
+            // Dibujar la nueva polilínea
+            lastRoute = L.polyline(coordinates, { color: 'blue' }).addTo(mapa_2);
+            mapa_2.fitBounds(lastRoute.getBounds());
         }
 
         fetchAndDrawRoute();
