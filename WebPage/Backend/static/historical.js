@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         console.log(`Longitud mínima: ${lngMin}, Longitud máxima: ${lngMax}`);
             
                         // Construir la URL de la query GET
-                        const url = `/api/position?lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}&start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}`;
+                        const url = `/api/search?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}`;
                         console.log(`URL generada: ${url}`);
             
                         // Hacer la petición GET usando fetch
@@ -297,6 +297,14 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 contenedor_info.classList.remove('activo')
                 contenedor_btn.classList.remove('activo')
+
+                if (lastMarker) {
+                    mapa_2.removeLayer(lastMarker);
+                }
+                if (lastCircle) {
+                    mapa_2.removeLayer(lastCircle);
+                }
+
             }        
         });
 
