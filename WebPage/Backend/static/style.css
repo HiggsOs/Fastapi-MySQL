@@ -87,10 +87,24 @@ body {
     width: 100%;
 }
 
+
 .contenedor-position {
+
+.position {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.fechas{
     display: flex;
     flex-direction: row;
 }
+
+
+
 
 /* Control de visibilidad de botones y contenedores */
 .contenedor-position .contenedor-info {
