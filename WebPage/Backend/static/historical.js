@@ -87,6 +87,17 @@ document.addEventListener("DOMContentLoaded", function() {
         async function fetchAndDrawRoute() {
             try {
                 const response = await fetch(urlString);
+
+                if (response.status === 404) {
+                    console.log("No se encontraron datos. Error 404.");
+                    if (lastRoute) {
+                        mapa_2.removeLayer(lastRoute);  // Eliminar la polilínea anterior si existe
+                        lastRoute = null;
+                    }
+                    alert("No se encontraron datos para el rango de fechas seleccionado.");
+                    return;
+                }
+
                 if (!response.ok) {
                     throw new Error(`Error en la solicitud: ${response.status}`);
                 }
@@ -94,16 +105,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 const data = await response.json();
                 const resultados = data.resultados;
 
-                if (resultados.length === 0) {
-                    console.log("No se encontraron datos en este rango de fechas.");
-                    // Si no hay resultados, eliminar la polilínea anterior si existe
-                    if (lastRoute) {
-                        mapa_2.removeLayer(lastRoute);
-                        lastRoute = null; // Resetear la variable
-                    }
-                    alert("No se encontraron datos para el rango de fechas seleccionado.");
-                    return;
-                }
 
                 const coordinates = [];
                 resultados.forEach(result => {
