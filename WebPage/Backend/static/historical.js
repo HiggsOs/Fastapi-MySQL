@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
 
-                const coordinates = [];
+                const coordinates = []; 
                 resultados.forEach(result => {
                     const lat = parseFloat(result.Latitude.trim());
                     const lng = parseFloat(result.Longitude.trim());
