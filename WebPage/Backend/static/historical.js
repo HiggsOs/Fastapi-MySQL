@@ -94,6 +94,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 const data = await response.json();
                 const resultados = data.resultados;
 
+                if (resultados.length === 0) {
+                    // Si no hay resultados, eliminar la polilínea anterior y mostrar alerta
+                    if (lastRoute) {
+                        mapa_2.removeLayer(lastRoute);
+                        lastRoute = null; // Resetear la variable
+                    }
+                    alert("No se encontraron datos para el rango de fechas seleccionado.");
+                    return;
+                }
+
                 const coordinates = [];
                 resultados.forEach(result => {
                     const lat = parseFloat(result.Latitude.trim());
