@@ -1,15 +1,16 @@
-/* Diseño original para computadoras */
+/* Contenedor principal */
 .contenedor {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
+/* Botones de pestañas */
 .tab_btn {
     padding: 15px 20px;
     font-size: 16px;
     font-weight: 600;
-    font-family: sans-serif;   
+    font-family: sans-serif;
     color: white;
     background: none;
     border: none;
@@ -17,6 +18,7 @@
     transition: color 0.3s ease;
 }
 
+/* Header general */
 #general-header {
     display: flex;
     justify-content: space-around;
@@ -24,67 +26,51 @@
     color: white;
     height: 50px;
     width: 100%;
-    left: 0;
-    right: 0;
     position: fixed;
     top: 0;
+    z-index: 10;
 }
 
+/* Margen para que el contenido no esté oculto por el header */
 body {
     margin: 0;
     padding: 0;
     padding-top: 50px;
 }
 
-
-
+/* Estilo hover para los botones */
 .tab_btn:hover {
     color: yellow;
 }
 
-
+/* Ajustar el espacio entre columnas */
 .contenedor-data {
     display: flex;
-    flex-direction: column; /* Alinear elementos en una columna */
+    flex-direction: column;
     gap: 20px;
     width: 100%;
 }
 
-
-.datos {
-    display: flex; /* Mostrar el contenido activo */
-    flex-direction: column; /* Asegurar que los elementos se alineen en fila */
-    align-items: center;
-    width: 100%;
-}
-
+/* Información general */
 .info {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%; /* Ancho del contenedor de datos */
+    width: 100%;
     gap: 20px;
+    flex-wrap: wrap; /* Asegurar que los elementos se alineen bien en pantallas pequeñas */
 }
 
-#contenedor-mapa {
-    width: 100%; /* El mapa ocupa la mitad del ancho disponible */
-    height: 452px;
+/* Ajustes a los contenedores de mapa */
+#contenedor-mapa, #contenedor-mapa-2, #contenedor-mapa-3 {
+    width: 100%;
+    height: auto;
+    min-height: 400px;
     border-radius: 10px;
 }
 
-#contenedor-mapa-2 {
-    width: 100%; /* El mapa ocupa la mitad del ancho disponible */
-    height: 487px;
-    border-radius: 10px;
-}
-
-#contenedor-mapa-3 {
-    width: 100%; /* El mapa ocupa la mitad del ancho disponible */
-    height: 490px;
-    border-radius: 10px;
-}
-
+/* Posicionamiento para información específica */
 .datos-especifico {
     display: flex;
     flex-direction: row;
@@ -92,13 +78,8 @@ body {
     font-size: 1.1em;
 }
 
-.titulo {
-    font-size: 1.5em;
-    margin: 10px 0;
-    text-align: center;
-}
-
-.historical {
+/* Otros estilos */
+.historical, .position {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -106,38 +87,28 @@ body {
     width: 100%;
 }
 
-.position {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.contenedor-position{
+.contenedor-position {
     display: flex;
     flex-direction: row;
-
 }
 
-/* Estado inicial: contenedor-info y el botón no interactuables */
+/* Control de visibilidad de botones y contenedores */
 .contenedor-position .contenedor-info {
     opacity: 0;
-    pointer-events: none; /* Desactiva interacción */
+    pointer-events: none;
 }
 
 .contenedor-position .contenedor-btn {
     opacity: 1;
-    pointer-events: auto; /* Habilita interacción */
+    pointer-events: auto;
 }
 
-/* Mostrar contenedor-info y desactivar el botón "Enviar" */
 .contenedor-position .contenedor-info.activo {
     opacity: 1;
-    pointer-events: auto; /* Habilita interacción */
+    pointer-events: auto;
 }
 
 .contenedor-position .contenedor-btn.activo {
     opacity: 0;
-    pointer-events: none; /* Desactiva interacción del botón */
+    pointer-events: none;
 }
