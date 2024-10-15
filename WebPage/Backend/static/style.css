@@ -62,6 +62,14 @@ body {
     flex-wrap: wrap; /* Asegurar que los elementos se alineen bien en pantallas pequeñas */
 }
 
+.datetime-input {
+    width: 200px; /* Establece un ancho estándar */
+    padding: 5px; /* Añade algo de padding para una mejor apariencia */
+    margin: 5px 0; /* Espaciado entre los inputs */
+    box-sizing: border-box; /* Para asegurar que el padding no afecte el ancho total */
+}
+
+
 /* Ajustes a los contenedores de mapa */
 #contenedor-mapa, #contenedor-mapa-2, #contenedor-mapa-3 {
     width: 100%;

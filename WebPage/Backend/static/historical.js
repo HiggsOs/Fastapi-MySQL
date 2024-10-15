@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         console.log(`Longitud mínima: ${lngMin}, Longitud máxima: ${lngMax}`);
             
                         // Construir la URL de la query GET
-                        const url = `/api/search?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}`;
+                        const url = `/apisearch?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}`;
                         console.log(`URL generada: ${url}`);
             
                         // Hacer la petición GET usando fetch
