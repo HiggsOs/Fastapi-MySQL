@@ -114,6 +114,12 @@ body {
     width: 100%;
 }
 
+.fechas{
+    display: flex;
+    flex-direction: row;
+}
+
+
 .contenedor-position{
     display: flex;
     flex-direction: row;
