@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let mapa_2;
     let lastRoute = null; // Variable para almacenar la última polilínea
     const indexBtn = document.getElementById("index-btn");
-    const positionBtn = document.getElementById("position-btn");
     const contenedor_info = document.querySelector('.contenedor-info')
     const contenedor_btn = document.querySelector('.contenedor-btn')
     const filtro_posicion= document.getElementById("position-switch")
@@ -30,11 +29,6 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = newURL;
     });
 
-    positionBtn.addEventListener("click", function() {
-        const currentURL = window.location.href
-        const newURL = currentURL.replace(/[^/]*$/, "position");
-        window.location.href = newURL;
-    });
 
     // Función que se ejecuta cuando cambia la fecha de inicio
     startDateInput.addEventListener("change", function () {

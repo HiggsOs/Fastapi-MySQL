@@ -61,7 +61,7 @@ window.onload = function() {
     fetchData(); // Ejecutar fetchData al cargar la página
 
     const historicosBtn = document.getElementById("historicos-btn");
-    const positionBtn = document.getElementById("position-btn");
+    
     // Agregar evento de clic
     historicosBtn.addEventListener("click", function() {
         // Obtener la URL actual
@@ -71,11 +71,6 @@ window.onload = function() {
         const newURL = currentURL.replace(/[^/]*$/, "historical");
         
         // Redirigir a la nueva URL
-        window.location.href = newURL;
-    });
-    positionBtn.addEventListener("click", function() {
-        const currentURL = window.location.href;
-        const newURL = currentURL.replace(/[^/]*$/, "position");
         window.location.href = newURL;
     });
 };
