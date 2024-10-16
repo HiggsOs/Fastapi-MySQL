@@ -4,6 +4,9 @@
     flex-direction: column;
     width: 100%;
 }
+.historical{
+    background-color: #feffd4;
+}
 .titulo{
     display: flex;
 
@@ -16,7 +19,7 @@
     font-size: 16px;
     font-weight: 600;
     font-family: sans-serif;
-    color: white;
+    color: #feffd4;
     background: none;
     border: none;
     cursor: pointer;
@@ -27,8 +30,8 @@
 #general-header {
     display: flex;
     justify-content: space-around;
-    background: #11aedd;
-    color: white;
+    background: #21000f;
+    color: #feffd4;
     height: 50px;
     width: 100%;
     position: fixed;
@@ -45,10 +48,13 @@ body {
 
 /* Hover en botones */
 .tab_btn:hover {
-    color: yellow;
+    color: #feffd4;
 }
 .boton:hover{
-    color: yellow;
+    
+    color: #21000f;
+    background-color:#9e2d4a;
+
 }
 /* Ajuste de espacio entre columnas */
 .contenedor-data {
@@ -114,7 +120,7 @@ body {
 
 .boton {
     padding: 10px 20px;
-    background-color: rgb(71, 71, 71);
+    background-color: #21000f;
     color: white;
     border: none;
     cursor: pointer;
