@@ -36,7 +36,7 @@ async function fetchData() {
 
         marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup(); // Actualizar el popup del marcador
 
-        // Actualizar o crear la polilínea
+        // Actualizar o crear la polilínea..
         if (polyline) {
             polyline.setLatLngs(routeCoords);
         } else {
