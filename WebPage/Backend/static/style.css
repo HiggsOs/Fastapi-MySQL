@@ -4,7 +4,12 @@
     flex-direction: column;
     width: 100%;
 }
-
+.titulo{
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+}
 /* Botones de pestañas */
 .tab_btn {
     padding: 15px 20px;
@@ -31,19 +36,21 @@
     z-index: 10;
 }
 
-/* Margen para que el contenido no esté oculto por el header */
+/* Para evitar que el contenido quede detrás del header */
 body {
     margin: 0;
     padding: 0;
     padding-top: 50px;
 }
 
-/* Estilo hover para los botones */
+/* Hover en botones */
 .tab_btn:hover {
     color: yellow;
 }
-
-/* Ajustar el espacio entre columnas */
+.boton:hover{
+    color: yellow;
+}
+/* Ajuste de espacio entre columnas */
 .contenedor-data {
     display: flex;
     flex-direction: column;
@@ -59,57 +66,47 @@ body {
     align-items: center;
     width: 100%;
     gap: 20px;
-    flex-wrap: wrap; /* Asegurar que los elementos se alineen bien en pantallas pequeñas */
+    flex-wrap: wrap;
 }
 
 .datetime-input {
-    width: 200px; /* Establece un ancho estándar */
-    padding: 5px; /* Añade algo de padding para una mejor apariencia */
-    margin: 5px 0; /* Espaciado entre los inputs */
-    box-sizing: border-box; /* Para asegurar que el padding no afecte el ancho total */
+    width: 100%; /* Se ajusta para dispositivos móviles */
+    max-width: 250px; /* Tamaño máximo en pantallas grandes */
+    padding: 5px;
+    margin: 5px 0;
+    box-sizing: border-box;
 }
 
-
-/* Ajustes a los contenedores de mapa */
-#contenedor-mapa, #contenedor-mapa-2, #contenedor-mapa-3 {
+/* Ajustes al mapa */
+#contenedor-mapa-2 {
     width: 100%;
-    height: auto;
-    min-height: 400px;
+    height: 100%;
+    min-height: 800px;
     border-radius: 10px;
+    gap: 20px;
 }
 
-/* Posicionamiento para información específica */
-.datos-especifico {
+/* Contenedor de fechas */
+.fechas {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap; /* Ajustar en pantallas pequeñas */
+    justify-content: center;
+    align-items: center;
     gap: 10px;
-    font-size: 1.1em;
-}
-
-/* Otros estilos */
-.historical, .position {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 100%;
+    margin-bottom: 20px;
+    height: auto;
 }
 
-.position {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+.boton {
+    padding: 10px 20px;
+    background-color: #11aedd;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
 }
-
-.fechas{
-    display: flex;
-    flex-direction: row;
-}
-
-
-
 
 /* Control de visibilidad de botones y contenedores */
 .contenedor-position .contenedor-info {
@@ -120,6 +117,9 @@ body {
 .contenedor-position .contenedor-btn {
     opacity: 1;
     pointer-events: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .contenedor-position .contenedor-info.activo {
@@ -130,4 +130,54 @@ body {
 .contenedor-position .contenedor-btn.activo {
     opacity: 0;
     pointer-events: none;
+}
+/* Media queries para dispositivos móviles */
+@media (max-width: 768px) {
+    #general-header {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .tab_btn {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .fechas {
+        flex-direction: column;
+    }
+
+    .datetime-input {
+        width: 100%;
+    }
+
+    .contenedor-info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #contenedor-mapa-2 {
+        min-height: 300px;
+    }
+}
+
+/* Media queries para pantallas más pequeñas (smartphones) */
+@media (max-width: 480px) {
+    .fechas {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .datetime-input {
+        max-width: 100%;
+    }
+
+    .contenedor-btn {
+        width: 100%;
+    }
+
+    .contenedor-info {
+        width: 100%;
+    }
 }
