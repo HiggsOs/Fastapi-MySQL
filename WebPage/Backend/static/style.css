@@ -26,6 +26,10 @@
     cursor: pointer;
     transition: color 0.3s ease;
 }
+.NameNot {
+    display: none; /* El texto no se mostrará y no ocupará espacio */
+    visibility: hidden;
+}
 
 /* Header general */
 #general-header {
