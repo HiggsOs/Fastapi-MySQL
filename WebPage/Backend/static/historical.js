@@ -133,6 +133,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         fetchAndDrawRoute();
     });
+    function convertirAHorasMinutos(hora) {
+        const [horas, minutos] = hora.split(':').map(Number);
+        return horas * 60 + minutos; // Convertir a minutos totales
+    }
+    
 
     window.onload = function() {
         mapa_2 = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
@@ -235,12 +240,18 @@ document.addEventListener("DOMContentLoaded", function() {
                                             const option = document.createElement('option');
                                             option.value = key; // Usar el key del objeto como valor
                                             if (infoendDay==infostartDate){
-                                            option.text = `El dia ${infostartDate}: de ${infostartTime}
-                                            , hasta: ${infoendTime}`;
+
+                                            option.text = `El dia ${infostartDate}: desde ${infostartTime}
+                                            ,Hasta: ${infoendTime}`;
+                                            
                                             } else
                                             {
                                                 option.text = `De: ${infostartDate} a ${infostartTime}
                                                 , hasta: ${infoendDay} a ${infoendTime}`; // Mostrar datetime
+                                            }
+                                            if(convertirAHorasMinutos(infostartTime)>convertirAHorasMinutos(infoendTime)){
+                                                option.text = `El dia ${infostartDate}: desde ${infoendTime}
+                                                ,Hasta: ${infostartTime}`;
                                             }
                                          
                                             selectPolyline.appendChild(option);
