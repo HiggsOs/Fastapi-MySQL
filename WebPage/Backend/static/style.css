@@ -63,10 +63,11 @@ body {
 }
 
 .datetime-input {
-    width: 200px; /* Establece un ancho estándar */
+    width: 60px; /* Establece un ancho estándar */
     padding: 5px; /* Añade algo de padding para una mejor apariencia */
     margin: 5px 0; /* Espaciado entre los inputs */
     box-sizing: border-box; /* Para asegurar que el padding no afecte el ancho total */
+    padding-right: 10px;
 }
 
 
