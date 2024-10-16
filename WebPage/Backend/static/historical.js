@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
                         // Función para graficar una polilínea
                         function graficarPolilinea(coordinates) {
-                            // Eliminar las polilíneas anteriores
+                            // Eliminar las polilíneas anteriores ..gi
                             polylines.forEach(polyline => {
                                 mapa_2.removeLayer(polyline);
                             });
