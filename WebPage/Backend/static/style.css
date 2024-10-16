@@ -4,7 +4,12 @@
     flex-direction: column;
     width: 100%;
 }
-
+.titulo{
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+}
 /* Botones de pestañas */
 .tab_btn {
     padding: 15px 20px;
@@ -42,7 +47,9 @@ body {
 .tab_btn:hover {
     color: yellow;
 }
-
+.boton:hover{
+    color: yellow;
+}
 /* Ajuste de espacio entre columnas */
 .contenedor-data {
     display: flex;
