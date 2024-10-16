@@ -148,6 +148,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 contenedor_info.classList.add('activo')
                 contenedor_btn.classList.add('activo')
 
+                if (lastRoute) {
+                    mapa_2.removeLayer(lastRoute);
+                }
+
                 mapa_2.on('click', function(e) {
                     const { lat, lng } = e.latlng;
                     const radius = parseInt(radioInput.value); // Obtener el valor del radio actual
@@ -236,13 +240,14 @@ document.addEventListener("DOMContentLoaded", function() {
                                             const option = document.createElement('option');
                                             option.value = key; // Usar el key del objeto como valor
                                             if (infoendDay==infostartDate){
+
                                             option.text = `El dia ${infostartDate}: desde ${infostartTime}
                                             ,Hasta: ${infoendTime}`;
                                             
                                             } else
                                             {
-                                                option.text = `Desde: ${infostartDate} a las ${infostartTime}
-                                                ,Hasta: ${infoendDay} a las ${infoendTime}`; // Mostrar datetime
+                                                option.text = `De: ${infostartDate} a ${infostartTime}
+                                                , hasta: ${infoendDay} a ${infoendTime}`; // Mostrar datetime
                                             }
                                             if(convertirAHorasMinutos(infostartTime)>convertirAHorasMinutos(infoendTime)){
                                                 option.text = `El dia ${infostartDate}: desde ${infoendTime}
