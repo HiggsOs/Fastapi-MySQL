@@ -31,7 +31,7 @@ def start_sniffer():
                     for line in data.splitlines():
                         # Asumiendo que los datos están en formato: "latitud,longitud,time"
                         try:
-                            latitud, longitud, time_str,RPM,speed = line.split(",")
+                            latitud, longitud, time_str,RPM,speed,placa = line.split(",")
                             time = int(time_str)
                             
                             # Convertir el timestamp a un objeto datetime en UTC
@@ -53,7 +53,8 @@ def start_sniffer():
                                     "dia": dia,
                                     "hora": hora,
                                     "RPM":RPM,
-                                    "speed":speed
+                                    "speed":speed,
+                                    "placa":placa
                                 })
                                 response.raise_for_status()  # Lanza un error para códigos de respuesta HTTP 4xx/5xx
                                 print(f"Datos enviados con éxito: {response.json()}")
