@@ -5,5 +5,5 @@ class Data(BaseModel):
     longitud: str
     dia: str
     hora: str
-    rpm:str
+    RPM:str
     speed:str
