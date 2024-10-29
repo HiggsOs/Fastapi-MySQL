@@ -11,6 +11,8 @@ from routes.hour import hourRoute
 from routes.historicsearch import historicSearch
 from routes.position import position
 from routes.apiHistoricAndPosition import apiSearch_HAP
+from routes.rpm import RPM
+from routes.speed import Speed
 from routes.name import apiName
 
 
@@ -31,6 +33,9 @@ app.include_router(historicSearch)
 app.include_router(position)
 app.include_router(apiSearch_HAP)
 app.include_router(apiName)
+app.include_router(Speed)
+app.include_router(RPM)
+
 app.title="Host-Gps"
 # Montar archivos estáticos
 app.mount("/static", StaticFiles(directory="./static"), name="static")
