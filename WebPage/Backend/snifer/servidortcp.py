@@ -61,7 +61,7 @@ def start_sniffer():
                             except requests.ConnectionError as e:
                                 print(f"Error en la conexión: {e}")
                             except requests.RequestException as e:
-                                print(f"Error en la solicitud: {e}")
+                                print(f"Error en la solicitud: {e},{response}")
                         
                         except ValueError as e:
                             print(f"Error al procesar los datos: {e}")
