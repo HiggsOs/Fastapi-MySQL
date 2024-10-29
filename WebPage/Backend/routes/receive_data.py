@@ -9,7 +9,8 @@ receive_data = APIRouter()
 def funreceive_data(data:Data):
     new_data={"Latitude":data.latitud,
               "Longitude":data.longitud,
-              "Day":data.dia,"Hour":data.hora}
+              "Day":data.dia,"Hour":data.hora,
+              "RPM":data.rpm,"Speed":data.speed}
 
     with SessionLocal() as session:
         session.execute(taxisTB.insert().values(new_data))
