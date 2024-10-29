@@ -7,3 +7,4 @@ class Data(BaseModel):
     hora: str
     RPM:str
     speed:str
+    placa:str

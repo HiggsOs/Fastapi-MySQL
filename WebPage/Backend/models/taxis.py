@@ -9,7 +9,8 @@ taxisTB=Table("Taxis",meta,
             Column("Day",String(100)),
             Column("Hour",String(100)),
             Column("RPM",String(100)),
-            Column("Speed",String(100))
+            Column("Speed",String(100)),
+            Column("placa",String(100))
             )
 
 meta.create_all(engine)
