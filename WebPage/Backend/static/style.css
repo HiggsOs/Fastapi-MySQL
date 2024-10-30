@@ -44,7 +44,7 @@
     z-index: 10;
 }
 
-/* Para evitar que el contenido quede detrás del header */
+/* Para evitar que el contenido quede detrás del header.. */
 body {
     margin: 0;
     padding: 0;
