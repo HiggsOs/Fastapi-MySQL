@@ -2,6 +2,7 @@ let marcador;  // Variable global para el marcador
 let mapa;  // Variable global para el mapa
 let polyline;  // Variable global para la polilínea
 let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
+let vehicle = {};
 
 async function fetchData()  {
     try {
@@ -21,6 +22,25 @@ async function fetchData()  {
         const response7 = await fetch('/placa');
         const data7 = await response7.json();
 
+        const placa = data7.placa;
+        const nuevaPosicion = [data3.latitude, data4.longitude];
+
+        if (!vehiculos[placa]) {
+            // Crea una nueva entrada para el vehículo
+            vehiculos[placa] = {
+                routeCoords: [], // Coordenadas de la ruta
+                color: '#' + Math.floor(Math.random() * 16777215).toString(16), // Color aleatorio
+                marker: L.marker(nuevaPosicion).addTo(mapa), // Marcador del vehículo
+                polyline: L.polyline([], { color: '#' + Math.floor(Math.random() * 16777215).toString(16) }).addTo(mapa) // Polilínea del vehículo
+            };
+        }
+
+        const vehicle = vehicle[placa];
+        vehicle.routeCoords.push(nuevaPosicion);
+        vehicle.marker.setLatLng(nuevaPosicion);
+        vehicle.polyline.setLatLng(vehicle.routeCoords);
+        
+        
         // Actualizar el contenido de la página con los datos obtenidos
         document.getElementById('latitude').textContent = data3.latitude || 'No disponible';
         document.getElementById('longitude').textContent = data4.longitude || 'No disponible';
@@ -30,27 +50,6 @@ async function fetchData()  {
         document.getElementById('speed').textContent = data6.hour || 'No disponible';
 
         document.getElementById('error').textContent = ''; // Limpiar el mensaje de error si se actualizan correctamente los datos
-
-        const nuevaPosicion = [data3.latitude, data4.longitude];
-        routeCoords.push(nuevaPosicion); // Añadir la nueva posición al arreglo de coordenadas de la ruta
-
-        // Actualizar la posición del marcador en el mapa
-        if (marcador) {
-            marcador.setLatLng(nuevaPosicion);
-        } else {
-            marcador = L.marker(nuevaPosicion).addTo(mapa);
-            mapa.setView(nuevaPosicion, 12);
-        }
-
-        marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup(); // Actualizar el popup del marcador
-
-        // Actualizar o crear la polilínea..
-        if (polyline) {
-            polyline.setLatLngs(routeCoords);
-        } else {
-            polyline = L.polyline(routeCoords, { color: 'blue' }).addTo(mapa);
-        }
-
     } catch (error) {
         console.error('Error al obtener los datos:', error);
         document.getElementById('error').textContent = 'Error al obtener los datos.';
