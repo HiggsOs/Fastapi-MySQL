@@ -3,7 +3,7 @@ let mapa;  // Variable global para el mapa
 let polyline;  // Variable global para la polilínea
 let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
 
-async function fetchData() {
+async function fetchData()  {
     try {
         // Hacer las solicitudes a los endpoints
         const response = await fetch('/hour');
@@ -14,12 +14,20 @@ async function fetchData() {
         const data3 = await response3.json();
         const response4 = await fetch('/longitude');
         const data4 = await response4.json();
-        
+        const response5 = await fetch('/RPM');
+        const data5 = await response5.json();
+        const response6 = await fetch('/speed');
+        const data6 = await response6.json();
+        const response7 = await fetch('/placa');
+        const data7 = await response7.json();
+
         // Actualizar el contenido de la página con los datos obtenidos
         document.getElementById('latitude').textContent = data3.latitude || 'No disponible';
         document.getElementById('longitude').textContent = data4.longitude || 'No disponible';
         document.getElementById('day').textContent = data2.day || 'No disponible';
         document.getElementById('hour').textContent = data.hour || 'No disponible';
+        document.getElementById('RPM').textContent = data5.hour || 'No disponible';
+        document.getElementById('speed').textContent = data6.hour || 'No disponible';
 
         document.getElementById('error').textContent = ''; // Limpiar el mensaje de error si se actualizan correctamente los datos
 
