@@ -45,8 +45,8 @@ async function fetchData()  {
                     longitude: data4.longitude,
                     day: data2.day,
                     hour: data.hour,
-                    rpm: data5.rpm,
-                    speed: data6.speed
+                    rpm: data5.RPM,
+                    speed: data6.Speed
                 }
             };
 
@@ -73,8 +73,8 @@ async function fetchData()  {
             longitude: data4.longitude,
             day: data2.day,
             hour: data.hour,
-            rpm: data5.rpm,
-            speed: data6.speed
+            rpm: data5.RPM,
+            speed: data6.Speed
         };
         vehicle.marker.setLatLng(nuevaPosicion);
         vehicle.polyline.setLatLngs(vehicle.routeCoords);
