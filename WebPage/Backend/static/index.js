@@ -128,8 +128,8 @@ plateSelect.addEventListener('change', function() {
 setInterval(fetchData, 2000);
 
 // Ejecutar fetchData cuando la página se haya cargado completamente
-window.onload = function() {
-    // Inicializar el mapa solo una vez
+window.addEventListener('load', function () {
+    // Inicializar el mapa solo una vez que la página esté cargada
     mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
 
@@ -142,17 +142,9 @@ window.onload = function() {
 
     const historicosBtn = document.getElementById("historicos-btn");
     
-    // Agregar evento de clic
     historicosBtn.addEventListener("click", function() {
-        // Obtener la URL actual
         const currentURL = window.location.href;
-        
-        // Crear la nueva URL reemplazando el complemento
         const newURL = currentURL.replace(/[^/]*$/, "historical");
-        
-        // Redirigir a la nueva URL
         window.location.href = newURL;
     });
-};
-
-
+});
