@@ -117,15 +117,6 @@ function actualizarDatosEnPantalla(placa) {
     document.getElementById('speed').textContent = vehiculo.data.speed || 'No disponible';
 }
 
-// Escuchar cambios en el dropdown
-plateSelect.addEventListener('change', function() {
-    selectedPlaca = plateSelect.value; // Actualizar la placa seleccionada
-    if (selectedPlaca !== 'all') {
-        actualizarDatosEnPantalla(selectedPlaca); // Actualizar los datos mostrados si se selecciona una placa específica
-    }
-    actualizarPolilineas(); // Actualizar el mapa con la nueva selección
-});
-
 // Actualización periódica de los datos
 setInterval(fetchData, 2000);
 
@@ -141,6 +132,15 @@ window.addEventListener('load', function () {
     plateSelect.appendChild(allOption);
 
     fetchData(); // Ejecutar fetchData al cargar la página
+
+    // Escuchar cambios en el dropdown
+    plateSelect.addEventListener('change', function() {
+        selectedPlaca = plateSelect.value; // Actualizar la placa seleccionada
+        if (selectedPlaca !== 'all') {
+            actualizarDatosEnPantalla(selectedPlaca); // Actualizar los datos mostrados si se selecciona una placa específica
+        }
+        actualizarPolilineas(); // Actualizar el mapa con la nueva selección
+    });
 
     const historicosBtn = document.getElementById("historicos-btn");
     
