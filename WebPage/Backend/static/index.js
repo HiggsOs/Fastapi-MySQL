@@ -74,7 +74,7 @@ async function fetchData()  {
             speed: data6.speed
         };
         vehicle.marker.setLatLng(nuevaPosicion);
-        vehicle.polyline.setLatLng(vehicle.routeCoords);
+        vehicle.polyline.setLatLngs(vehicle.routeCoords);
         
         
        // Filtrar y mostrar las polilíneas según la placa seleccionada
