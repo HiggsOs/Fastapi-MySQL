@@ -5,7 +5,9 @@ let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
 let vehicle = {};
 let plateSelect = document.getElementById('plate-select');
 let selectedPlaca = 'all';
-let defaulPlaca = null;
+let defaultPlaca = null;
+let vehiculos = {};
+
 
 async function fetchData()  {
     try {
@@ -63,7 +65,7 @@ async function fetchData()  {
 
         const vehicle = vehiculos[placa];
         vehicle.routeCoords.push(nuevaPosicion);
-        vehiculo.data = { // Actualizar los datos
+        vehicle.data = { // Actualizar los datos
             latitude: data3.latitude,
             longitude: data4.longitude,
             day: data2.day,
