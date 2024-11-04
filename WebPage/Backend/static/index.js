@@ -22,8 +22,11 @@ async function fetchData()  {
         const data4 = await response4.json();
         const response5 = await fetch('/RPM');
         const data5 = await response5.json();
+        console.log('RPM Data:', data5); // Verifica la respuesta
+
         const response6 = await fetch('/speed');
         const data6 = await response6.json();
+        console.log('Speed Data:', data6); // Verifica la respuesta
         //const response7 = await fetch('/placa');
         //const data7 = await response7.json();
 
