@@ -3,6 +3,7 @@ let mapa;  // Variable global para el mapa
 let polyline;  // Variable global para la polilínea
 let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
 let vehicle = {};
+let plateSelect = document.getElementById('plate-select');
 
 async function fetchData()  {
     try {
@@ -33,6 +34,14 @@ async function fetchData()  {
                 marker: L.marker(nuevaPosicion).addTo(mapa), // Marcador del vehículo
                 polyline: L.polyline([], { color: '#' + Math.floor(Math.random() * 16777215).toString(16) }).addTo(mapa) // Polilínea del vehículo
             };
+
+            let optionExists = Array.from(plateSelect.options).some(option => option.value === placa);
+            if (!optionExists) {
+                let newOption = document.createElement('option');
+                newOption.value = placa;
+                newOption.text = placa;
+                plateSelect.appendChild(newOption);
+            }
         }
 
         const vehicle = vehicle[placa];
