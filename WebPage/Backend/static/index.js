@@ -4,6 +4,7 @@ let polyline;  // Variable global para la polilínea
 let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
 let vehicle = {};
 let plateSelect = document.getElementById('plate-select');
+let selectedPlaca = 'all';
 
 async function fetchData()  {
     try {
@@ -65,6 +66,26 @@ async function fetchData()  {
     }
 }
 
+function actualizarPolilineas() {
+    Object.keys(vehiculos).forEach(placa => {
+        const vehiculo = vehiculos[placa];
+        if (selectedPlaca === 'all' || selectedPlaca === placa) {
+            // Mostrar marcador y polilínea
+            vehiculo.marker.addTo(mapa);
+            vehiculo.polyline.addTo(mapa);
+        } else {
+            // Ocultar marcador y polilínea
+            mapa.removeLayer(vehiculo.marker);
+            mapa.removeLayer(vehiculo.polyline);
+        }
+    });
+}
+
+plateSelect.addEventListener('change', function() {
+    selectedPlaca = plateSelect.value; // Actualizar la placa seleccionada
+    actualizarPolilineas(); // Actualizar el mapa con la nueva selección
+});
+
 // Actualización periódica de los datos
 setInterval(fetchData, 2000);
 
@@ -73,6 +94,11 @@ window.onload = function() {
     // Inicializar el mapa solo una vez
     mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
+
+    let allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.text = 'Todas';
+    plateSelect.appendChild(allOption);
 
     fetchData(); // Ejecutar fetchData al cargar la página
 
