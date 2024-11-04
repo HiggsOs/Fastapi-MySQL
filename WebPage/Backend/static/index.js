@@ -40,8 +40,8 @@ async function fetchData()  {
                     longitude: data4.longitude,
                     day: data2.day,
                     hour: data.hour,
-                    rpm: data5.hour,
-                    speed: data6.hour
+                    rpm: data5.rpm,
+                    speed: data6.speed
                 }
             };
 
