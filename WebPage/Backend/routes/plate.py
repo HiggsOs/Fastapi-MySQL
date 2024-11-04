@@ -2,7 +2,7 @@ from fastapi import APIRouter,HTTPException
 from models.taxis import taxisTB
 from config.db import conn,SessionLocal
 from sqlalchemy import select
-dayRoute = APIRouter()
+plateRoute = APIRouter()
 
 # Imprime todos los valores que hay en la tabla taxisTB
 
@@ -16,7 +16,7 @@ def get_last_plate():
        
         
 
-@dayRoute.get("/placa",tags=["Basic info from database"])
+@plateRoute.get("/placa",tags=["Basic info from database"])
 async def read_last_plate():
     last_plate = get_last_plate()
     if last_plate is not None:
