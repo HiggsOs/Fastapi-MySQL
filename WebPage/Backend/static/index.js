@@ -61,15 +61,15 @@ async function fetchData()  {
             }
         }
 
-        const vehicle = vehicle[placa];
+        const vehicle = vehiculos[placa];
         vehicle.routeCoords.push(nuevaPosicion);
         vehiculo.data = { // Actualizar los datos
             latitude: data3.latitude,
             longitude: data4.longitude,
             day: data2.day,
             hour: data.hour,
-            rpm: data5.hour,
-            speed: data6.hour
+            rpm: data5.rpm,
+            speed: data6.speed
         };
         vehicle.marker.setLatLng(nuevaPosicion);
         vehicle.polyline.setLatLng(vehicle.routeCoords);
