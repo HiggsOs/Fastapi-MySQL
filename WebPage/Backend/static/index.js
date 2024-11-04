@@ -2,8 +2,12 @@ let marcador;  // Variable global para el marcador
 let mapa;  // Variable global para el mapa
 let polyline;  // Variable global para la polilínea
 let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
+let vehicle = {};
+let plateSelect = document.getElementById('plate-select');
+let selectedPlaca = 'all';
+let defaulPlaca = null;
 
-async function fetchData() {
+async function fetchData()  {
     try {
         // Hacer las solicitudes a los endpoints
         const response = await fetch('/hour');
@@ -14,40 +18,111 @@ async function fetchData() {
         const data3 = await response3.json();
         const response4 = await fetch('/longitude');
         const data4 = await response4.json();
+        const response5 = await fetch('/RPM');
+        const data5 = await response5.json();
+        const response6 = await fetch('/speed');
+        const data6 = await response6.json();
+        const response7 = await fetch('/placa');
+        const data7 = await response7.json();
+
+        const placa = data7.placa;
+        const nuevaPosicion = [data3.latitude, data4.longitude];
+
+        if (!vehiculos[placa]) {
+            // Crea una nueva entrada para el vehículo
+            vehiculos[placa] = {
+                routeCoords: [], // Coordenadas de la ruta
+                color: '#' + Math.floor(Math.random() * 16777215).toString(16), // Color aleatorio
+                marker: L.marker(nuevaPosicion).addTo(mapa), // Marcador del vehículo
+                polyline: L.polyline([], { color: '#' + Math.floor(Math.random() * 16777215).toString(16) }).addTo(mapa), // Polilínea del vehículo
+                data: { // Guardar datos del vehículo
+                    latitude: data3.latitude,
+                    longitude: data4.longitude,
+                    day: data2.day,
+                    hour: data.hour,
+                    rpm: data5.hour,
+                    speed: data6.hour
+                }
+            };
+
+            let optionExists = Array.from(plateSelect.options).some(option => option.value === placa);
+            if (!optionExists) {
+                let newOption = document.createElement('option');
+                newOption.value = placa;
+                newOption.text = placa;
+                plateSelect.appendChild(newOption);
+            }
+
+            // Establecer la primera placa que llega como placa por defecto
+            if (!defaultPlaca) {
+                defaultPlaca = placa;
+                selectedPlaca = placa;
+                actualizarDatosEnPantalla(placa);
+            }
+        }
+
+        const vehicle = vehicle[placa];
+        vehicle.routeCoords.push(nuevaPosicion);
+        vehiculo.data = { // Actualizar los datos
+            latitude: data3.latitude,
+            longitude: data4.longitude,
+            day: data2.day,
+            hour: data.hour,
+            rpm: data5.hour,
+            speed: data6.hour
+        };
+        vehicle.marker.setLatLng(nuevaPosicion);
+        vehicle.polyline.setLatLng(vehicle.routeCoords);
         
-        // Actualizar el contenido de la página con los datos obtenidos
-        document.getElementById('latitude').textContent = data3.latitude || 'No disponible';
-        document.getElementById('longitude').textContent = data4.longitude || 'No disponible';
-        document.getElementById('day').textContent = data2.day || 'No disponible';
-        document.getElementById('hour').textContent = data.hour || 'No disponible';
+        
+       // Filtrar y mostrar las polilíneas según la placa seleccionada
+       actualizarPolilineas();
+
+       // Actualizar datos en pantalla solo si el vehículo seleccionado es el que está actualizando
+       if (selectedPlaca === placa) {
+           actualizarDatosEnPantalla(placa);
+       }
 
         document.getElementById('error').textContent = ''; // Limpiar el mensaje de error si se actualizan correctamente los datos
-
-        const nuevaPosicion = [data3.latitude, data4.longitude];
-        routeCoords.push(nuevaPosicion); // Añadir la nueva posición al arreglo de coordenadas de la ruta
-
-        // Actualizar la posición del marcador en el mapa
-        if (marcador) {
-            marcador.setLatLng(nuevaPosicion);
-        } else {
-            marcador = L.marker(nuevaPosicion).addTo(mapa);
-            mapa.setView(nuevaPosicion, 12);
-        }
-
-        marcador.bindPopup("Fecha y hora: " + data2.day + " " + data.hour).openPopup(); // Actualizar el popup del marcador
-
-        // Actualizar o crear la polilínea..
-        if (polyline) {
-            polyline.setLatLngs(routeCoords);
-        } else {
-            polyline = L.polyline(routeCoords, { color: 'blue' }).addTo(mapa);
-        }
-
     } catch (error) {
         console.error('Error al obtener los datos:', error);
         document.getElementById('error').textContent = 'Error al obtener los datos.';
     }
 }
+
+function actualizarPolilineas() {
+    Object.keys(vehiculos).forEach(placa => {
+        const vehiculo = vehiculos[placa];
+        if (selectedPlaca === 'all' || selectedPlaca === placa) {
+            // Mostrar marcador y polilínea
+            vehiculo.marker.addTo(mapa);
+            vehiculo.polyline.addTo(mapa);
+        } else {
+            // Ocultar marcador y polilínea
+            mapa.removeLayer(vehiculo.marker);
+            mapa.removeLayer(vehiculo.polyline);
+        }
+    });
+}
+
+function actualizarDatosEnPantalla(placa) {
+    const vehiculo = vehiculos[placa];
+    document.getElementById('latitude').textContent = vehiculo.data.latitude || 'No disponible';
+    document.getElementById('longitude').textContent = vehiculo.data.longitude || 'No disponible';
+    document.getElementById('day').textContent = vehiculo.data.day || 'No disponible';
+    document.getElementById('hour').textContent = vehiculo.data.hour || 'No disponible';
+    document.getElementById('RPM').textContent = vehiculo.data.rpm || 'No disponible';
+    document.getElementById('speed').textContent = vehiculo.data.speed || 'No disponible';
+}
+
+// Escuchar cambios en el dropdown
+plateSelect.addEventListener('change', function() {
+    selectedPlaca = plateSelect.value; // Actualizar la placa seleccionada
+    if (selectedPlaca !== 'all') {
+        actualizarDatosEnPantalla(selectedPlaca); // Actualizar los datos mostrados si se selecciona una placa específica
+    }
+    actualizarPolilineas(); // Actualizar el mapa con la nueva selección
+});
 
 // Actualización periódica de los datos
 setInterval(fetchData, 2000);
@@ -57,6 +132,11 @@ window.onload = function() {
     // Inicializar el mapa solo una vez
     mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
+
+    let allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.text = 'Todas';   
+    plateSelect.appendChild(allOption);
 
     fetchData(); // Ejecutar fetchData al cargar la página
 
