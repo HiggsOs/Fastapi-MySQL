@@ -22,10 +22,10 @@ async function fetchData()  {
         const data5 = await response5.json();
         const response6 = await fetch('/speed');
         const data6 = await response6.json();
-        const response7 = await fetch('/placa');
-        const data7 = await response7.json();
+        //const response7 = await fetch('/placa');
+        //const data7 = await response7.json();
 
-        const placa = data7.placa;
+        const placa = "DTZ890";
         const nuevaPosicion = [data3.latitude, data4.longitude];
 
         if (!vehiculos[placa]) {
