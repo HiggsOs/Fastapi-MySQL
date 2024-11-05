@@ -220,12 +220,21 @@ document.addEventListener("DOMContentLoaded", function() {
                                 if (resultados && typeof resultados === 'object') {
                                     // Vaciar el selector de polilíneas
                                     selectPolyline.innerHTML = '';
+
+                                    let totalSpeed = 0;
+                                    let totalRPM = 0;
+                                    let totalPoints = 0;
             
                                     for (const key in resultados) {
                                         if (resultados.hasOwnProperty(key)) {
                                             const polyline = resultados[key];
             
-                                            
+                                            polyline.forEach(point => {
+                                                totalSpeed += parseFloat(point.Speed); 
+                                                totalRPM += parseFloat(point.RPM); 
+                                            });
+                                            totalPoints += polyline.length;
+
                                             const infostartDate =polyline[0].Day;
                                             const infoendDay=polyline[polyline.length - 1].Day; 
                                             const infostartTime =polyline[0].Hour.substring(0, 5);;
@@ -251,6 +260,13 @@ document.addEventListener("DOMContentLoaded", function() {
                                             selectPolyline.appendChild(option);
                                         }
                                     }
+
+                                    const averageSpeed = (totalSpeed / totalPoints).toFixed(2);
+                                    const averageRPM = (totalRPM / totalPoints).toFixed(2);
+
+                                    // Actualizar los elementos HTML con la velocidad y RPM promedio
+                                    document.getElementById('average-speed').textContent = `${averageSpeed} km/h`; // Asegúrate de ajustar las unidades si es necesario
+                                    document.getElementById('average-RPM').textContent = `${averageRPM} RPM`;
             
                                     selectPolyline.addEventListener('change', function () {
                                         const selectedPolylineIndex = selectPolyline.value;
