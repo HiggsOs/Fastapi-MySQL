@@ -323,11 +323,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (lastCircle) {
                     mapa_2.removeLayer(lastCircle);
                 }
-
             }        
         });
-
-        
-
     };
 });
