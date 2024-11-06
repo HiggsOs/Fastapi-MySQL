@@ -28,7 +28,7 @@ async def read_last_longitude():
 @placasRoute.post("/placa/add", tags=["Insert info to database"])
 def funreceive_data(data: Placa ):
     new_data = {
-        "Placas": data.placa
+        "Placa": data.placa
     }
 
     try:
