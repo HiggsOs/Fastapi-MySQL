@@ -8,3 +8,8 @@ class Data(BaseModel):
     RPM:str
     speed:str
     placa:str
+
+
+
+class Placa(BaseModel):
+    placa:str
