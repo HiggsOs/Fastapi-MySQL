@@ -14,6 +14,7 @@ from routes.apiHistoricAndPosition import apiSearch_HAP
 from routes.rpm import RPM
 from routes.speed import Speed
 from routes.name import apiName
+from routes.placas import placasRoute
 
 
 from starlette.responses import FileResponse
@@ -35,6 +36,7 @@ app.include_router(apiSearch_HAP)
 app.include_router(apiName)
 app.include_router(Speed)
 app.include_router(RPM)
+app.include_router(placasRoute)
 
 app.title="Host-Gps"
 # Montar archivos estáticos

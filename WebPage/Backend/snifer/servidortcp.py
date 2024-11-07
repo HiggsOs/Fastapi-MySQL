@@ -8,7 +8,7 @@ TCP_PORT = 41000
 
 # Configuración del backend de FastAPI
 FASTAPI_URL = "http://127.0.0.1:8000/receive_data"
-
+FASTAPI_URL2="http://127.0.0.1:8000/placa"
 def start_sniffer():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((TCP_IP, TCP_PORT))
@@ -44,6 +44,22 @@ def start_sniffer():
                             # Obtener el día y la hora en la zona horaria de Bogotá
                             dia = bogota_time.date().isoformat()  # Convertir a formato de cadena ISO
                             hora = bogota_time.time().isoformat()  # Convertir a formato de cadena ISO
+                            
+                            # Se agregan consultan la tabla de placas y se agregan
+
+                            try :
+                                placas_list=requests.get(FASTAPI_URL2)
+                                if (not(placa in placas_list)):
+                                    try:
+                                        statusP=requests.post(FASTAPI_URL2+"/add",json={
+                                            "placa":placa})
+                                        statusP.raise_for_status()
+                                        print(f"Nueva placa agregada con exito: {statusP.json()}")
+                                    except requests.ConnectionError as e:
+                                        print(f"Error al agregar placa: {e}")
+                            except requests.ConnectionError as e:
+                                print(f"Error al consultar la tabla de placas : {e} ")
+                            
                             
                             # Enviar datos al backend de FastAPI
                             try:

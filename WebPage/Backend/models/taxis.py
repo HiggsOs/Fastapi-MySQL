@@ -13,6 +13,11 @@ taxisTB=Table("Taxis",meta,
             Column("Placas",String(100))
             )
 
+PlacasTB=Table("Placas",meta,
+               Column("id",INTEGER,primary_key=True),
+               Column("Placa",String(100)))
+
+
 meta.create_all(engine)
 
 
