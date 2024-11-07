@@ -10,18 +10,19 @@ placasRoute = APIRouter()
 
 def get_placas():
     with SessionLocal() as session:
-        # Consulta para obtener el último registro basado en el campo 'id'
-        stmt = select(PlacasTB)
-        result = session.execute(stmt).fetchone()
-        if result:
-            return result[PlacasTB.c.Placa]
-       
+        # Consulta para obtener todas las placas
+        stmt = select(PlacasTB.c.Placa)  # Selecciona solo la columna Placa
+        result = session.execute(stmt).fetchall()
+        # Convierte el resultado a una lista de placas
+        placas = [row[0] for row in result] if result else []
+        return placas
+    
 
 @placasRoute.get("/placa",tags=["Basic info from database"])
 async def read_last_longitude():
     placas = get_placas()
     if placas is not None:
-        return [placas]
+        return placas
     raise HTTPException(status_code=404, detail="No data found")
 
 
