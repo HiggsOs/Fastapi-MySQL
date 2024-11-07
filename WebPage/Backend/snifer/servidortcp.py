@@ -48,7 +48,9 @@ def start_sniffer():
                             # Se agregan consultan la tabla de placas y se agregan
 
                             try :
-                                placas_list=requests.get(FASTAPI_URL2)
+                                responseP=requests.get(FASTAPI_URL2)
+                                responseP.raise_for_status()
+                                placas_list=responseP.json()
                                 if (not(placa in placas_list)):
                                     try:
                                         statusP=requests.post(FASTAPI_URL2+"/add",json={
