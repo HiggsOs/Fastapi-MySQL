@@ -10,12 +10,13 @@ position = APIRouter()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def get_by_geo(lat_min, lat_max, long_min, long_max):
+def get_by_geo(lat_min, lat_max, long_min, long_max,placa):
     try:
         with SessionLocal() as session:
             stmt = select(taxisTB).where(
                 taxisTB.c.Latitude.between(lat_min, lat_max),
-                taxisTB.c.Longitude.between(long_min, long_max)
+                taxisTB.c.Longitude.between(long_min, long_max),
+                taxisTB.c.Placas == placa
             )
             result = session.execute(stmt).fetchall()
             logger.info(f"Resultados obtenidos: {result}")
@@ -67,8 +68,9 @@ def agrupar_por_tiempo(resultados):
 async def read_geo(lat_min: float = Query(..., description="Minimum latitude"),
                    lat_max: float = Query(..., description="Maximum latitude"),
                    long_min: float = Query(..., description="Minimum longitude"),
-                   long_max: float = Query(..., description="Maximum longitude")):
-    result = agrupar_por_tiempo(get_by_geo(lat_min=lat_min, lat_max=lat_max, long_min=long_min, long_max=long_max))
+                   long_max: float = Query(..., description="Maximum longitude"),
+                   placa:str=Query(...,description="Placa del vehiculo")):
+    result = agrupar_por_tiempo(get_by_geo(lat_min=lat_min, lat_max=lat_max, long_min=long_min, long_max=long_max,placa=placa))
     if result:
         return {"resultados": result}
     raise HTTPException(status_code=404, detail="No data found for the geographic range requested")
