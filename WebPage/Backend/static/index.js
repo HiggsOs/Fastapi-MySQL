@@ -1,55 +1,21 @@
-let marcador;  // Variable global para el marcador
-let mapa;  // Variable global para el mapa
-let polyline;  // Variable global para la polilínea
-let routeCoords = [];  // Arreglo para almacenar las coordenadas de la ruta
+// Variables globales
+let marcador;
+let mapa;
+let polyline;
+let routeCoords = [];
 let vehicle = {};
 let plateSelect = document.getElementById('plate-select');
 let selectedPlaca = 'all';
 let defaultPlaca = null;
 let vehiculos = {};
 
-
-async function fetchData()  {
+// Función para obtener las placas de vehículos desde el servidor y agregarlas al selector
+async function fetchPlacas() {
     try {
-        // Hacer las solicitudes a los endpoints
-        const response = await fetch('/hour');
-        const data = await response.json();
-        const response2 = await fetch('/day');
-        const data2 = await response2.json();
-        const response3 = await fetch('/latitude');
-        const data3 = await response3.json();
-        const response4 = await fetch('/longitude');
-        const data4 = await response4.json();
-        const response5 = await fetch('/RPM');
-        const data5 = await response5.json();
-        console.log('RPM Data:', data5); // Verifica la respuesta
+        const response = await fetch('/placa');
+        const placas = await response.json();
 
-        const response6 = await fetch('/speed');
-        const data6 = await response6.json();
-        console.log('Speed Data:', data6); // Verifica la respuesta
-        //const response7 = await fetch('/placa');
-        //const data7 = await response7.json();
-
-        const placa = "DTZ890";
-        const nuevaPosicion = [data3.latitude, data4.longitude];
-
-        if (!vehiculos[placa]) {
-            // Crea una nueva entrada para el vehículo
-            vehiculos[placa] = {
-                routeCoords: [], // Coordenadas de la ruta
-                color: '#' + Math.floor(Math.random() * 16777215).toString(16), // Color aleatorio
-                marker: L.marker(nuevaPosicion).addTo(mapa), // Marcador del vehículo
-                polyline: L.polyline([], { color: '#' + Math.floor(Math.random() * 16777215).toString(16) }).addTo(mapa), // Polilínea del vehículo
-                data: { // Guardar datos del vehículo
-                    latitude: data3.latitude,
-                    longitude: data4.longitude,
-                    day: data2.day,
-                    hour: data.hour,
-                    rpm: data5.RPM,
-                    speed: data6.Speed
-                }
-            };
-
+        placas.forEach(placa => {
             let optionExists = Array.from(plateSelect.options).some(option => option.value === placa);
             if (!optionExists) {
                 let newOption = document.createElement('option');
@@ -57,59 +23,98 @@ async function fetchData()  {
                 newOption.text = placa;
                 plateSelect.appendChild(newOption);
             }
+        });
 
-            // Establecer la primera placa que llega como placa por defecto
-            if (!defaultPlaca) {
-                defaultPlaca = placa;
-                selectedPlaca = placa;
+        if (!defaultPlaca && placas.length > 0) {
+            defaultPlaca = placas[0];
+            selectedPlaca = placas[0];
+            actualizarDatosEnPantalla(placas[0]);
+        }
+    } catch (error) {
+        console.error('Error al obtener las placas:', error);
+    }
+}
+
+// Función para obtener los datos de un vehículo y actualizar su marcador y polilínea en el mapa
+async function fetchData() {
+    try {
+        const placas = selectedPlaca === 'all' 
+            ? Array.from(plateSelect.options).map(option => option.value).filter(v => v !== 'all') 
+            : [selectedPlaca];
+
+        for (const placa of placas) {
+            const responses = await Promise.all([
+                fetch(`/hour?placa=${placa}`),
+                fetch(`/day?placa=${placa}`),
+                fetch(`/latitude?placa=${placa}`),
+                fetch(`/longitude?placa=${placa}`),
+                fetch(`/RPM?placa=${placa}`),
+                fetch(`/speed?placa=${placa}`)
+            ]);
+
+            const [data, data2, data3, data4, data5, data6] = await Promise.all(responses.map(res => res.json()));
+
+            const nuevaPosicion = [data3.latitude, data4.longitude];
+
+            if (!vehiculos[placa]) {
+                // Crea una nueva entrada para el vehículo
+                vehiculos[placa] = {
+                    routeCoords: [],
+                    color: '#' + Math.floor(Math.random() * 16777215).toString(16),
+                    marker: L.marker(nuevaPosicion).addTo(mapa),
+                    polyline: L.polyline([], { color: '#' + Math.floor(Math.random() * 16777215).toString(16) }).addTo(mapa),
+                    data: {
+                        latitude: data3.latitude,
+                        longitude: data4.longitude,
+                        day: data2.day,
+                        hour: data.hour,
+                        rpm: data5.RPM,
+                        speed: data6.Speed
+                    }
+                };
+            }
+
+            const vehicle = vehiculos[placa];
+            vehicle.routeCoords.push(nuevaPosicion);
+            vehicle.data = {
+                latitude: data3.latitude,
+                longitude: data4.longitude,
+                day: data2.day,
+                hour: data.hour,
+                rpm: data5.RPM,
+                speed: data6.Speed
+            };
+            vehicle.marker.setLatLng(nuevaPosicion);
+            vehicle.polyline.setLatLngs(vehicle.routeCoords);
+
+            if (selectedPlaca === placa) {
                 actualizarDatosEnPantalla(placa);
             }
         }
 
-        const vehicle = vehiculos[placa];
-        vehicle.routeCoords.push(nuevaPosicion);
-        vehicle.data = { // Actualizar los datos
-            latitude: data3.latitude,
-            longitude: data4.longitude,
-            day: data2.day,
-            hour: data.hour,
-            rpm: data5.RPM,
-            speed: data6.Speed
-        };
-        vehicle.marker.setLatLng(nuevaPosicion);
-        vehicle.polyline.setLatLngs(vehicle.routeCoords);
-        
-        
-       // Filtrar y mostrar las polilíneas según la placa seleccionada
-       actualizarPolilineas();
-
-       // Actualizar datos en pantalla solo si el vehículo seleccionado es el que está actualizando
-       if (selectedPlaca === placa) {
-           actualizarDatosEnPantalla(placa);
-       }
-
-        document.getElementById('error').textContent = ''; // Limpiar el mensaje de error si se actualizan correctamente los datos
+        actualizarPolilineas();
+        document.getElementById('error').textContent = '';
     } catch (error) {
         console.error('Error al obtener los datos:', error);
         document.getElementById('error').textContent = 'Error al obtener los datos.';
     }
 }
 
+// Función para actualizar las polilíneas en el mapa en función del vehículo seleccionado
 function actualizarPolilineas() {
     Object.keys(vehiculos).forEach(placa => {
         const vehiculo = vehiculos[placa];
         if (selectedPlaca === 'all' || selectedPlaca === placa) {
-            // Mostrar marcador y polilínea
             vehiculo.marker.addTo(mapa);
             vehiculo.polyline.addTo(mapa);
         } else {
-            // Ocultar marcador y polilínea
             mapa.removeLayer(vehiculo.marker);
             mapa.removeLayer(vehiculo.polyline);
         }
     });
 }
 
+// Función para actualizar los datos del vehículo en pantalla
 function actualizarDatosEnPantalla(placa) {
     const vehiculo = vehiculos[placa];
     document.getElementById('latitude').textContent = vehiculo.data.latitude || 'No disponible';
@@ -120,31 +125,28 @@ function actualizarDatosEnPantalla(placa) {
     document.getElementById('speed').textContent = vehiculo.data.speed || 'No disponible';
 }
 
-// Actualización periódica de los datos
-setInterval(fetchData, 2000);
-
-// Ejecutar fetchData cuando la página se haya cargado completamente
+// Inicialización del mapa y eventos en la carga de la ventana
 window.addEventListener('load', function () {
-    // Inicializar el mapa solo una vez que la página esté cargada
     mapa = L.map("contenedor-mapa").setView([10.96854, -74.78132], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa);
 
     let allOption = document.createElement('option');
     allOption.value = 'all';
-    allOption.text = 'Todas';   
+    allOption.text = 'Todas';
     plateSelect.appendChild(allOption);
 
-    fetchData(); // Ejecutar fetchData al cargar la página
+    fetchPlacas(); // Cargar las placas desde el servidor
+    fetchData();   // Cargar datos al inicio
 
-    // Escuchar cambios en el dropdown
-    plateSelect.addEventListener('change', function() {
-        selectedPlaca = plateSelect.value; // Actualizar la placa seleccionada
+    plateSelect.addEventListener('change', function () {
+        selectedPlaca = plateSelect.value;
         if (selectedPlaca !== 'all') {
-            actualizarDatosEnPantalla(selectedPlaca); // Actualizar los datos mostrados si se selecciona una placa específica
+            actualizarDatosEnPantalla(selectedPlaca);
         }
-        actualizarPolilineas(); // Actualizar el mapa con la nueva selección
+        actualizarPolilineas();
     });
 
+    setInterval(fetchData, 2000);
     const historicosBtn = document.getElementById("historicos-btn");
     
     historicosBtn.addEventListener("click", function() {
