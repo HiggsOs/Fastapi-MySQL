@@ -114,16 +114,81 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        function drawRouteOnMap(coordinates) {
-            // Eliminar la polilínea anterior si existe
+        // Array para almacenar las flechas
+        let arrows = [];
+
+        // Función para dibujar la ruta en el mapa junto con las flechas
+        function drawRouteOnMap(resultados) {
+            // Eliminar polilíneas y flechas anteriores si existen
             if (lastRoute) {
                 mapa_2.removeLayer(lastRoute);
             }
-
+            arrows.forEach(arrow => {
+                mapa_2.removeLayer(arrow);
+            });
+            arrows = []; // Reiniciar las flechas
+        
+            // Crear un nuevo array de coordenadas y flechas
+            const coordinates = resultados.map(result => [
+                parseFloat(result.Latitude.trim()), 
+                parseFloat(result.Longitude.trim())
+            ]);
+        
             // Dibujar la nueva polilínea
             lastRoute = L.polyline(coordinates, { color: 'blue' }).addTo(mapa_2);
             mapa_2.fitBounds(lastRoute.getBounds());
-        }
+        
+            // Agregar flechas de dirección con popups
+            for (let i = 0; i < resultados.length - 1; i++) {
+                const pointA = L.latLng(
+                    parseFloat(resultados[i].Latitude.trim()), 
+                    parseFloat(resultados[i].Longitude.trim())
+                );
+                const pointB = L.latLng(
+                    parseFloat(resultados[i + 1].Latitude.trim()), 
+                    parseFloat(resultados[i + 1].Longitude.trim())
+                );
+        
+                // Calcular el ángulo entre dos puntos
+                const angle = Math.atan2(
+                    pointB.lat - pointA.lat, 
+                    pointB.lng - pointA.lng
+                ) * (180 / Math.PI);
+        
+                // Crear una flecha usando un icono CSS personalizado
+                const arrowIcon = L.divIcon({
+                    className: 'arrow-icon',
+                    html: '<div class="arrow"></div>',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+        
+                // Colocar la flecha en el punto medio entre A y B y rotarla
+                const midpoint = L.latLng(
+                    (pointA.lat + pointB.lat) / 2, 
+                    (pointA.lng + pointB.lng) / 2
+                );
+                const arrowMarker = L.marker(midpoint, { icon: arrowIcon, rotationAngle: angle }).addTo(mapa_2);
+        
+                // Agregar el popup solo al pasar el ratón o hacer clic
+                const velocidad = resultados[i].Speed;
+                const rpm = resultados[i].RPM;
+                const popupContent = `Velocidad: ${velocidad} km/h<br>RPM: ${rpm}`;
+        
+                arrowMarker.on('mouseover', () => {
+                    arrowMarker.bindPopup(popupContent).openPopup();
+                });
+                arrowMarker.on('mouseout', () => {
+                    arrowMarker.closePopup();
+                });
+                arrowMarker.on('click', () => {
+                    arrowMarker.bindPopup(popupContent).openPopup();
+                });
+        
+                arrows.push(arrowMarker); // Agregar a la lista de flechas
+            }
+        }        
+
 
         fetchAndDrawRoute();
     });
