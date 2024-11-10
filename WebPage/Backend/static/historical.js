@@ -219,21 +219,12 @@ document.addEventListener("DOMContentLoaded", function() {
                                 // Comprobar si resultados es un objeto
                                 if (resultados && typeof resultados === 'object') {
                                     // Vaciar el selector de polilíneas
-                                    selectPolyline.innerHTML = '';
-
-                                    let totalSpeed = 0;
-                                    let totalRPM = 0;
-                                    let totalPoints = 0;
+                                    selectPolyline.innerHTML = '';        
             
                                     for (const key in resultados) {
                                         if (resultados.hasOwnProperty(key)) {
                                             const polyline = resultados[key];
             
-                                            polyline.forEach(point => {
-                                                totalSpeed += parseFloat(point.Speed); 
-                                                totalRPM += parseFloat(point.RPM); 
-                                            });
-                                            totalPoints += polyline.length;
 
                                             const infostartDate =polyline[0].Day;
                                             const infoendDay=polyline[polyline.length - 1].Day; 
@@ -260,14 +251,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                             selectPolyline.appendChild(option);
                                         }
                                     }
-
-                                    const averageSpeed = (totalSpeed / totalPoints).toFixed(2);
-                                    const averageRPM = (totalRPM / totalPoints).toFixed(2);
-
-                                    // Actualizar los elementos HTML con la velocidad y RPM promedio
-                                    document.getElementById('average-speed').textContent = `${averageSpeed} km/h`; // Asegúrate de ajustar las unidades si es necesario
-                                    document.getElementById('average-RPM').textContent = `${averageRPM} RPM`;
-            
+                                    
                                     selectPolyline.addEventListener('change', function () {
                                         const selectedPolylineIndex = selectPolyline.value;
                                         graficarPolilinea(resultados[selectedPolylineIndex]);
@@ -287,31 +271,50 @@ document.addEventListener("DOMContentLoaded", function() {
             
                         // Función para graficar una polilínea
                         function graficarPolilinea(coordinates) {
-                            // Eliminar las polilíneas anteriores
+    // Eliminar las polilíneas anteriores
                             polylines.forEach(polyline => {
                                 mapa_2.removeLayer(polyline);
                             });
-            
-                            // Filtrar solo las coordenadas dentro del círculo
+
                             const latLngs = coordinates
-                                .map(coord => [parseFloat(coord.Latitude.trim()), parseFloat(coord.Longitude.trim())])
-                                .filter(([lat, lng]) => {
+                                .map(coord => {
+                                    const lat = parseFloat(coord.Latitude.trim());
+                                    const lng = parseFloat(coord.Longitude.trim());
+                                    return { lat, lng, speed: coord.Speed, rpm: coord.RPM };
+                                })
+                                .filter(({ lat, lng }) => {
                                     const distancia = calcularDistancia(lastCircle.getLatLng().lat, lastCircle.getLatLng().lng, lat, lng);
-                                    return distancia <= lastCircle.getRadius(); // Filtrar solo puntos dentro del círculo
+                                    return distancia <= lastCircle.getRadius();
                                 });
-            
+
                             // Crear una nueva polilínea con las coordenadas filtradas
-                            const polyline = L.polyline(latLngs, { color: 'blue' }).addTo(mapa_2);
-            
-                            // Añadir la nueva polilínea a la lista de polilíneas
+                            const polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color: 'blue' }).addTo(mapa_2);
                             polylines.push(polyline);
-            
+
+                            // Añadir eventos a cada punto de la polilínea
+                            latLngs.forEach(coord => {
+                                const marker = L.circleMarker([coord.lat, coord.lng], { radius: 5 }).addTo(mapa_2);
+                                
+                                // Añadir eventos para mostrar y ocultar el popup
+                                marker.on('mouseover', function() {
+                                    marker.bindPopup(`Velocidad: ${coord.speed} km/h, RPM: ${coord.rpm}`).openPopup();
+                                });
+                                
+                                marker.on('mouseout', function() {
+                                    marker.closePopup();
+                                });
+                                
+                                marker.on('click', function() {
+                                    marker.bindPopup(`Velocidad: ${coord.speed} km/h, RPM: ${coord.rpm}`).openPopup();
+                                });
+                            });
+
                             // Ajustar la vista del mapa para que se ajuste a la polilínea
                             if (latLngs.length > 0) {
                                 mapa_2.fitBounds(polyline.getBounds());
                             }
                         }
-            
+
                         obtenerYGraficarPolilineas(); // Llamar a la función para obtener y graficar polilíneas
                     }
                 });
