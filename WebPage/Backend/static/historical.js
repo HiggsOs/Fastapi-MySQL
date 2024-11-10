@@ -268,13 +268,20 @@ document.addEventListener("DOMContentLoaded", function() {
                                 console.error('Error al obtener las polilíneas:', error);
                             }
                         }
-            
+                        
+                        let pointMarkers = [];
                         // Función para graficar una polilínea
                         function graficarPolilinea(coordinates) {
-    // Eliminar las polilíneas anteriores
+                            // Eliminar las polilíneas anteriores
                             polylines.forEach(polyline => {
                                 mapa_2.removeLayer(polyline);
                             });
+                            polylines = []; // Limpiar el arreglo de polilíneas
+
+                            pointMarkers.forEach(marker => {
+                                mapa_2.removeLayer(marker);
+                            });
+                            pointMarkers = [];
 
                             const latLngs = coordinates
                                 .map(coord => {
@@ -294,7 +301,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             // Añadir eventos a cada punto de la polilínea
                             latLngs.forEach(coord => {
                                 const marker = L.circleMarker([coord.lat, coord.lng], { radius: 5 }).addTo(mapa_2);
-                                
+                                pointMarkers.push(marker);
                                 // Añadir eventos para mostrar y ocultar el popup
                                 marker.on('mouseover', function() {
                                     marker.bindPopup(`Velocidad: ${coord.speed} km/h, RPM: ${coord.rpm}`).openPopup();
