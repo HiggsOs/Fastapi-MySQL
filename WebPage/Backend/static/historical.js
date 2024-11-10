@@ -268,15 +268,23 @@ document.addEventListener("DOMContentLoaded", function() {
                                 console.error('Error al obtener las polilíneas:', error);
                             }
                         }
-                        
+
                         let pointMarkers = [];
                         // Función para graficar una polilínea
+                        // Definir un icono de flecha con CSS
+                        const ArrowIcon = L.DivIcon.extend({
+                            options: {
+                                className: 'arrow-marker', // Clase CSS para el marcador de flecha
+                                iconSize: [20, 20], // Tamaño de la flecha
+                            }
+                        });
+
                         function graficarPolilinea(coordinates) {
-                            // Eliminar las polilíneas anteriores
+                            // Eliminar polilíneas y marcadores anteriores
                             polylines.forEach(polyline => {
                                 mapa_2.removeLayer(polyline);
                             });
-                            polylines = []; // Limpiar el arreglo de polilíneas
+                            polylines = [];
 
                             pointMarkers.forEach(marker => {
                                 mapa_2.removeLayer(marker);
@@ -294,29 +302,45 @@ document.addEventListener("DOMContentLoaded", function() {
                                     return distancia <= lastCircle.getRadius();
                                 });
 
-                            // Crear una nueva polilínea con las coordenadas filtradas
+                            // Crear la polilínea con las coordenadas filtradas
                             const polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color: 'blue' }).addTo(mapa_2);
                             polylines.push(polyline);
 
-                            // Añadir eventos a cada punto de la polilínea
-                            latLngs.forEach(coord => {
-                                const marker = L.circleMarker([coord.lat, coord.lng], { radius: 5 }).addTo(mapa_2);
-                                pointMarkers.push(marker);
-                                // Añadir eventos para mostrar y ocultar el popup
-                                marker.on('mouseover', function() {
-                                    marker.bindPopup(`Velocidad: ${coord.speed} km/h, RPM: ${coord.rpm}`).openPopup();
-                                });
-                                
-                                marker.on('mouseout', function() {
-                                    marker.closePopup();
-                                });
-                                
-                                marker.on('click', function() {
-                                    marker.bindPopup(`Velocidad: ${coord.speed} km/h, RPM: ${coord.rpm}`).openPopup();
-                                });
-                            });
+                            // Añadir marcadores de flecha en cada punto
+                            for (let i = 0; i < latLngs.length - 1; i++) {
+                                const start = latLngs[i];
+                                const end = latLngs[i + 1];
 
-                            // Ajustar la vista del mapa para que se ajuste a la polilínea
+                                // Calcular el ángulo entre los puntos (en radianes)
+                                const angleRad = Math.atan2(end.lat - start.lat, end.lng - start.lng);
+                                const angleDeg = angleRad * (180 / Math.PI); // Convertir a grados
+
+                                // Crear el marcador de flecha con rotación
+                                const arrowMarker = L.marker([start.lat, start.lng], {
+                                    icon: new ArrowIcon(),
+                                }).addTo(mapa_2);
+
+                                // Aplicar la rotación de la flecha usando CSS
+                                arrowMarker.getElement().style.transform = `rotate(${angleDeg}deg)`;
+
+                                // Guardar el marcador en el arreglo para eliminarlo después
+                                pointMarkers.push(arrowMarker);
+
+                                // Añadir eventos para mostrar el popup
+                                arrowMarker.on('mouseover', function() {
+                                    arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h, RPM: ${start.rpm}`).openPopup();
+                                });
+
+                                arrowMarker.on('mouseout', function() {
+                                    arrowMarker.closePopup();
+                                });
+
+                                arrowMarker.on('click', function() {
+                                    arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h, RPM: ${start.rpm}`).openPopup();
+                                });
+                            }
+
+                            // Ajustar la vista del mapa para la nueva polilínea
                             if (latLngs.length > 0) {
                                 mapa_2.fitBounds(polyline.getBounds());
                             }
