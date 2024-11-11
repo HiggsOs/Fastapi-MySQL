@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function() {
             try {
                 // Para cada placa, hacer una petición y dibujar su ruta
                 for (const plate of vehiclePlates) {
-                    const response = await fetch(urlString + `&plate=${plate}`);
+                    const response = await fetch(urlString + `&placa=${plate}`);
     
                     if (response.status === 404) {
                         console.log("No se encontraron datos para la placa:", plate);
@@ -307,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         // Realizar peticiones para cada placa
                         for (let i = 0; i < platesToProcess.length; i++) {
                             const plate = platesToProcess[i];
-                            const url = `/apisearch?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}&plate=${plate}`;
+                            const url = `/apisearch?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}&placa=${plate}`;
                             
                             try {
                                 const response = await fetch(url);
