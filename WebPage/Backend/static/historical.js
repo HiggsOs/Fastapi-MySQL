@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const value = document.querySelector("#value");
     const polylines = []; // Almacenar polilíneas en el mapa
     const selectPolyline = document.getElementById('polyline-select'); // Usar el selector ya existente
+    let plateSelect = document.getElementById('plate-select');
+    let vehiclePlates = [];
 
 
     // Agregar evento de clic
@@ -29,6 +31,38 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = newURL;
     });
 
+    async function fetchPlacas() {
+    try {
+        const response = await fetch('/placa');
+        const placas = await response.json();
+        
+        // Asignar las placas obtenidas a la variable global vehiclePlates
+        vehiclePlates = placas;
+
+        // Llenar el dropdown con las placas
+        placas.forEach(placa => {
+            let optionExists = Array.from(plateSelect.options).some(option => option.value === placa);
+            if (!optionExists) {
+                let newOption = document.createElement('option');
+                newOption.value = placa;
+                newOption.text = placa;
+                plateSelect.appendChild(newOption);
+            }
+        });
+
+        if (!defaultPlaca && placas.length > 0) {
+            defaultPlaca = placas[0];
+            selectedPlaca = placas[0];
+            actualizarDatosEnPantalla(placas[0]);
+        }
+
+        // Ahora pasamos el array de placas a la función que hace las peticiones
+        fetchAndDrawRoutes(vehiclePlates);
+
+    } catch (error) {
+        console.error('Error al obtener las placas:', error);
+    }
+}
 
     // Función que se ejecuta cuando cambia la fecha de inicio
     startDateInput.addEventListener("change", function () {
@@ -52,13 +86,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     
     // Función para validar al enviar
-    submitButton.addEventListener("click", function (event) {   //
+    submitButton.addEventListener("click", function (event) {
         if (endDateInput.value < startDateInput.value) {
             event.preventDefault();
             alert("La fecha final no puede ser anterior a la fecha de inicio.");
             return;
-        } 
-
+        }
+    
         const startDateTime = startDateInput.value;
         const endDateTime = endDateInput.value;
         //split de los datos
@@ -66,67 +100,108 @@ document.addEventListener("DOMContentLoaded", function() {
         const startTime = startDateTime.split("T")[1];
         const endDate = endDateTime.split("T")[0];
         const endTime = endDateTime.split("T")[1];
-
+    
         // Usar URLSearchParams para construir la cadena de consulta
         const params = new URLSearchParams({
             start_day: startDate,
             end_day: endDate,
             start_hour: encodeURIComponent(startTime),
-            end_hour: encodeURIComponent(endTime)      
+            end_hour: encodeURIComponent(endTime)
         });
-
+    
         const urlString = `days-hours/?${params.toString()}`;
-        console.log(urlString)
-
-        async function fetchAndDrawRoute() {
+        console.log(urlString);
+        // Array para almacenar las rutas de todos los vehículos
+        let allRoutes = [];
+    
+        // Función para hacer la petición para cada placa y graficar sus rutas
+        async function  fetchAndDrawRoutes(vehiclePlates) {
             try {
-                const response = await fetch(urlString);
-
-                if (response.status === 404) {
-                    console.log("No se encontraron datos. Error 404.");
-                    if (lastRoute) {
-                        mapa_2.removeLayer(lastRoute);  // Eliminar la polilínea anterior si existe
-                        lastRoute = null;
+                // Para cada placa, hacer una petición y dibujar su ruta
+                for (const plate of vehiclePlates) {
+                    const response = await fetch(urlString + `&plate=${plate}`);
+    
+                    if (response.status === 404) {
+                        console.log("No se encontraron datos para la placa:", plate);
+                        alert(`No se encontraron datos para la placa ${plate}.`);
+                        continue;
                     }
-                    alert("No se encontraron datos para el rango de fechas seleccionado.");
-                    return;
+    
+                    if (!response.ok) {
+                        throw new Error(`Error en la solicitud: ${response.status}`);
+                    }
+    
+                    const data = await response.json();
+                    const resultados = data.resultados;
+    
+                    // Almacenar los resultados de la placa
+                    allRoutes.push({ plate, results: resultados });
+    
+                    // Llamar a la función para dibujar la ruta de este vehículo
+                    drawRouteOnMap(resultados, plate);
                 }
-
-                if (!response.ok) {
-                    throw new Error(`Error en la solicitud: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const resultados = data.resultados;
-
-
-                const coordinates = [];
-                resultados.forEach(result => {
-                    const lat = parseFloat(result.Latitude.trim());
-                    const lng = parseFloat(result.Longitude.trim());
-                    coordinates.push([lat, lng]);
-                });
-
-                drawRouteOnMap(coordinates);
-
+    
             } catch (error) {
                 console.error("Error al obtener los datos:", error);
             }
         }
-
-        function drawRouteOnMap(coordinates) {
-            // Eliminar la polilínea anterior si existe
+    
+        // Función para dibujar la ruta en el mapa
+        function drawRouteOnMap(resultados, plate) {
+            // Eliminar polilíneas y flechas anteriores si existen
             if (lastRoute) {
                 mapa_2.removeLayer(lastRoute);
             }
-
-            // Dibujar la nueva polilínea
-            lastRoute = L.polyline(coordinates, { color: 'blue' }).addTo(mapa_2);
+            arrows.forEach(arrow => {
+                mapa_2.removeLayer(arrow);
+            });
+            arrows = []; // Reiniciar las flechas
+    
+            const coordinates = resultados.map(result => [
+                parseFloat(result.Latitude.trim()), 
+                parseFloat(result.Longitude.trim())
+            ]);
+    
+            // Asignar un color diferente a cada placa (puedes usar un arreglo de colores)
+            const color = getVehicleColor(plate);
+    
+            // Dibujar la nueva polilínea con un color distinto para cada vehículo
+            lastRoute = L.polyline(coordinates, { color: color }).addTo(mapa_2);
             mapa_2.fitBounds(lastRoute.getBounds());
         }
-
-        fetchAndDrawRoute();
+    
+        // Función para obtener un color para cada placa
+        function getVehicleColor(plate) {
+            // Puedes mejorar esto para asignar colores aleatorios o usar un esquema
+            const colors = ['blue', 'green', 'red', 'purple', 'orange'];
+            const index = vehiclePlates.indexOf(plate);
+            return colors[index % colors.length];
+        }
+    
+        // Llamar a la función para hacer las peticiones
+        fetchAndDrawRoutes();
+    
+        // Función para filtrar por placa seleccionada
+        const vehicleSelect = document.getElementById('vehicle-select');
+        vehicleSelect.addEventListener('change', function () {
+            const selectedPlate = vehicleSelect.value;
+    
+            if (selectedPlate) {
+                // Filtrar las rutas de los vehículos y solo mostrar la seleccionada
+                const filteredRoute = allRoutes.find(route => route.plate === selectedPlate);
+                if (filteredRoute) {
+                    drawRouteOnMap(filteredRoute.results, selectedPlate);
+                }
+            } else {
+                // Si no hay placa seleccionada, mostrar todas las rutas
+                allRoutes.forEach(route => {
+                    drawRouteOnMap(route.results, route.plate);
+                });
+            }
+        });
     });
+    
+
     function convertirAHorasMinutos(hora) {
         const [horas, minutos] = hora.split(':').map(Number);
         return horas * 60 + minutos; // Convertir a minutos totales
@@ -136,6 +211,12 @@ document.addEventListener("DOMContentLoaded", function() {
     window.onload = function() {
         mapa_2 = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa_2);
+
+        let allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.text = 'Todas';
+        plateSelect.appendChild(allOption);
+        fetchPlacas();
 
         filtro_posicion.addEventListener("change", (event) => {
             if (event.target.checked){
@@ -185,137 +266,201 @@ document.addEventListener("DOMContentLoaded", function() {
                     value.textContent = event.target.value;
                 });
         
-                extractCoordsBtn.addEventListener("click", function() {
+                // Objeto para almacenar las polilíneas por vehículo
+                let vehiclePolylines = {};
+                const colorPalette = ['blue', 'red', 'green', 'purple', 'orange', 'brown', 'pink', 'cyan'];
+
+                // Función para obtener un color único para cada vehículo
+                function getVehicleColor(index) {
+                    return colorPalette[index % colorPalette.length];
+                }
+
+                // Modificar el evento del botón de extracción
+                extractCoordsBtn.addEventListener("click", async function() {
                     if (lastCircle) {
-                        const bounds = lastCircle.getBounds(); // Obtener los límites del círculo
-                        const latMin = bounds.getSouth(); // Latitud mínima
-                        const latMax = bounds.getNorth(); // Latitud máxima
-                        const lngMin = bounds.getWest();  // Longitud mínima
-                        const lngMax = bounds.getEast();  // Longitud máxima
-        
+                        const bounds = lastCircle.getBounds();
+                        const latMin = bounds.getSouth();
+                        const latMax = bounds.getNorth();
+                        const lngMin = bounds.getWest();
+                        const lngMax = bounds.getEast();
+
                         const startDateTime = startDateInput.value;
                         const endDateTime = endDateInput.value;
                         const startDate = startDateTime.split("T")[0];
                         const startTime = startDateTime.split("T")[1];
                         const endDate = endDateTime.split("T")[0];
                         const endTime = endDateTime.split("T")[1];
-                    
-                        // Mostrar los valores en la consola
-                        console.log(`Latitud mínima: ${latMin}, Latitud máxima: ${latMax}`);
-                        console.log(`Longitud mínima: ${lngMin}, Longitud máxima: ${lngMax}`);
-            
-                        // Construir la URL de la query GET
-                        const url = `/apisearch?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}`;
-                        console.log(`URL generada: ${url}`);
-            
-                        // Hacer la petición GET usando fetch
-                        async function obtenerYGraficarPolilineas() {
+
+                        // Obtener todas las placas disponibles
+                        const allPlates = Array.from(vehicleDropdown.options)
+                            .map(option => option.value)
+                            .filter(value => value !== 'todos');
+                            
+                        // Determinar qué placas procesar
+                        const selectedPlate = vehicleDropdown.value;
+                        const platesToProcess = selectedPlate === 'todos' ? allPlates : [selectedPlate];
+                        
+                        // Limpiar datos anteriores
+                        vehiclePolylines = {};
+                        limpiarMapa();
+                        
+                        // Realizar peticiones para cada placa
+                        for (let i = 0; i < platesToProcess.length; i++) {
+                            const plate = platesToProcess[i];
+                            const url = `/apisearch?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}&plate=${plate}`;
+                            
                             try {
                                 const response = await fetch(url);
                                 const data = await response.json();
-                                console.log(data); // Agrega este log para verificar la respuesta
-                                const resultados = data.resultados;
-            
-                                // Comprobar si resultados es un objeto
-                                if (resultados && typeof resultados === 'object') {
-                                    // Vaciar el selector de polilíneas
-                                    selectPolyline.innerHTML = '';        
-            
-                                    for (const key in resultados) {
-                                        if (resultados.hasOwnProperty(key)) {
-                                            const polyline = resultados[key];
-            
-
-                                            const infostartDate =polyline[0].Day;
-                                            const infoendDay=polyline[polyline.length - 1].Day; 
-                                            const infostartTime =polyline[0].Hour.substring(0, 5);;
-                                            const infoendTime=polyline[polyline.length - 1].Hour.substring(0, 5);; 
-            
-                                            const option = document.createElement('option');
-                                            option.value = key; // Usar el key del objeto como valor
-                                            if (infoendDay==infostartDate){
-
-                                            option.text = `El dia ${infostartDate}: desde ${infostartTime}
-                                            ,Hasta: ${infoendTime}`;
-                                            
-                                            } else
-                                            {
-                                                option.text = `De: ${infostartDate} a ${infostartTime}
-                                                , hasta: ${infoendDay} a ${infoendTime}`; // Mostrar datetime
-                                            }
-                                            if(convertirAHorasMinutos(infostartTime)>convertirAHorasMinutos(infoendTime)){
-                                                option.text = `El dia ${infostartDate}: desde ${infoendTime}
-                                                ,Hasta: ${infostartTime}`;
-                                            }
-                                         
-                                            selectPolyline.appendChild(option);
-                                        }
-                                    }
-                                    
-                                    selectPolyline.addEventListener('change', function () {
-                                        const selectedPolylineIndex = selectPolyline.value;
-                                        graficarPolilinea(resultados[selectedPolylineIndex]);
-                                    });
-            
-                                    // Graficar la primera polilínea por defecto
-                                    if (Object.keys(resultados).length > 0) {
-                                        graficarPolilinea(resultados[Object.keys(resultados)[0]]);
-                                    }
-                                } else {
-                                    console.error('resultados no es un objeto o está vacío:', resultados);
-                                }
+                                vehiclePolylines[plate] = {
+                                    data: data.resultados,
+                                    color: getVehicleColor(i)
+                                };
                             } catch (error) {
-                                console.error('Error al obtener las polilíneas:', error);
-                            }
-                        }
-            
-                        // Función para graficar una polilínea
-                        function graficarPolilinea(coordinates) {
-    // Eliminar las polilíneas anteriores
-                            polylines.forEach(polyline => {
-                                mapa_2.removeLayer(polyline);
-                            });
-
-                            const latLngs = coordinates
-                                .map(coord => {
-                                    const lat = parseFloat(coord.Latitude.trim());
-                                    const lng = parseFloat(coord.Longitude.trim());
-                                    return { lat, lng, speed: coord.Speed, rpm: coord.RPM };
-                                })
-                                .filter(({ lat, lng }) => {
-                                    const distancia = calcularDistancia(lastCircle.getLatLng().lat, lastCircle.getLatLng().lng, lat, lng);
-                                    return distancia <= lastCircle.getRadius();
-                                });
-
-                            // Crear una nueva polilínea con las coordenadas filtradas
-                            const polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color: 'blue' }).addTo(mapa_2);
-                            polylines.push(polyline);
-
-                            // Añadir eventos a cada punto de la polilínea
-                            latLngs.forEach(coord => {
-                                const marker = L.circleMarker([coord.lat, coord.lng], { radius: 5 }).addTo(mapa_2);
-                                
-                                // Añadir eventos para mostrar y ocultar el popup
-                                marker.on('mouseover', function() {
-                                    marker.bindPopup(`Velocidad: ${coord.speed} km/h, RPM: ${coord.rpm}`).openPopup();
-                                });
-                                
-                                marker.on('mouseout', function() {
-                                    marker.closePopup();
-                                });
-                                
-                                marker.on('click', function() {
-                                    marker.bindPopup(`Velocidad: ${coord.speed} km/h, RPM: ${coord.rpm}`).openPopup();
-                                });
-                            });
-
-                            // Ajustar la vista del mapa para que se ajuste a la polilínea
-                            if (latLngs.length > 0) {
-                                mapa_2.fitBounds(polyline.getBounds());
+                                console.error(`Error al obtener datos para el vehículo ${plate}:`, error);
                             }
                         }
 
-                        obtenerYGraficarPolilineas(); // Llamar a la función para obtener y graficar polilíneas
+                        actualizarVisualizacion();
+                    }
+                });
+
+                // Función para limpiar el mapa
+                function limpiarMapa() {
+                    polylines.forEach(polyline => mapa_2.removeLayer(polyline));
+                    polylines = [];
+                    pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
+                    pointMarkers = [];
+                }
+
+                // Función para actualizar la visualización según la selección actual
+                function actualizarVisualizacion() {
+                    const selectedPlate = vehicleDropdown.value;
+                    
+                    // Limpiar el selector de polilíneas
+                    selectPolyline.innerHTML = '';
+                    
+                    if (selectedPlate === 'todos') {
+                        // Mostrar una polilínea por cada vehículo
+                        limpiarMapa();
+                        Object.entries(vehiclePolylines).forEach(([plate, vehicleData]) => {
+                            const firstKey = Object.keys(vehicleData.data)[0];
+                            if (firstKey) {
+                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, false);
+                            }
+                        });
+                        
+                        // Agregar todas las polilíneas al selector
+                        Object.entries(vehiclePolylines).forEach(([plate, vehicleData]) => {
+                            Object.entries(vehicleData.data).forEach(([key, polyline]) => {
+                                agregarOpcionPolilinea(plate, key, polyline, vehicleData.color);
+                            });
+                        });
+                    } else {
+                        // Mostrar solo las polilíneas del vehículo seleccionado
+                        const vehicleData = vehiclePolylines[selectedPlate];
+                        if (vehicleData) {
+                            // Agregar las polilíneas al selector
+                            Object.entries(vehicleData.data).forEach(([key, polyline]) => {
+                                agregarOpcionPolilinea(selectedPlate, key, polyline, vehicleData.color);
+                            });
+                            
+                            // Graficar la primera polilínea
+                            const firstKey = Object.keys(vehicleData.data)[0];
+                            if (firstKey) {
+                                limpiarMapa();
+                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true);
+                            }
+                        }
+                    }
+                }
+
+                // Función para agregar una opción al selector de polilíneas
+                function agregarOpcionPolilinea(plate, key, polyline, color) {
+                    const infostartDate = polyline[0].Day;
+                    const infoendDay = polyline[polyline.length - 1].Day;
+                    const infostartTime = polyline[0].Hour.substring(0, 5);
+                    const infoendTime = polyline[polyline.length - 1].Hour.substring(0, 5);
+
+                    const option = document.createElement('option');
+                    option.value = `${plate}-${key}`;
+
+                    let timeText;
+                    if (infoendDay == infostartDate) {
+                        timeText = `El día ${infostartDate}: desde ${infostartTime} hasta ${infoendTime}`;
+                    } else {
+                        timeText = `De: ${infostartDate} a ${infostartTime}, hasta: ${infoendDay} a ${infoendTime}`;
+                    }
+                    if (convertirAHorasMinutos(infostartTime) > convertirAHorasMinutos(infoendTime)) {
+                        timeText = `El día ${infostartDate}: desde ${infoendTime} hasta ${infostartTime}`;
+                    }
+
+                    option.text = `Vehículo ${plate}: ${timeText}`;
+                    selectPolyline.appendChild(option);
+                }
+
+                // Función para graficar una polilínea
+                function graficarPolilinea(coordinates, color = 'blue', ajustarVista = true) {
+                    const latLngs = coordinates
+                        .map(coord => {
+                            const lat = parseFloat(coord.Latitude.trim());
+                            const lng = parseFloat(coord.Longitude.trim());
+                            return { lat, lng, speed: coord.Speed, rpm: coord.RPM };
+                        })
+                        .filter(({ lat, lng }) => {
+                            const distancia = calcularDistancia(lastCircle.getLatLng().lat, lastCircle.getLatLng().lng, lat, lng);
+                            return distancia <= lastCircle.getRadius();
+                        });
+
+                    const polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color }).addTo(mapa_2);
+                    polylines.push(polyline);
+
+                    // Añadir marcadores de flecha
+                    for (let i = 0; i < latLngs.length - 1; i++) {
+                        const start = latLngs[i];
+                        const end = latLngs[i + 1];
+                        const angleRad = Math.atan2(end.lat - start.lat, end.lng - start.lng);
+                        const angleDeg = angleRad * (180 / Math.PI);
+
+                        const arrowMarker = L.marker([start.lat, start.lng], {
+                            icon: new ArrowIcon(),
+                        }).addTo(mapa_2);
+
+                        arrowMarker.getElement().style.transform = `rotate(${angleDeg}deg)`;
+                        pointMarkers.push(arrowMarker);
+
+                        arrowMarker.on('mouseover', function() {
+                            arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h, RPM: ${start.rpm}`).openPopup();
+                        });
+
+                        arrowMarker.on('mouseout', function() {
+                            arrowMarker.closePopup();
+                        });
+
+                        arrowMarker.on('click', function() {
+                            arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h, RPM: ${start.rpm}`).openPopup();
+                        });
+                    }
+
+                    if (ajustarVista && latLngs.length > 0) {
+                        mapa_2.fitBounds(polyline.getBounds());
+                    }
+                }
+
+                // Event listeners para los selectores
+                vehicleDropdown.addEventListener('change', function() {
+                    if (Object.keys(vehiclePolylines).length > 0) {
+                        actualizarVisualizacion();
+                    }
+                });
+
+                selectPolyline.addEventListener('change', function() {
+                    const [plate, polylineKey] = selectPolyline.value.split('-');
+                    const vehicleData = vehiclePolylines[plate];
+                    
+                    if (vehicleData && vehicleData.data[polylineKey]) {
+                        limpiarMapa();
+                        graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                     }
                 });
             
