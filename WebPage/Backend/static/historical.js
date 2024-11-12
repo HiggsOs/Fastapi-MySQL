@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         // Función para dibujar la ruta en el mapa
         function drawRouteOnMap(resultados, plate) {
+            let arrows = [];
             // Eliminar polilíneas y flechas anteriores si existen
             if (lastRoute) {
                 mapa_2.removeLayer(lastRoute);
@@ -177,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function() {
         fetchAndDrawRoutes(vehiclePlates);
     
         // Función para filtrar por placa seleccionada
-        const vehicleSelect = document.getElementById('vehicle-select');
+        const vehicleSelect = document.getElementById('plate-select');
         vehicleSelect.addEventListener('change', function () {
             const selectedPlate = vehicleSelect.value;
     
