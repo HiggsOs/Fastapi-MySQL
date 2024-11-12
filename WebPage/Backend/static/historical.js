@@ -107,6 +107,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // Función para hacer la petición para cada placa y graficar sus rutas
         async function fetchAndDrawRoutes(vehiclePlates) {
             try {
+                if (!Array.isArray(vehiclePlates)) {
+                    throw new Error('El argumento vehiclePlates no es un array');
+                }
                 // Para cada placa, hacer una petición y dibujar su ruta
                 for (const plate of vehiclePlates) {
                     console.log(`Procesando la placa: ${plate}`);
@@ -171,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         // Llamar a la función para hacer las peticiones
-        fetchAndDrawRoutes();
+        fetchAndDrawRoutes(vehiclePlates);
     
         // Función para filtrar por placa seleccionada
         const vehicleSelect = document.getElementById('vehicle-select');
