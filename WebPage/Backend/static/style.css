@@ -224,7 +224,7 @@ body {
 
 
 /* Media queries para dispositivos móviles */
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
     #general-header {
         flex-direction: column;
         height: auto;
@@ -254,7 +254,7 @@ body {
     }
 }
 
-/* Media queries para pantallas más pequeñas (smartphones) 
+/* Media queries para pantallas más pequeñas (smartphones) */
 @media (max-width: 480px) {
     .fechas {
         flex-direction: column;
@@ -272,4 +272,4 @@ body {
     .contenedor-info {
         width: 100%;
     }
-} */
+}
