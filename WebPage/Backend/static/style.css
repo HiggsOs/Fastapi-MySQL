@@ -1,28 +1,105 @@
+/* Para evitar que el contenido quede detrás del header */
+body {
+    margin: 0;
+    padding: 0;
+    padding-top: 50px;
+    height: 100vh;
+    overflow: hidden; /*Previene el scroll innecesario*/
+}
+
 /* Contenedor principal */
 .contenedor {
     display: flex;
     flex-direction: column;
     width: 100%;
-}
-.historical{
-    background-color: #feffd4;
+    height: calc(100vh - 50px); /* Ajustamos por el padding-top del body */
 }
 
-.titulo{
+.titulo {
+    height: 40px;
+    min-height: 40px; /* Asegura altura mínima */
     display: flex;
-
     justify-content: center;
     align-items: center;
+    margin: 0;
+    padding: 10px 0;
 }
+
+
+.plate {
+    margin-left: 30px; 
+}
+
+/* Ajuste de espacio entre columnas */
+.contenedor-data {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+    overflow: hidden; /* Previene scroll interno innecesario */
+}
+
+.datos {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Información general */
+.info {
+    height: 20px; 
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    width: 100%;
+}
+/* Ajustes al mapa */
+#contenedor-mapa-x {
+    flex: 1;
+    display: flex;
+    padding: 15px;
+    margin: 10px;
+    background-color: lightgray;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden; /* Previene scroll interno */
+}
+
+
+#contenedor-mapa {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    position: relative;
+}
+
+/* Panel de control dentro del mapa */
+.control-panel {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+    max-width: 200px;
+}
+
 /* Botones de pestañas */
 .tab_btn {
-    padding: 15px 20px;
+    padding: 10px 20px;
+    margin-top: 7px;
+    margin-bottom: 7px;
     font-size: 16px;
     font-weight: 600;
     font-family: sans-serif;
     color: #feffd4;
-    background: none;
+    background-color: #D08770;
     border: none;
+    border-radius: 30px;
     cursor: pointer;
     transition: color 0.3s ease;
 }
@@ -44,40 +121,13 @@
     z-index: 10;
 }
 
-/* Para evitar que el contenido quede detrás del header.. */
-body {
-    margin: 0;
-    padding: 0;
-    padding-top: 50px;
-}
-
 /* Hover en botones */
 .tab_btn:hover {
-    color: #feffd4;
-}
-.boton:hover{
-    
     color: #21000f;
-    background-color:#9e2d4a;
-
-}
-/* Ajuste de espacio entre columnas */
-.contenedor-data {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
 }
 
-/* Información general */
-.info {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    gap: 20px;
-    flex-wrap: wrap;
+.historical{
+    background-color: #feffd4;
 }
 
 .datetime-input {
@@ -88,38 +138,14 @@ body {
     box-sizing: border-box;
 }
 
-/* Ajustes al mapa */
-#contenedor-mapa-x {
-    height: 100%;
-    position: relative;
-}
-
 #contenedor-mapa-2  {
     width: 100%;
     height: 100%;
-    min-height: 800px;
+    padding: 15px 15px;
     border-radius: 10px;
     gap: 20px;
 }
 
-.control-panel {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-#contenedor-mapa{ 
-    width: 100%;
-    height: 100%;
-    min-height: 800px;
-    border-radius: 10px;
-    gap: 20px;
-}
 #contenedor-mapa-3{ 
     width: 100%;
     height: 100%;
@@ -147,6 +173,11 @@ body {
     border: none;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.boton:hover{
+    color: #21000f;
+    background-color:#9e2d4a;
 }
 
 /* Control de visibilidad de botones y contenedores */
@@ -193,7 +224,7 @@ body {
 
 
 /* Media queries para dispositivos móviles */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     #general-header {
         flex-direction: column;
         height: auto;
@@ -223,7 +254,7 @@ body {
     }
 }
 
-/* Media queries para pantallas más pequeñas (smartphones) */
+/* Media queries para pantallas más pequeñas (smartphones) 
 @media (max-width: 480px) {
     .fechas {
         flex-direction: column;
@@ -241,4 +272,4 @@ body {
     .contenedor-info {
         width: 100%;
     }
-}
+} */
