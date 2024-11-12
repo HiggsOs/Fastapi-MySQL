@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // Asignar las placas obtenidas a la variable global vehiclePlates
         vehiclePlates = placas;
+        console.log(vehiclePlates);
 
         // Llenar el dropdown con las placas
         placas.forEach(placa => {
@@ -115,32 +116,33 @@ document.addEventListener("DOMContentLoaded", function() {
         let allRoutes = [];
     
         // Función para hacer la petición para cada placa y graficar sus rutas
-        async function  fetchAndDrawRoutes(vehiclePlates) {
+        async function fetchAndDrawRoutes(vehiclePlates) {
             try {
                 // Para cada placa, hacer una petición y dibujar su ruta
                 for (const plate of vehiclePlates) {
                     const response = await fetch(urlString + `&placa=${plate}`);
-    
+                    console.log(urlString + `&placa=${plate}`);
+        
                     if (response.status === 404) {
                         console.log("No se encontraron datos para la placa:", plate);
                         alert(`No se encontraron datos para la placa ${plate}.`);
                         continue;
                     }
-    
+        
                     if (!response.ok) {
                         throw new Error(`Error en la solicitud: ${response.status}`);
                     }
-    
+        
                     const data = await response.json();
                     const resultados = data.resultados;
-    
+        
                     // Almacenar los resultados de la placa
                     allRoutes.push({ plate, results: resultados });
-    
+        
                     // Llamar a la función para dibujar la ruta de este vehículo
                     drawRouteOnMap(resultados, plate);
                 }
-    
+        
             } catch (error) {
                 console.error("Error al obtener los datos:", error);
             }
@@ -295,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         const allPlates = Array.from(vehicleDropdown.options)
                             .map(option => option.value)
                             .filter(value => value !== 'todos');
-                            
+                        console.log(allPlates);    
                         // Determinar qué placas procesar
                         const selectedPlate = vehicleDropdown.value;
                         const platesToProcess = selectedPlate === 'todos' ? allPlates : [selectedPlate];
