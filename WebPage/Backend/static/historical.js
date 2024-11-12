@@ -95,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const params = new URLSearchParams({
             start_day: startDate,
             end_day: endDate,
-            start_hour: encodeURIComponent(startTime),
-            end_hour: encodeURIComponent(endTime)
+            start_hour: startTime,
+            end_hour: endTime
         });
     
         const urlString = `days-hours/?${params.toString()}`;
