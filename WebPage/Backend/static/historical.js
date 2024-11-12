@@ -288,12 +288,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         const endTime = endDateTime.split("T")[1];
 
                         // Obtener todas las placas disponibles
-                        const allPlates = Array.from(vehicleDropdown.options)
+                        const allPlates = Array.from(plateSelect.options)
                             .map(option => option.value)
                             .filter(value => value !== 'todos');
                         console.log(allPlates);    
                         // Determinar qué placas procesar
-                        const selectedPlate = vehicleDropdown.value;
+                        const selectedPlate = plateSelect.value;
                         const platesToProcess = selectedPlate === 'todos' ? allPlates : [selectedPlate];
                         
                         // Limpiar datos anteriores
@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Función para actualizar la visualización según la selección actual
                 function actualizarVisualizacion() {
-                    const selectedPlate = vehicleDropdown.value;
+                    const selectedPlate = plateSelect.value;
                     
                     // Limpiar el selector de polilíneas
                     selectPolyline.innerHTML = '';
@@ -445,7 +445,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 // Event listeners para los selectores
-                vehicleDropdown.addEventListener('change', function() {
+                plateSelect.addEventListener('change', function() {
                     if (Object.keys(vehiclePolylines).length > 0) {
                         actualizarVisualizacion();
                     }
