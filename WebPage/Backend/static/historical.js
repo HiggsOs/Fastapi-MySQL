@@ -88,9 +88,9 @@ document.addEventListener("DOMContentLoaded", function() {
         //split de los datos
         const startDate = startDateTime.split("T")[0];
         const startTime = startDateTime.split("T")[1];
-        const endDate = endDateTime.split("T")[0];
-        const endTime = endDateTime.split("T")[1];
-    
+        const endDate = endDateTime.split("T")[0].replace("%3A", ":");
+        const endTime = endDateTime.split("T")[1].replace("%3A", ":");
+
         // Usar URLSearchParams para construir la cadena de consulta
         const params = new URLSearchParams({
             start_day: startDate,
