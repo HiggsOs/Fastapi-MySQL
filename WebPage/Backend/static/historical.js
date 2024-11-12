@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
             end_hour: endTime
         });
     
-        const urlString = `days-hours/?${params.toString()}`;
+        const urlString = `days-hours/?${decodeURIComponent(params.toString())}`;
         console.log(urlString);
         // Array para almacenar las rutas de todos los vehículos
         let allRoutes = [];
