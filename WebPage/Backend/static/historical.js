@@ -32,38 +32,29 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     async function fetchPlacas() {
-    try {
-        const response = await fetch('/placa');
-        const placas = await response.json();
-        
-        // Asignar las placas obtenidas a la variable global vehiclePlates
-        vehiclePlates = placas;
-        console.log(vehiclePlates);
+        try {
+            const response = await fetch('/placa');
+            const placas = await response.json();
+            console.log(placas);
+            // Llenar el dropdown con las placas
+            placas.forEach(placa => {
+                let optionExists = Array.from(plateSelect.options).some(option => option.value === placa);
+                if (!optionExists) {
+                    let newOption = document.createElement('option');
+                    newOption.value = placa;
+                    newOption.text = placa;
+                    plateSelect.appendChild(newOption);
+                }
+            });
+            vehiclePlates = placas;
+            console.log(vehiclePlates);
+            // Ahora pasamos el array de placas a la función que hace las peticiones
+            fetchAndDrawRoutes(vehiclePlates);
 
-        // Llenar el dropdown con las placas
-        placas.forEach(placa => {
-            let optionExists = Array.from(plateSelect.options).some(option => option.value === placa);
-            if (!optionExists) {
-                let newOption = document.createElement('option');
-                newOption.value = placa;
-                newOption.text = placa;
-                plateSelect.appendChild(newOption);
-            }
-        });
-
-        if (!defaultPlaca && placas.length > 0) {
-            defaultPlaca = placas[0];
-            selectedPlaca = placas[0];
-            actualizarDatosEnPantalla(placas[0]);
+        } catch (error) {
+            console.error('Error al obtener las placas:', error);
         }
-
-        // Ahora pasamos el array de placas a la función que hace las peticiones
-        fetchAndDrawRoutes(vehiclePlates);
-
-    } catch (error) {
-        console.error('Error al obtener las placas:', error);
     }
-}
 
     // Función que se ejecuta cuando cambia la fecha de inicio
     startDateInput.addEventListener("change", function () {
@@ -120,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function() {
             try {
                 // Para cada placa, hacer una petición y dibujar su ruta
                 for (const plate of vehiclePlates) {
+                    console.log(`Procesando la placa: ${plate}`);
                     const response = await fetch(urlString + `&placa=${plate}`);
                     console.log(urlString + `&placa=${plate}`);
         
@@ -277,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     return colorPalette[index % colorPalette.length];
                 }
 
-                // Modificar el evento del botón de extracción
+                //Evento del botón de extracción
                 extractCoordsBtn.addEventListener("click", async function() {
                     if (lastCircle) {
                         const bounds = lastCircle.getBounds();
@@ -310,7 +302,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         for (let i = 0; i < platesToProcess.length; i++) {
                             const plate = platesToProcess[i];
                             const url = `/apisearch?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}&placa=${plate}`;
-                            
+                            console.log(plate);
+                            console.log(url);
                             try {
                                 const response = await fetch(url);
                                 const data = await response.json();
