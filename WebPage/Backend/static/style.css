@@ -1,3 +1,28 @@
+body {
+    margin: 0;
+    padding: 0;
+    padding-top: 50px;
+    height: 100vh;
+    overflow: hidden; /*Previene el scroll innecesario*/
+}
+
+.NameNot {
+    display: none; /* El texto no se mostrará y no ocupará espacio */
+    visibility: hidden;
+}
+
+/* Header general */
+#general-header {
+    display: flex;
+    justify-content: space-around;
+    background: #21000f;
+    color: #feffd4;
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
 
 /* Contenedor principal */
 .contenedor {
@@ -65,6 +90,7 @@
     height: 100%;
     border-radius: 10px;
     position: relative;
+    z-index: 1;
 }
 
 /* Panel de control dentro del mapa */
@@ -76,7 +102,7 @@
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    z-index: 5;
+    z-index: 1000;
     max-width: 200px;
 }
 
@@ -102,32 +128,6 @@
 }
 
 /* Para evitar que el contenido quede detrás del header */
-body {
-    margin: 0;
-    padding: 0;
-    padding-top: 50px;
-    height: 100vh;
-    overflow: hidden; /*Previene el scroll innecesario*/
-}
-
-.NameNot {
-    display: none; /* El texto no se mostrará y no ocupará espacio */
-    visibility: hidden;
-}
-
-/* Header general */
-#general-header {
-    display: flex;
-    justify-content: space-around;
-    background: #21000f;
-    color: #feffd4;
-    height: 50px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 10;
-}
-
 .historical{
     display: flex;
     flex-direction: column;
@@ -161,7 +161,6 @@ body {
     width: 100%;
     margin: 0;
     height: auto;
-    background-color: #D08770;
 }
 
 .contenedor-position {
@@ -172,7 +171,6 @@ body {
 
 .contenedor-switch {
     display: flex;
-    background-color: aqua;
     align-items: center;
     justify-items: center;
 }
@@ -271,6 +269,7 @@ body {
         flex-direction: column;
         align-items: center;
     }
+
 
     #contenedor-mapa-2 {
         min-height: 300px;
