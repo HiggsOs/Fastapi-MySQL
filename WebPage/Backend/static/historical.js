@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     return colorPalette[index % colorPalette.length];
                 }
 
-                // Modificar el evento del botón de extracción
+                //Evento del botón de extracción
                 extractCoordsBtn.addEventListener("click", async function() {
                     if (lastCircle) {
                         const bounds = lastCircle.getBounds();
@@ -302,7 +302,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         for (let i = 0; i < platesToProcess.length; i++) {
                             const plate = platesToProcess[i];
                             const url = `/apisearch?start_day=${startDate}&end_day=${endDate}&start_hour=${encodeURIComponent(startTime)}&end_hour=${encodeURIComponent(endTime)}&lat_min=${latMin}&lat_max=${latMax}&long_min=${lngMin}&long_max=${lngMax}&placa=${plate}`;
-                            
+                            console.log(plate);
+                            console.log(url);
                             try {
                                 const response = await fetch(url);
                                 const data = await response.json();
