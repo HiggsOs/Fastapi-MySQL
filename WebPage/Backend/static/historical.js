@@ -48,8 +48,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
             vehiclePlates = placas;
             console.log(vehiclePlates);
-            // Ahora pasamos el array de placas a la función que hace las peticiones
-            fetchAndDrawRoutes(vehiclePlates);
 
         } catch (error) {
             console.error('Error al obtener las placas:', error);
