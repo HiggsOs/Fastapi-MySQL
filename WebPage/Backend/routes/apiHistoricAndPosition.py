@@ -35,7 +35,7 @@ async def epsearch(
     lat_max: float = Query(..., description="Maximum latitude"),
     long_min: float = Query(..., description="Minimum longitude"),
     long_max: float = Query(..., description="Maximum longitude"),
-    placa:str=Query(...,"Placa del vehiculo")
+    placa:str=Query(...,description="Placa del vehiculo")
 ):
     result = agrupar_por_tiempo(get_DH_Pos(start_day=start_day,end_day=end_day,start_hour=start_hour,end_hour=end_hour,lat_min=lat_min, lat_max=lat_max, long_min=long_min, long_max=long_max,placa=placa))
     if result:
