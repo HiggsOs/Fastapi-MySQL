@@ -90,6 +90,13 @@ document.addEventListener("DOMContentLoaded", function() {
         
         pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
         pointMarkers = [];
+        // Eliminar todas las rutas dibujadas previamente
+        allRoutesLayers.forEach(layer => mapa_2.removeLayer(layer));
+        allRoutesLayers = [];
+
+        // Eliminar todas las flechas
+        allArrows.forEach(arrow => mapa_2.removeLayer(arrow));
+        allArrows = [];
         
         // Limpiar datos almacenados
         allRoutes = [];
