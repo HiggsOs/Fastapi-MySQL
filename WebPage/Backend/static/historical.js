@@ -206,6 +206,15 @@ document.addEventListener("DOMContentLoaded", function() {
         const [horas, minutos] = hora.split(':').map(Number);
         return horas * 60 + minutos; // Convertir a minutos totales
     }
+
+    function limpiarBusqueda() {
+        // Limpiar el mapa
+        limpiarMapa(); // Esta ya limpia polylines y markers
+    
+        // Limpiar datos de las variables globales
+        allRoutes = []; 
+        vehiclePolylines = {};
+    }
     
 
     window.onload = function() {
