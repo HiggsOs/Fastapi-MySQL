@@ -198,20 +198,31 @@ document.addEventListener("DOMContentLoaded", function() {
         
             mapa_2.fitBounds(lastRoute.getBounds());
         
-            // Crear un marcador en cada punto con una flecha y popup
-            coordinates.forEach((coord, index) => {
+            // Crear flechas en cada segmento
+            for (let i = 0; i < coordinates.length - 1; i++) {
+                const start = coordinates[i];
+                const end = coordinates[i + 1];
+        
+                // Calcular el ángulo entre los puntos en radianes
+                const angleRad = Math.atan2(end.lat - start.lat, end.lng - start.lng);
+        
+                // Convertir a grados y ajustar para Leaflet (rotación en CSS)
+                const angleDeg = (angleRad * 180) / Math.PI;
+        
                 // Crear un marcador de flecha
-                const arrowMarker = L.marker([coord.lat, coord.lng], {
+                const arrowMarker = L.marker([start.lat, start.lng], {
                     icon: L.divIcon({
                         className: 'arrow-icon',
-                        html: '➡️', // Cambia esto si quieres otro símbolo o estilo
-                        iconSize: [20, 20]
+                        html: '»', // Cambia esto si quieres otro símbolo o estilo
+                        iconSize: [20, 20],
+                        iconAnchor: [10, 10],
+                        style: `transform: rotate(${angleDeg}deg);`
                     })
                 }).addTo(mapa_2);
         
                 // Agregar popup al marcador
                 arrowMarker.bindPopup(
-                    `Velocidad: ${coord.speed} km/h<br>RPM: ${coord.rpm}`,
+                    `Velocidad: ${start.speed} km/h<br>RPM: ${start.rpm}`,
                     { closeButton: false }
                 );
         
@@ -225,8 +236,9 @@ document.addEventListener("DOMContentLoaded", function() {
         
                 // Almacenar el marcador en el array de flechas
                 arrows.push(arrowMarker);
-            });
+            }
         }
+        
         
     
         // Función para obtener un color para cada placa
