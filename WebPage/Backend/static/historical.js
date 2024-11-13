@@ -13,10 +13,11 @@ document.addEventListener("DOMContentLoaded", function() {
     let lastMarker = null; // Variable para almacenar el último marcador
     let lastCircle = null; // Variable para almacenar el último círculo
     const value = document.querySelector("#value");
-    const polylines = []; // Almacenar polilíneas en el mapa
+    let polylines = []; // Almacenar polilíneas en el mapa
     const selectPolyline = document.getElementById('polyline-select'); // Usar el selector ya existente
     let plateSelect = document.getElementById('plate-select');
     let vehiclePlates = [];
+    let pointMarkers = []; //almacena el marker
 
 
     // Agregar evento de clic
@@ -409,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             return distancia <= lastCircle.getRadius();
                         });
 
-                    const polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color }).addTo(mapa_2);
+                    let polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color }).addTo(mapa_2);
                     polylines.push(polyline);
 
                     // Añadir marcadores de flecha
