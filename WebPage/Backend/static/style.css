@@ -233,6 +233,13 @@ body {
     transform-origin: center; /* Permite la rotación desde el centro */
 }
 
+.arrow-icon {
+    color: red;
+    font-size: 16px;
+    transform: rotate(90deg); /* Ajusta la dirección */
+}
+
+
 .arrow-icon .arrow {
     width: 0;
     height: 0;
