@@ -14,9 +14,9 @@ def get_DH_Pos(start_day, end_day, start_hour, end_hour,lat_min,lat_max,long_min
         and_(
             func.concat(taxisTB.c.Day, ' ', taxisTB.c.Hour).between(
                 f'{start_day} {start_hour}',
-                f'{end_day} {end_hour}',
-                taxisTB.c.Placas == placa
+                f'{end_day} {end_hour}'
             )
+            ,taxisTB.c.Placas == placa
         )
         ,taxisTB.c.Latitude.between(lat_min, lat_max),
         taxisTB.c.Longitude.between(long_min, long_max)
