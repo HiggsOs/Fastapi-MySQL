@@ -424,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         Object.entries(vehiclePolylines).forEach(([plate, vehicleData]) => {
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
-                                graficarPolilinea(vehicleData.data[firstKey], mapa_2, false);
+                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, false);
                             }
                         });
                         
@@ -447,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
                                 limpiarMapa();
-                                graficarPolilinea(vehicleData.data[firstKey], mapa_2, true);
+                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true);
                             }
                         }
                     }
@@ -479,87 +479,80 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Función para graficar una polilínea
 
-                function graficarPolilinea(latLngs, mapa_2) {
-                    // Verificar que mapa_2 es un mapa Leaflet válido
-                    if (!mapa_2 || !mapa_2.hasOwnProperty('addLayer')) {
-                        console.error('El mapa no es válido:', mapa_2);
-                        return;
-                    }
-                
-                    // Asegúrate de limpiar las flechas anteriores correctamente
-                    if (Array.isArray(pointMarkers)) {
-                        pointMarkers.forEach(marker => marker.remove());
-                    } else {
-                        console.warn('pointMarkers no es un array:', pointMarkers);
-                    }
-                    pointMarkers = []; // Limpiar el array de marcadores
-                
-                    // Función para crear el ícono de flecha con rotación dinámica
-                    function createArrowIcon(angleDeg) {
-                        return L.divIcon({
-                            className: 'custom-arrow-icon',
-                            html: `
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="transform: rotate(${angleDeg}deg);">
-                                    <path d="M12 2l9 9h-6v11h-6v-11h-6z" fill="red"/>
-                                </svg>
-                            `,
-                            iconSize: [20, 20],
-                            iconAnchor: [10, 10], // Centro del icono
+                function graficarPolilinea(coordinates, color = 'blue', ajustarVista = true) {
+                    const latLngs = coordinates
+                        .map(coord => {
+                            const lat = parseFloat(coord.Latitude.trim());
+                            const lng = parseFloat(coord.Longitude.trim());
+                            return { lat, lng, speed: coord.Speed, rpm: coord.RPM };
+                        })
+                        .filter(({ lat, lng }) => {
+                            const distancia = calcularDistancia(
+                                lastCircle.getLatLng().lat,
+                                lastCircle.getLatLng().lng,
+                                lat,
+                                lng
+                            );
+                            return distancia <= lastCircle.getRadius();
                         });
-                    }
                 
-                    // Asegúrate de que latLngs es un array válido
-                    if (!Array.isArray(latLngs) || latLngs.length === 0) {
-                        console.error('latLngs no es un array válido o está vacío:', latLngs);
-                        return;
-                    }
+                    // Dibujar la polilínea
+                    let polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color }).addTo(mapa_2);
+                    polylines.push(polyline);
                 
-                    // Crear la polilínea en el mapa
-                    const polyline = L.polyline(latLngs, { color: 'blue' }).addTo(mapa_2);
+                    // Añadir flechas de dirección
+                    for (let i = 0; i < latLngs.length - 1; i++) {
+                        const start = latLngs[i];
+                        const end = latLngs[i + 1];
                 
-                    // Iterar sobre los puntos de la polilínea para colocar las flechas
-                    latLngs.forEach((point, index) => {
-                        if (index < latLngs.length - 1) {
-                            const start = latLngs[index];
-                            const end = latLngs[index + 1];
+                        // Calcular el ángulo en radianes entre los puntos
+                        const angleRad = Math.atan2(end.lat - start.lat, end.lng - start.lng);
                 
-                            // Cálculo del ángulo entre dos puntos
-                            const angleRad = Math.atan2(end.lat - start.lat, end.lng - start.lng);
-                            const angleDeg = angleRad * (180 / Math.PI);
+                        // Convertir el ángulo a grados para la rotación CSS
+                        const angleDeg = (angleRad * 180) / Math.PI;
                 
-                            // Crear el ícono de la flecha con el ángulo calculado
-                            const arrowIcon = createArrowIcon(angleDeg);
+                        // Crear un marcador de flecha
+                        const arrowMarker = L.marker([start.lat, start.lng], {
+                            icon: L.divIcon({
+                                className: 'arrow-icon',
+                                html: '⚫', // Símbolo de flecha o contenido personalizado
+                                iconSize: [20, 20],
+                                iconAnchor: [10, 10]
+                            })
+                        }).addTo(mapa_2);
                 
-                            // Crear el marcador de la flecha y añadirlo al mapa
-                            const arrowMarker = L.marker([start.lat, start.lng], { icon: arrowIcon }).addTo(mapa_2);
-                
-                            // Agregar eventos para mostrar el popup con datos al pasar el ratón o hacer clic
-                            arrowMarker.on('mouseover', function () {
-                                arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h, RPM: ${start.rpm}`).openPopup();
-                            });
-                
-                            arrowMarker.on('mouseout', function () {
-                                arrowMarker.closePopup();
-                            });
-                
-                            arrowMarker.on('click', function () {
-                                arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h, RPM: ${start.rpm}`).openPopup();
-                            });
-                
-                            // Almacenar el marcador en el array
-                            pointMarkers.push(arrowMarker);
+                        // Aplicar la rotación al marcador usando CSS
+                        const arrowElement = arrowMarker.getElement();
+                        if (arrowElement) {
+                            arrowElement.style.transform = `rotate(${angleDeg}deg)`;
                         }
-                    });
                 
-                    // Ajustar el mapa para que se enfoque en toda la polilínea
-                    mapa_2.fitBounds(polyline.getBounds());
+                        // Agregar popups con velocidad y RPM
+                        arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h<br>RPM: ${start.rpm}`, {
+                            closeButton: false
+                        });
+                
+                        // Mostrar/ocultar popups al pasar el ratón o hacer clic
+                        arrowMarker.on('mouseover', function () {
+                            this.openPopup();
+                        });
+                        arrowMarker.on('mouseout', function () {
+                            this.closePopup();
+                        });
+                
+                        arrowMarker.on('click', function () {
+                            this.openPopup();
+                        });
+                
+                        pointMarkers.push(arrowMarker);
+                    }
+                
+                    // Ajustar la vista del mapa para mostrar la polilínea
+                    if (ajustarVista && latLngs.length > 0) {
+                        mapa_2.fitBounds(polyline.getBounds());
+                    }
                 }
-                
 
-                
-                
-
-                // Event listeners para los selectores
                 // Event listeners para los selectores
                 plateSelect.addEventListener('change', function() {
                     const selectedPlate = plateSelect.value;
@@ -596,7 +589,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                     if (vehicleData && vehicleData.data[polylineKey]) {
                         limpiarMapa();
-                        graficarPolilinea(vehicleData.data[polylineKey], mapa_2, true);
+                        graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                     }
                 });
             
