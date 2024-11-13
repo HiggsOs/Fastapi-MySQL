@@ -480,6 +480,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Función para graficar una polilínea
 
                 function graficarPolilinea(latLngs, mapa_2) {
+                    // Verificar que mapa_2 es un mapa Leaflet válido
+                    if (!mapa_2 || !mapa_2.hasOwnProperty('addLayer')) {
+                        console.error('El mapa no es válido:', mapa_2);
+                        return;
+                    }
+                
                     // Asegúrate de limpiar las flechas anteriores correctamente
                     if (Array.isArray(pointMarkers)) {
                         pointMarkers.forEach(marker => marker.remove());
@@ -487,7 +493,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         console.warn('pointMarkers no es un array:', pointMarkers);
                     }
                     pointMarkers = []; // Limpiar el array de marcadores
-
+                
                     // Función para crear el ícono de flecha con rotación dinámica
                     function createArrowIcon(angleDeg) {
                         return L.divIcon({
@@ -501,47 +507,54 @@ document.addEventListener("DOMContentLoaded", function() {
                             iconAnchor: [10, 10], // Centro del icono
                         });
                     }
-
+                
+                    // Asegúrate de que latLngs es un array válido
+                    if (!Array.isArray(latLngs) || latLngs.length === 0) {
+                        console.error('latLngs no es un array válido o está vacío:', latLngs);
+                        return;
+                    }
+                
                     // Crear la polilínea en el mapa
                     const polyline = L.polyline(latLngs, { color: 'blue' }).addTo(mapa_2);
-
+                
                     // Iterar sobre los puntos de la polilínea para colocar las flechas
                     latLngs.forEach((point, index) => {
                         if (index < latLngs.length - 1) {
                             const start = latLngs[index];
                             const end = latLngs[index + 1];
-
+                
                             // Cálculo del ángulo entre dos puntos
                             const angleRad = Math.atan2(end.lat - start.lat, end.lng - start.lng);
                             const angleDeg = angleRad * (180 / Math.PI);
-
+                
                             // Crear el ícono de la flecha con el ángulo calculado
                             const arrowIcon = createArrowIcon(angleDeg);
-
+                
                             // Crear el marcador de la flecha y añadirlo al mapa
                             const arrowMarker = L.marker([start.lat, start.lng], { icon: arrowIcon }).addTo(mapa_2);
-
+                
                             // Agregar eventos para mostrar el popup con datos al pasar el ratón o hacer clic
                             arrowMarker.on('mouseover', function () {
                                 arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h, RPM: ${start.rpm}`).openPopup();
                             });
-
+                
                             arrowMarker.on('mouseout', function () {
                                 arrowMarker.closePopup();
                             });
-
+                
                             arrowMarker.on('click', function () {
                                 arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h, RPM: ${start.rpm}`).openPopup();
                             });
-
+                
                             // Almacenar el marcador en el array
                             pointMarkers.push(arrowMarker);
                         }
                     });
-
+                
                     // Ajustar el mapa para que se enfoque en toda la polilínea
                     mapa_2.fitBounds(polyline.getBounds());
                 }
+                
 
                 
                 
