@@ -108,6 +108,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // Función para hacer la petición para cada placa y graficar sus rutas
         async function fetchAndDrawRoutes(vehiclePlates) {
             try {
+
+                limpiarBusqueda();
+
                 if (!Array.isArray(vehiclePlates)) {
                     throw new Error('El argumento vehiclePlates no es un array');
                 }
@@ -275,6 +278,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 //Evento del botón de extracción
                 extractCoordsBtn.addEventListener("click", async function() {
                     if (lastCircle) {
+
+                        limpiarBusqueda();
                         const bounds = lastCircle.getBounds();
                         const latMin = bounds.getSouth();
                         const latMax = bounds.getNorth();
@@ -329,6 +334,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     polylines = [];
                     pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
                     pointMarkers = [];
+                }
+
+                function limpiarBusqueda() {
+                    // Limpiar el mapa
+                    limpiarMapa(); // Esta ya limpia polylines y markers
+                
+                    // Limpiar datos de las variables globales
+                    allRoutes = []; 
+                    vehiclePolylines = {};
                 }
 
                 // Función para actualizar la visualización según la selección actual
