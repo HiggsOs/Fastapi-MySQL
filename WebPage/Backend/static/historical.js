@@ -519,6 +519,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             }
                         } else {
                             // Mostrar solo la ruta seleccionada
+                            limpiarTodo();
                             const selectedRoute = allRoutes.find(route => route.plate === selectedPlate);
                             if (selectedRoute) {
                                 drawRouteOnMap(selectedRoute.results, selectedRoute.plate, true);
