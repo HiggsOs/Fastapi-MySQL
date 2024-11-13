@@ -424,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         Object.entries(vehiclePolylines).forEach(([plate, vehicleData]) => {
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
-                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, false);
+                                graficarPolilinea(vehicleData.data[firstKey], mapa_2, false);
                             }
                         });
                         
@@ -447,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
                                 limpiarMapa();
-                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true);
+                                graficarPolilinea(vehicleData.data[firstKey], mapa_2, true);
                             }
                         }
                     }
@@ -596,7 +596,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                     if (vehicleData && vehicleData.data[polylineKey]) {
                         limpiarMapa();
-                        graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                        graficarPolilinea(vehicleData.data[polylineKey], mapa_2, true);
                     }
                 });
             
