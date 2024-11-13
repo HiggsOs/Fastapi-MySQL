@@ -515,7 +515,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         const arrowMarker = L.marker([start.lat, start.lng], {
                             icon: L.divIcon({
                                 className: 'arrow-icon',
-                                html: '⚫', // Símbolo de flecha o contenido personalizado
+                                html: '⚫', // Símbolo de flecha o contenido personalizad..
                                 iconSize: [20, 20],
                                 iconAnchor: [10, 10]
                             })
