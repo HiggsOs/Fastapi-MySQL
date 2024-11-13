@@ -181,8 +181,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const coordinates = resultados.map(result => ({
                 lat: parseFloat(result.Latitude.trim()),
                 lng: parseFloat(result.Longitude.trim()),
-                speed: result.speed, // Velocidad del resultado
-                rpm: result.rpm // RPM del resultado
+                speed: result.Speed, // Velocidad del resultado
+                rpm: result.RPM // RPM del resultado
             }));
         
             // Asignar un color diferente a cada placa
