@@ -167,8 +167,8 @@ document.addEventListener("DOMContentLoaded", function() {
         // Función para dibujar la ruta en el mapa
         function drawRouteOnMap(resultados, plate) {
             if (currentSearchMode !== 'time') return;
-            let arrows = [];
-            // Eliminar polilíneas y flechas anteriores si existen
+        
+            // Limpiar polilíneas y flechas anteriores si existen
             if (lastRoute) {
                 mapa_2.removeLayer(lastRoute);
             }
@@ -176,19 +176,56 @@ document.addEventListener("DOMContentLoaded", function() {
                 mapa_2.removeLayer(arrow);
             });
             arrows = []; // Reiniciar las flechas
-    
-            const coordinates = resultados.map(result => [
-                parseFloat(result.Latitude.trim()), 
-                parseFloat(result.Longitude.trim())
-            ]);
-    
-            // Asignar un color diferente a cada placa (puedes usar un arreglo de colores)
+        
+            // Obtener las coordenadas y datos adicionales
+            const coordinates = resultados.map(result => ({
+                lat: parseFloat(result.Latitude.trim()),
+                lng: parseFloat(result.Longitude.trim()),
+                speed: result.speed, // Velocidad del resultado
+                rpm: result.rpm // RPM del resultado
+            }));
+        
+            // Asignar un color diferente a cada placa
             const color = getVehicleColor(plate);
-    
+        
             // Dibujar la nueva polilínea con un color distinto para cada vehículo
-            lastRoute = L.polyline(coordinates, { color: color }).addTo(mapa_2);
+            lastRoute = L.polyline(
+                coordinates.map(coord => [coord.lat, coord.lng]),
+                { color: color }
+            ).addTo(mapa_2);
+        
             mapa_2.fitBounds(lastRoute.getBounds());
+        
+            // Crear un marcador en cada punto con una flecha y popup
+            coordinates.forEach((coord, index) => {
+                // Crear un marcador de flecha
+                const arrowMarker = L.marker([coord.lat, coord.lng], {
+                    icon: L.divIcon({
+                        className: 'arrow-icon',
+                        html: '➡️', // Cambia esto si quieres otro símbolo o estilo
+                        iconSize: [20, 20]
+                    })
+                }).addTo(mapa_2);
+        
+                // Agregar popup al marcador
+                arrowMarker.bindPopup(
+                    `Velocidad: ${coord.speed} km/h<br>RPM: ${coord.rpm}`,
+                    { closeButton: false }
+                );
+        
+                // Configurar eventos para mostrar/ocultar popup
+                arrowMarker.on('mouseover', function () {
+                    this.openPopup();
+                });
+                arrowMarker.on('mouseout', function () {
+                    this.closePopup();
+                });
+        
+                // Almacenar el marcador en el array de flechas
+                arrows.push(arrowMarker);
+            });
         }
+        
     
         // Función para obtener un color para cada placa
         function getVehicleColor(plate) {
