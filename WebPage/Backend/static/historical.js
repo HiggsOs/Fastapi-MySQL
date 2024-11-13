@@ -75,6 +75,23 @@ document.addEventListener("DOMContentLoaded", function() {
             contenedor_btn.classList.remove('activo')
         }        
     });
+
+    function limpiarTodo() {
+        // Limpiar el mapa
+        if (lastRoute) {
+            mapa_2.removeLayer(lastRoute);
+        }
+        
+        polylines.forEach(polyline => mapa_2.removeLayer(polyline));
+        polylines = [];
+        
+        pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
+        pointMarkers = [];
+        
+        // Limpiar datos almacenados
+        allRoutes = [];
+        vehiclePolylines = {};
+    }
     
     // Función para validar al enviar
     submitButton.addEventListener("click", function (event) {
@@ -109,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
         async function fetchAndDrawRoutes(vehiclePlates) {
             try {
 
-                limpiarBusqueda();
+                limpiarTodo();
 
                 if (!Array.isArray(vehiclePlates)) {
                     throw new Error('El argumento vehiclePlates no es un array');
@@ -206,14 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const [horas, minutos] = hora.split(':').map(Number);
         return horas * 60 + minutos; // Convertir a minutos totales
     }
-
-    function limpiarBusqueda() {
-        // Limpiar datos de las variables globales
-        allRoutes = []; 
-        vehiclePolylines = {};
-    }
     
-
     window.onload = function() {
         mapa_2 = L.map("contenedor-mapa-2").setView([10.96854, -74.78132], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(mapa_2);
@@ -285,7 +295,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 extractCoordsBtn.addEventListener("click", async function() {
                     if (lastCircle) {
 
-                        limpiarBusqueda();
+                        limpiarTodo();
                         const bounds = lastCircle.getBounds();
                         const latMin = bounds.getSouth();
                         const latMax = bounds.getNorth();
@@ -340,15 +350,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     polylines = [];
                     pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
                     pointMarkers = [];
-                }
-
-                function limpiarBusqueda() {
-                    // Limpiar el mapa
-                    limpiarMapa(); // Esta ya limpia polylines y markers
-                
-                    // Limpiar datos de las variables globales
-                    allRoutes = []; 
-                    vehiclePolylines = {};
                 }
 
                 // Función para actualizar la visualización según la selección actual
