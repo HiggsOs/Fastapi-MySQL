@@ -19,10 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let vehiclePlates = [];
     let pointMarkers = []; //almacena el marker
     let currentSearchMode = null;
-    let allRoutesLayers = []; // Array para almacenar todas las rutas dibujadas
-    let allArrows = [];
-
-
+    
     // Agregar evento de clic
     indexBtn.addEventListener("click", function() {
         // Obtener la URL actual
@@ -90,13 +87,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
         pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
         pointMarkers = [];
-        // Eliminar todas las rutas dibujadas previamente
-        allRoutesLayers.forEach(layer => mapa_2.removeLayer(layer));
-        allRoutesLayers = [];
-
-        // Eliminar todas las flechas
-        allArrows.forEach(arrow => mapa_2.removeLayer(arrow));
-        allArrows = [];
         
         // Limpiar datos almacenados
         allRoutes = [];
@@ -176,22 +166,27 @@ document.addEventListener("DOMContentLoaded", function() {
         // Función para dibujar la ruta en el mapa
         function drawRouteOnMap(resultados, plate) {
             if (currentSearchMode !== 'time') return;
-        
-            // Crear las coordenadas de la ruta
+            let arrows = [];
+            // Eliminar polilíneas y flechas anteriores si existen
+            if (lastRoute) {
+                mapa_2.removeLayer(lastRoute);
+            }
+            arrows.forEach(arrow => {
+                mapa_2.removeLayer(arrow);
+            });
+            arrows = []; // Reiniciar las flechas
+    
             const coordinates = resultados.map(result => [
                 parseFloat(result.Latitude.trim()), 
                 parseFloat(result.Longitude.trim())
             ]);
-        
-            // Obtener un color único para la ruta de esta placa
+    
+            // Asignar un color diferente a cada placa (puedes usar un arreglo de colores)
             const color = getVehicleColor(plate);
-        
-            // Dibujar la polilínea
-            const routeLayer = L.polyline(coordinates, { color }).addTo(mapa_2);
-            allRoutesLayers.push(routeLayer);
-        
-            // Ajustar la vista del mapa para incluir la nueva ruta
-            mapa_2.fitBounds(routeLayer.getBounds());
+    
+            // Dibujar la nueva polilínea con un color distinto para cada vehículo
+            lastRoute = L.polyline(coordinates, { color: color }).addTo(mapa_2);
+            mapa_2.fitBounds(lastRoute.getBounds());
         }
     
         // Función para obtener un color para cada placa
