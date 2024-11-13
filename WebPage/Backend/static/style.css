@@ -212,7 +212,6 @@ body {
     height: 100%;
     opacity: 0;
     pointer-events: none;
-    background-color: cadetblue;
 }
 
 .contenedor-position .contenedor-info.activo {

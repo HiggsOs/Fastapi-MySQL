@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             return distancia <= lastCircle.getRadius();
                         });
 
-                    const polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color }).addTo(mapa_2);
+                    let polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color }).addTo(mapa_2);
                     polylines.push(polyline);
 
                     // Añadir marcadores de flecha
