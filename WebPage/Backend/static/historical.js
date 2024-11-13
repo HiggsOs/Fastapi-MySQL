@@ -19,7 +19,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let vehiclePlates = [];
     let pointMarkers = []; //almacena el marker
     let currentSearchMode = null;
-    
+
+
     // Agregar evento de clic
     indexBtn.addEventListener("click", function() {
         // Obtener la URL actual
@@ -155,35 +156,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     allRoutes.push({ plate, results: resultados });
         
                     // Llamar a la función para dibujar la ruta de este vehículo
-                    // drawRouteOnMap(resultados, plate);
+                    drawRouteOnMap(resultados, plate);
                 }
-
-                const selectedPlate = plateSelect.value;
-                if (selectedPlate === 'all' || selectedPlate === 'todos') {
-                    // Mostrar todas las rutas
-                    allRoutes.forEach(route => {
-                        drawRouteOnMap(route.results, route.plate, false); // false para no hacer fit bounds en cada ruta
-                    });
-                    // Hacer fit bounds considerando todas las rutas
-                    if (allRoutes.length > 0) {
-                        const bounds = L.latLngBounds([]);
-                        allRoutes.forEach(route => {
-                            const coordinates = route.results.map(result => [
-                                parseFloat(result.Latitude.trim()),
-                                parseFloat(result.Longitude.trim())
-                            ]);
-                            bounds.extend(coordinates);
-                        });
-                        mapa_2.fitBounds(bounds);
-                    }
-                } else {
-                    // Mostrar solo la ruta seleccionada
-                    const selectedRoute = allRoutes.find(route => route.plate === selectedPlate);
-                    if (selectedRoute) {
-                        drawRouteOnMap(selectedRoute.results, selectedRoute.plate, true);
-                    }
-                }
-
         
             } catch (error) {
                 console.error("Error al obtener los datos:", error);
@@ -191,19 +165,29 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         // Función para dibujar la ruta en el mapa
-        function drawRouteOnMap(resultados, plate, fitBounds = true) {
+        function drawRouteOnMap(resultados, plate) {
+            if (currentSearchMode !== 'time') return;
+            let arrows = [];
+            // Eliminar polilíneas y flechas anteriores si existen
+            if (lastRoute) {
+                mapa_2.removeLayer(lastRoute);
+            }
+            arrows.forEach(arrow => {
+                mapa_2.removeLayer(arrow);
+            });
+            arrows = []; // Reiniciar las flechas
+    
             const coordinates = resultados.map(result => [
                 parseFloat(result.Latitude.trim()), 
                 parseFloat(result.Longitude.trim())
             ]);
     
+            // Asignar un color diferente a cada placa (puedes usar un arreglo de colores)
             const color = getVehicleColor(plate);
-            const route = L.polyline(coordinates, { color: color }).addTo(mapa_2);
-            polylines.push(route); // Almacenar la polilínea para poder eliminarla después
     
-            if (fitBounds) {
-                mapa_2.fitBounds(route.getBounds());
-            }
+            // Dibujar la nueva polilínea con un color distinto para cada vehículo
+            lastRoute = L.polyline(coordinates, { color: color }).addTo(mapa_2);
+            mapa_2.fitBounds(lastRoute.getBounds());
         }
     
         // Función para obtener un color para cada placa
@@ -489,6 +473,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 // Event listeners para los selectores
+                // Event listeners para los selectores
                 plateSelect.addEventListener('change', function() {
                     const selectedPlate = plateSelect.value;
                     
@@ -499,30 +484,18 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                     } else if (currentSearchMode === 'time') {
                         // Manejar cambio para búsqueda por tiempo
-                        if (selectedPlate === 'all' || selectedPlate === 'todos') {
+                        if (selectedPlate === 'all') {
                             // Mostrar todas las rutas
                             limpiarTodo();
                             allRoutes.forEach(route => {
-                                drawRouteOnMap(route.results, route.plate, false);
+                                drawRouteOnMap(route.results, route.plate);
                             });
-                            // Ajustar vista a todas las rutas
-                            if (allRoutes.length > 0) {
-                                const bounds = L.latLngBounds([]);
-                                allRoutes.forEach(route => {
-                                    const coordinates = route.results.map(result => [
-                                        parseFloat(result.Latitude.trim()),
-                                        parseFloat(result.Longitude.trim())
-                                    ]);
-                                    bounds.extend(coordinates);
-                                });
-                                mapa_2.fitBounds(bounds);
-                            }
                         } else {
                             // Mostrar solo la ruta seleccionada
-                            limpiarTodo();
-                            const selectedRoute = allRoutes.find(route => route.plate === selectedPlate);
-                            if (selectedRoute) {
-                                drawRouteOnMap(selectedRoute.results, selectedRoute.plate, true);
+                            const filteredRoute = allRoutes.find(route => route.plate === selectedPlate);
+                            if (filteredRoute) {
+                                limpiarTodo();
+                                drawRouteOnMap(filteredRoute.results, selectedPlate);
                             }
                         }
                     }
