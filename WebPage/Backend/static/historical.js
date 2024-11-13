@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let plateSelect = document.getElementById('plate-select');
     let vehiclePlates = [];
     let pointMarkers = []; //almacena el marker
+    let currentSearchMode = null;
 
 
     // Agregar evento de clic
@@ -126,6 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
         async function fetchAndDrawRoutes(vehiclePlates) {
             try {
 
+                currentSearchMode = 'time';
                 limpiarTodo();
 
                 if (!Array.isArray(vehiclePlates)) {
@@ -164,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         // Función para dibujar la ruta en el mapa
         function drawRouteOnMap(resultados, plate) {
+            if (currentSearchMode !== 'time') return;
             let arrows = [];
             // Eliminar polilíneas y flechas anteriores si existen
             if (lastRoute) {
@@ -295,6 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 extractCoordsBtn.addEventListener("click", async function() {
                     if (lastCircle) {
 
+                        currentSearchMode = 'position';
                         limpiarTodo();
                         const bounds = lastCircle.getBounds();
                         const latMin = bounds.getSouth();
@@ -354,6 +358,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Función para actualizar la visualización según la selección actual
                 function actualizarVisualizacion() {
+                    if (currentSearchMode !== 'position') return;
+
                     const selectedPlate = plateSelect.value;
                     
                     // Limpiar el selector de polilíneas
@@ -467,13 +473,37 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 // Event listeners para los selectores
+                // Event listeners para los selectores
                 plateSelect.addEventListener('change', function() {
-                    if (Object.keys(vehiclePolylines).length > 0) {
-                        actualizarVisualizacion();
+                    const selectedPlate = plateSelect.value;
+                    
+                    if (currentSearchMode === 'position') {
+                        // Manejar cambio para búsqueda por posición
+                        if (Object.keys(vehiclePolylines).length > 0) {
+                            actualizarVisualizacion();
+                        }
+                    } else if (currentSearchMode === 'time') {
+                        // Manejar cambio para búsqueda por tiempo
+                        if (selectedPlate === 'all') {
+                            // Mostrar todas las rutas
+                            limpiarTodo();
+                            allRoutes.forEach(route => {
+                                drawRouteOnMap(route.results, route.plate);
+                            });
+                        } else {
+                            // Mostrar solo la ruta seleccionada
+                            const filteredRoute = allRoutes.find(route => route.plate === selectedPlate);
+                            if (filteredRoute) {
+                                limpiarTodo();
+                                drawRouteOnMap(filteredRoute.results, selectedPlate);
+                            }
+                        }
                     }
                 });
 
                 selectPolyline.addEventListener('change', function() {
+                    if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
+                    
                     const [plate, polylineKey] = selectPolyline.value.split('-');
                     const vehicleData = vehiclePolylines[plate];
                     
