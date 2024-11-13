@@ -208,9 +208,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function limpiarBusqueda() {
-        // Limpiar el mapa
-        limpiarMapa(); // Esta ya limpia polylines y markers
-    
         // Limpiar datos de las variables globales
         allRoutes = []; 
         vehiclePolylines = {};
