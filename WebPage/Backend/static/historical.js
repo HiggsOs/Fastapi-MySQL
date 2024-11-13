@@ -498,10 +498,10 @@ document.addEventListener("DOMContentLoaded", function() {
                             actualizarVisualizacion();
                         }
                     } else if (currentSearchMode === 'time') {
-                        limpiarTodo();
                         // Manejar cambio para búsqueda por tiempo
                         if (selectedPlate === 'all' || selectedPlate === 'todos') {
                             // Mostrar todas las rutas
+                            limpiarTodo();
                             allRoutes.forEach(route => {
                                 drawRouteOnMap(route.results, route.plate, false);
                             });
