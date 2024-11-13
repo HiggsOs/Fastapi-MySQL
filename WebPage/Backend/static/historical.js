@@ -206,19 +206,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Calcular el ángulo entre los puntos en radianes
                 const angleRad = Math.atan2(end.lat - start.lat, end.lng - start.lng);
         
-                // Convertir a grados y ajustar para Leaflet (rotación en CSS)
+                // Convertir a grados (Leaflet rota en grados en sentido horario)
                 const angleDeg = (angleRad * 180) / Math.PI;
         
-                // Crear un marcador de flecha
-                const arrowMarker = L.marker([start.lat, start.lng], {
-                    icon: L.divIcon({
-                        className: 'arrow-icon',
-                        html: '»', // Cambia esto si quieres otro símbolo o estilo
-                        iconSize: [20, 20],
-                        iconAnchor: [10, 10],
-                        style: `transform: rotate(${angleDeg}deg);`
-                    })
-                }).addTo(mapa_2);
+                // Crear un ícono SVG personalizado
+                const arrowIcon = L.divIcon({
+                    className: '',
+                    html: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(${angleDeg})">
+                            <path d="M12 19l7-7-7-7M5 12h14"></path>
+                           </svg>`,
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                });
+        
+                // Crear un marcador para la flecha
+                const arrowMarker = L.marker([start.lat, start.lng], { icon: arrowIcon }).addTo(mapa_2);
         
                 // Agregar popup al marcador
                 arrowMarker.bindPopup(
@@ -238,6 +240,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 arrows.push(arrowMarker);
             }
         }
+        
         
         
     
