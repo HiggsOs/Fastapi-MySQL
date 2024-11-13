@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let vehiclePlates = [];
     let pointMarkers = []; //almacena el marker
     let currentSearchMode = null;
+    let arrows = []; // Variable global para almacenar los marcadores de flechas
+
 
 
     // Agregar evento de clic
