@@ -161,6 +161,7 @@ body {
     width: 100%;
     margin: 0;
     height: auto;
+    background-color: aqua;
 }
 
 .contenedor-position {
