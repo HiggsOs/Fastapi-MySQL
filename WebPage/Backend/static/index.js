@@ -100,18 +100,32 @@ async function fetchData() {
     }
 }
 
+
 // Función para actualizar las polilíneas en el mapa en función del vehículo seleccionado
 function actualizarPolilineas() {
+    console.log(`Opción seleccionada: ${selectedPlaca}`);
     Object.keys(vehiculos).forEach(placa => {
         const vehiculo = vehiculos[placa];
+        if (!vehiculo) return;
+
         if (selectedPlaca === 'all' || selectedPlaca === placa) {
             vehiculo.marker.addTo(mapa);
             vehiculo.polyline.addTo(mapa);
+            console.log(`Añadido marcador y polilínea para: ${placa}`);
         } else {
             mapa.removeLayer(vehiculo.marker);
             mapa.removeLayer(vehiculo.polyline);
+            console.log(`Eliminado marcador y polilínea para: ${placa}`);
         }
     });
+}
+
+async function inicializarDatos() {
+    await fetchPlacas(); // Carga las placas primero
+    await fetchData();   // Luego carga los datos
+    selectedPlaca = 'all'; // Asegúrate de que 'all' sea la selección inicial
+    plateSelect.value = 'all';
+    actualizarPolilineas(); // Actualiza el mapa con los datos cargados
 }
 
 // Función para actualizar los datos del vehículo en pantalla
@@ -135,8 +149,7 @@ window.addEventListener('load', function () {
     allOption.text = 'Todas';
     plateSelect.appendChild(allOption);
 
-    fetchPlacas(); // Cargar las placas desde el servidor
-    fetchData();   // Cargar datos al inicio
+    inicializarDatos();
 
     plateSelect.addEventListener('change', function () {
         selectedPlaca = plateSelect.value;
