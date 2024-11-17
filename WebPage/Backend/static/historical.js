@@ -80,9 +80,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function limpiarTodo() {
         mapa_2.eachLayer(layer => {
-            // Mantener solo el tile layer (capa base del mapa)
-            if (!layer._url) {
+            // Mantener solo el tile layer (capa base del mapa) y los layers de lastMarker y lastCircle
+            if (!layer._url && !layer._radius && !layer.__latlng ) {
+                console.log(layer);
                 mapa_2.removeLayer(layer);
+                
             }
         });
     }
@@ -341,13 +343,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (lastCircle) {
 
                         currentSearchMode = 'position';
-                        limpiarTodo();
+                        
                         const bounds = lastCircle.getBounds();
                         const latMin = bounds.getSouth();
                         const latMax = bounds.getNorth();
                         const lngMin = bounds.getWest();
                         const lngMax = bounds.getEast();
-
+                        
                         const startDateTime = startDateInput.value;
                         const endDateTime = endDateInput.value;
                         const startDate = startDateTime.split("T")[0];
@@ -362,11 +364,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         console.log(allPlates);    
                         // Determinar qué placas procesar
                         const selectedPlate = plateSelect.value;
-                        const platesToProcess = selectedPlate === 'todos' ? allPlates : [selectedPlate];
+                        const platesToProcess = selectedPlate === 'Todas' ? allPlates : ["MXL306","LOK123"];
                         
                         // Limpiar datos anteriores
                         vehiclePolylines = {};
-                        limpiarMapa();
+                        limpiarTodo();
                         
                         // Realizar peticiones para cada placa
                         for (let i = 0; i < platesToProcess.length; i++) {
@@ -390,13 +392,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
 
-                // Función para limpiar el mapa
-                function limpiarMapa() {
-                    polylines.forEach(polyline => mapa_2.removeLayer(polyline));
-                    polylines = [];
-                    pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
-                    pointMarkers = [];
-                }
+            
 
                 // Función para actualizar la visualización según la selección actual
                 function actualizarVisualizacion() {
@@ -407,9 +403,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Limpiar el selector de polilíneas
                     selectPolyline.innerHTML = '';
                     
-                    if (selectedPlate === 'todos') {
+                    if (selectedPlate === 'Todas') {
                         // Mostrar una polilínea por cada vehículo
-                        limpiarMapa();
+                        limpiarTodo();
                         Object.entries(vehiclePolylines).forEach(([plate, vehicleData]) => {
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
@@ -435,7 +431,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             // Graficar la primera polilínea
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
-                                limpiarMapa();
+                                limpiarTodo();
                                 graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true);
                             }
                         }
@@ -542,33 +538,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
 
-                // Event listeners para los selectores
-                plateSelect.addEventListener('change', function() {
-                    const selectedPlate = plateSelect.value;
-                    
-                    if (currentSearchMode === 'position') {
-                        // Manejar cambio para búsqueda por posición
-                        if (Object.keys(vehiclePolylines).length > 0) {
-                            actualizarVisualizacion();
-                        }
-                    } else if (currentSearchMode === 'time') {
-                        // Manejar cambio para búsqueda por tiempo
-                        if (selectedPlate === 'all') {
-                            // Mostrar todas las rutas
-                            limpiarTodo();
-                            allRoutes.forEach(route => {
-                                drawRouteOnMap(route.results, route.plate,"573");
-                            });
-                        } else {
-                            // Mostrar solo la ruta seleccionada
-                            const filteredRoute = allRoutes.find(route => route.plate === selectedPlate);
-                            if (filteredRoute) {
-                                limpiarTodo();
-                                drawRouteOnMap(filteredRoute.results, selectedPlate,"580");
-                            }
-                        }
-                    }
-                });
+                
 
                 selectPolyline.addEventListener('change', function() {
                     if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
@@ -577,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     const vehicleData = vehiclePolylines[plate];
                     
                     if (vehicleData && vehicleData.data[polylineKey]) {
-                        limpiarMapa();
+                        limpiarTodo();
                         graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                     }
                 });
