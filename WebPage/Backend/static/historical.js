@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
         mapa_2.eachLayer(layer => {
             // Mantener solo el tile layer (capa base del mapa) y los layers de lastMarker y lastCircle
             if (!layer._url && !layer._radius && !layer.__latlng ) {
-                console.log(layer);
+                
                 mapa_2.removeLayer(layer);
                 
             }
@@ -388,8 +388,9 @@ document.addEventListener("DOMContentLoaded", function() {
                             }
                         }
 
-                        actualizarVisualizacion();
+                        
                     }
+                    actualizarVisualizacion();
                 });
 
             
@@ -397,46 +398,54 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Función para actualizar la visualización según la selección actual
                 function actualizarVisualizacion() {
                     if (currentSearchMode !== 'position') return;
-
+                
                     const selectedPlate = plateSelect.value;
-                    
+                
                     // Limpiar el selector de polilíneas
                     selectPolyline.innerHTML = '';
+                
+                    // Limpiar el mapa solo una vez antes de agregar nuevas polilíneas
+                    limpiarTodo();
+                
+                    if (selectedPlate == 'all') {
+                        const listPlate = ["MXL306", "LOK123"];
+                        console.log("Se cumplio");
+                        listPlate.forEach(plate => { // Recorrer todos los vehículos y sus polilíneas
+                            const vehicleData = vehiclePolylines[plate];
+                            console.log(vehicleData);
+                            if (vehicleData) {
+                                // Agregar las polilíneas al selector
+                                Object.entries(vehicleData.data).forEach(([key, polyline]) => {
+                                    agregarOpcionPolilinea(plate, key, polyline, vehicleData.color); // Usar 'plate' en lugar de 'selectedPlate'
+                                });
                     
-                    if (selectedPlate === 'Todas') {
-                        // Mostrar una polilínea por cada vehículo
-                        limpiarTodo();
-                        Object.entries(vehiclePolylines).forEach(([plate, vehicleData]) => {
-                            const firstKey = Object.keys(vehicleData.data)[0];
-                            if (firstKey) {
-                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, false);
+                                // Graficar la primera polilínea del vehículo
+                                const firstKey = Object.keys(vehicleData.data)[0];
+                                if (firstKey) {
+                                    graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true);
+                                }
                             }
                         });
-                        
-                        // Agregar todas las polilíneas al selector
-                        Object.entries(vehiclePolylines).forEach(([plate, vehicleData]) => {
-                            Object.entries(vehicleData.data).forEach(([key, polyline]) => {
-                                agregarOpcionPolilinea(plate, key, polyline, vehicleData.color);
-                            });
-                        });
                     } else {
+                        console.log("no se cumplio");
                         // Mostrar solo las polilíneas del vehículo seleccionado
                         const vehicleData = vehiclePolylines[selectedPlate];
+
                         if (vehicleData) {
                             // Agregar las polilíneas al selector
                             Object.entries(vehicleData.data).forEach(([key, polyline]) => {
                                 agregarOpcionPolilinea(selectedPlate, key, polyline, vehicleData.color);
                             });
                             
-                            // Graficar la primera polilínea
+                            // Graficar la primera polilínea del vehículo
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
-                                limpiarTodo();
                                 graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true);
                             }
                         }
                     }
                 }
+                
 
                 // Función para agregar una opción al selector de polilíneas
                 function agregarOpcionPolilinea(plate, key, polyline, color) {
