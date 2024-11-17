@@ -79,20 +79,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function limpiarTodo() {
-        // Limpiar el mapa
-        if (lastRoute) {
-            mapa_2.removeLayer(lastRoute);
-        }
-        
-        polylines.forEach(polyline => mapa_2.removeLayer(polyline));
-        polylines = [];
-        
-        pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
-        pointMarkers = [];
-        
-        // Limpiar datos almacenados
-        allRoutes = [];
-        vehiclePolylines = {};
+        mapa_2.eachLayer(layer => {
+            // Mantener solo el tile layer (capa base del mapa)
+            if (!layer._url) {
+                mapa_2.removeLayer(layer);
+            }
+        });
     }
     
     // Función para validar al enviar
@@ -156,8 +148,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Almacenar los resultados de la placa
                     allRoutes.push({ plate, results: resultados });
         
-                    // Llamar a la función para dibujar la ruta de este vehículo
-                    drawRouteOnMap(resultados, plate);
+                    if (plateSelect.value!="all") {
+                        // Filtrar las rutas de los vehículos y solo mostrar la seleccionada
+                        const filteredRoute = allRoutes.find(route => route.plate === plateSelect.value);
+                        if (filteredRoute) {
+                            limpiarTodo();
+                            drawRouteOnMap(filteredRoute.results, plateSelect.value,"linea 268");
+                        }
+                    } else {
+                        // Si no hay placa seleccionada, mostrar todas las rutas
+                        allRoutes.forEach(route => {
+                            drawRouteOnMap(route.results, route.plate,"Linea 273");
+                        });
+                    }
                 }
         
             } catch (error) {
@@ -166,18 +169,20 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         // Función para dibujar la ruta en el mapa
-        function drawRouteOnMap(resultados, plate) {
+        function drawRouteOnMap(resultados, plate,linea) {
             if (currentSearchMode !== 'time') return;
-        
-            // Limpiar polilíneas y flechas anteriores si existen
-            if (lastRoute) {
-                mapa_2.removeLayer(lastRoute);
+            if(plateSelect.value !="all"){
+            
+                // Limpiar polilíneas y flechas anteriores si existen
+                if (lastRoute) {
+                    mapa_2.removeLayer(lastRoute);
+                }
+                arrows.forEach(arrow => {
+                    mapa_2.removeLayer(arrow);
+                });
+                arrows = []; // Reiniciar las flechas
             }
-            arrows.forEach(arrow => {
-                mapa_2.removeLayer(arrow);
-            });
-            arrows = []; // Reiniciar las flechas
-        
+            console.log(`Linea -${linea}`)
             // Obtener las coordenadas y datos adicionales
             const coordinates = resultados.map(result => ({
                 lat: parseFloat(result.Latitude.trim()),
@@ -254,24 +259,8 @@ document.addEventListener("DOMContentLoaded", function() {
         // Llamar a la función para hacer las peticiones
         fetchAndDrawRoutes(vehiclePlates);
     
-        // Función para filtrar por placa seleccionada
-        const vehicleSelect = document.getElementById('plate-select');
-        vehicleSelect.addEventListener('change', function () {
-            const selectedPlate = vehicleSelect.value;
-    
-            if (selectedPlate) {
-                // Filtrar las rutas de los vehículos y solo mostrar la seleccionada
-                const filteredRoute = allRoutes.find(route => route.plate === selectedPlate);
-                if (filteredRoute) {
-                    drawRouteOnMap(filteredRoute.results, selectedPlate);
-                }
-            } else {
-                // Si no hay placa seleccionada, mostrar todas las rutas
-                allRoutes.forEach(route => {
-                    drawRouteOnMap(route.results, route.plate);
-                });
-            }
-        });
+        
+        
     });
     
 
@@ -568,14 +557,14 @@ document.addEventListener("DOMContentLoaded", function() {
                             // Mostrar todas las rutas
                             limpiarTodo();
                             allRoutes.forEach(route => {
-                                drawRouteOnMap(route.results, route.plate);
+                                drawRouteOnMap(route.results, route.plate,"573");
                             });
                         } else {
                             // Mostrar solo la ruta seleccionada
                             const filteredRoute = allRoutes.find(route => route.plate === selectedPlate);
                             if (filteredRoute) {
                                 limpiarTodo();
-                                drawRouteOnMap(filteredRoute.results, selectedPlate);
+                                drawRouteOnMap(filteredRoute.results, selectedPlate,"580");
                             }
                         }
                     }
