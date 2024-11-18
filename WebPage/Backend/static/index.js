@@ -58,16 +58,12 @@ async function fetchData() {
             if (!vehiculos[placa]) {
 
                 const color = coloresPredeterminados[index % coloresPredeterminados.length];
-                const customIcon = L.divIcon({
-                    className: 'custom-marker',
-                    html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%;"></div>`,
-                    iconSize: [12, 12]
-                });
+            
                 // Crea una nueva entrada para el vehículo
                 vehiculos[placa] = {
                     routeCoords: [],
                     color: color,
-                    marker: L.marker(nuevaPosicion, { icon: customIcon }).addTo(mapa),
+                    marker: L.marker(nuevaPosicion).addTo(mapa),
                     polyline: L.polyline([], { color: color }).addTo(mapa),
                     data: {
                         latitude: data3.latitude,
