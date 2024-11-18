@@ -95,8 +95,6 @@ async function fetchData() {
 
             if (selectedPlaca === placa) {
                 actualizarDatosEnPantalla(placa);
-                document.getElementById('vehicle-placa').textContent = placa;
-                document.getElementById('vehicle-color-box').style.backgroundColor = vehicle.color;
             }
         }
 
