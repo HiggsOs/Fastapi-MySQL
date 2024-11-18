@@ -139,6 +139,7 @@ function actualizarDatosEnPantalla(placa) {
         Object.keys(vehiculos).forEach((key, index) => {
             const vehiculo = vehiculos[key];
             const panelId = index + 1;
+            document.getElementById(`placa-${placa}`).textContent = placa || 'No disponible';
             document.getElementById(`latitude-${panelId}`).textContent = vehiculo.data.latitude || 'No disponible';
             document.getElementById(`longitude-${panelId}`).textContent = vehiculo.data.longitude || 'No disponible';
             document.getElementById(`day-${panelId}`).textContent = vehiculo.data.day || 'No disponible';
@@ -148,6 +149,7 @@ function actualizarDatosEnPantalla(placa) {
         });
     } else {
         const vehiculo = vehiculos[placa];
+        document.getElementById(`placa-1`).textContent = placa || 'No disponible';
         document.getElementById('latitude-1').textContent = vehiculo.data.latitude || 'No disponible';
         document.getElementById('longitude-1').textContent = vehiculo.data.longitude || 'No disponible';
         document.getElementById('day-1').textContent = vehiculo.data.day || 'No disponible';
@@ -173,6 +175,7 @@ window.addEventListener('load', function () {
     plateSelect.addEventListener("change", function () {
         const selectedPlaca = plateSelect.value;
         if (plateSelect.value != "all") {
+            document.getElementById(`placa-2`).textContent ='';
             document.getElementById('latitude-2').textContent ='No disponible';
             document.getElementById('longitude-2').textContent ='No disponible';
             document.getElementById('day-2').textContent = 'No disponible';
