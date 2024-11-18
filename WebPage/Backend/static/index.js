@@ -25,11 +25,7 @@ async function fetchPlacas() {
             }
         });
 
-        if (!defaultPlaca && placas.length > 0) {
-            defaultPlaca = placas[0];
-            selectedPlaca = placas[0];
-            actualizarDatosEnPantalla(placas[0]);
-        }
+        actualizarDatosEnPantalla();
     } catch (error) {
         console.error('Error al obtener las placas:', error);
     }
@@ -138,14 +134,6 @@ function actualizarDatosEnPantalla(placa) {
     console.log(`Vehículos disponibles:`, vehiculos);
     
     const estas_i_es = plateSelect.value
-
-    if (estas_i_es === "all") {
-        Object.keys(vehiculos).forEach((key, index) => {
-            console.log(`Actualizando panel ${index + 1} para vehículo ${key}`);
-        });
-    } else {
-        console.log(`Actualizando panel para vehículo ${placa}`);
-    }
 
     if (estas_i_es === "all") {
         Object.keys(vehiculos).forEach((key, index) => {
