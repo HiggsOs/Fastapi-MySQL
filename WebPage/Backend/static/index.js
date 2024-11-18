@@ -139,7 +139,7 @@ function actualizarDatosEnPantalla(placa) {
         Object.keys(vehiculos).forEach((key, index) => {
             const vehiculo = vehiculos[key];
             const panelId = index + 1;
-            document.getElementById(`placa-${placa}`).textContent = placa || 'No disponible';
+            document.getElementById(`placa-${panelId}`).textContent = placa || 'No disponible';
             document.getElementById(`latitude-${panelId}`).textContent = vehiculo.data.latitude || 'No disponible';
             document.getElementById(`longitude-${panelId}`).textContent = vehiculo.data.longitude || 'No disponible';
             document.getElementById(`day-${panelId}`).textContent = vehiculo.data.day || 'No disponible';
