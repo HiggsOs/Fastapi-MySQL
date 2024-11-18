@@ -41,7 +41,7 @@ async function fetchData() {
             ? Array.from(plateSelect.options).map(option => option.value).filter(v => v !== 'all') 
             : [selectedPlaca];
 
-        for (const placa of placas) {
+        for (const [index, placa] of placas.entries()) {
             const responses = await Promise.all([
                 fetch(`/hour?placa=${placa}`),
                 fetch(`/day?placa=${placa}`),
