@@ -130,7 +130,7 @@ async function inicializarDatos() {
 
 
 function actualizarDatosEnPantalla(placa) {
-    if (placa === "all") {
+    if (plateSelect.value === "all") {
         Object.keys(vehiculos).forEach((key, index) => {
             const vehiculo = vehiculos[key];
             console.log(vehiculo);
