@@ -93,7 +93,8 @@ async function fetchData() {
         }
 
         actualizarPolilineas();
-        document.getElementById('error').textContent = '';
+        document.getElementById('error-1').textContent = '';
+        document.getElementById('error-2').textContent = '';
     } catch (error) {
         console.error('Error al obtener los datos:', error);
         document.getElementById('error-1').textContent = 'Error al obtener los datos.';
