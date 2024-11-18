@@ -96,7 +96,8 @@ async function fetchData() {
         document.getElementById('error').textContent = '';
     } catch (error) {
         console.error('Error al obtener los datos:', error);
-        document.getElementById('error').textContent = 'Error al obtener los datos.';
+        document.getElementById('error-1').textContent = 'Error al obtener los datos.';
+        document.getElementById('error-2').textContent = 'Error al obtener los datos.';
     }
 }
 
