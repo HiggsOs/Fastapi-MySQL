@@ -121,8 +121,8 @@ function actualizarPolilineas() {
 async function inicializarDatos() {
     await fetchPlacas(); // Carga las placas primero
     await fetchData();   // Luego carga los datos
-    //selectedPlaca = 'all'; // Asegúrate de que 'all' sea la selección inicial
-    //plateSelect.value = 'all';
+    selectedPlaca = 'all'; // Asegúrate de que 'all' sea la selección inicial
+    plateSelect.value = 'all';
     actualizarPolilineas(); // Actualiza el mapa con los datos cargados
     actualizarDatosEnPantalla();
 }
@@ -139,6 +139,7 @@ function actualizarDatosEnPantalla(placa) {
         Object.keys(vehiculos).forEach((key, index) => {
             const vehiculo = vehiculos[key];
             const panelId = index + 1;
+            const placa = key;
             document.getElementById(`placa-${panelId}`).textContent = placa || 'No disponible';
             document.getElementById(`latitude-${panelId}`).textContent = vehiculo.data.latitude || 'No disponible';
             document.getElementById(`longitude-${panelId}`).textContent = vehiculo.data.longitude || 'No disponible';
