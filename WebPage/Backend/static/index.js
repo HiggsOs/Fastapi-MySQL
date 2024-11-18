@@ -130,14 +130,30 @@ async function inicializarDatos() {
 
 // Función para actualizar los datos del vehículo en pantalla
 function actualizarDatosEnPantalla(placa) {
-    const vehiculo = vehiculos[placa];
-    document.getElementById('latitude').textContent = vehiculo.data.latitude || 'No disponible';
-    document.getElementById('longitude').textContent = vehiculo.data.longitude || 'No disponible';
-    document.getElementById('day').textContent = vehiculo.data.day || 'No disponible';
-    document.getElementById('hour').textContent = vehiculo.data.hour || 'No disponible';
-    document.getElementById('RPM').textContent = vehiculo.data.rpm || 'No disponible';
-    document.getElementById('speed').textContent = vehiculo.data.speed || 'No disponible';
+    if (placa === "all") {
+        // Imprimir datos de todos los vehículos
+        Object.keys(vehiculos).forEach((key, index) => {
+            const vehiculo = vehiculos[key];
+            const panelId = index + 1; // Para asociar con IDs únicos
+            document.getElementById(`latitude-${panelId}`).textContent = vehiculo.data.latitude || 'No disponible';
+            document.getElementById(`longitude-${panelId}`).textContent = vehiculo.data.longitude || 'No disponible';
+            document.getElementById(`day-${panelId}`).textContent = vehiculo.data.day || 'No disponible';
+            document.getElementById(`hour-${panelId}`).textContent = vehiculo.data.hour || 'No disponible';
+            document.getElementById(`RPM-${panelId}`).textContent = vehiculo.data.rpm || 'No disponible';
+            document.getElementById(`speed-${panelId}`).textContent = vehiculo.data.speed || 'No disponible';
+        });
+    } else {
+        // Imprimir datos de un solo vehículo
+        const vehiculo = vehiculos[placa];
+        document.getElementById('latitude-1').textContent = vehiculo.data.latitude || 'No disponible';
+        document.getElementById('longitude-1').textContent = vehiculo.data.longitude || 'No disponible';
+        document.getElementById('day-1').textContent = vehiculo.data.day || 'No disponible';
+        document.getElementById('hour-1').textContent = vehiculo.data.hour || 'No disponible';
+        document.getElementById('RPM-1').textContent = vehiculo.data.rpm || 'No disponible';
+        document.getElementById('speed-1').textContent = vehiculo.data.speed || 'No disponible';
+    }
 }
+
 
 // Inicialización del mapa y eventos en la carga de la ventana
 window.addEventListener('load', function () {
@@ -151,14 +167,12 @@ window.addEventListener('load', function () {
 
     inicializarDatos();
 
-    plateSelect.addEventListener('change', function () {
-        selectedPlaca = plateSelect.value;
-        if (selectedPlaca !== 'all') {
-            actualizarDatosEnPantalla(selectedPlaca);
-        }
+    plateSelect.addEventListener("change", function () {
+        const selectedPlaca = plateSelect.value.toLowerCase();
+        actualizarDatosEnPantalla(selectedPlaca);
         actualizarPolilineas();
     });
-
+    
     setInterval(fetchData, 2000);
     const historicosBtn = document.getElementById("historicos-btn");
     
