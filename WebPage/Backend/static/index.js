@@ -121,8 +121,8 @@ function actualizarPolilineas() {
 async function inicializarDatos() {
     await fetchPlacas(); // Carga las placas primero
     await fetchData();   // Luego carga los datos
-    selectedPlaca = 'all'; // Asegúrate de que 'all' sea la selección inicial
-    plateSelect.value = 'all';
+    //selectedPlaca = 'all'; // Asegúrate de que 'all' sea la selección inicial
+    //plateSelect.value = 'all';
     actualizarPolilineas(); // Actualiza el mapa con los datos cargados
     actualizarDatosEnPantalla();
 }
