@@ -128,13 +128,14 @@ async function inicializarDatos() {
     actualizarPolilineas(); // Actualiza el mapa con los datos cargados
 }
 
-// Función para actualizar los datos del vehículo en pantalla
+
 function actualizarDatosEnPantalla(placa) {
     if (placa === "all") {
-        // Imprimir datos de todos los vehículos
         Object.keys(vehiculos).forEach((key, index) => {
             const vehiculo = vehiculos[key];
-            const panelId = index + 1; // Para asociar con IDs únicos
+            console.log(vehiculo);
+            const panelId = index + 1;
+            console.log(panelId);
             document.getElementById(`latitude-${panelId}`).textContent = vehiculo.data.latitude || 'No disponible';
             document.getElementById(`longitude-${panelId}`).textContent = vehiculo.data.longitude || 'No disponible';
             document.getElementById(`day-${panelId}`).textContent = vehiculo.data.day || 'No disponible';
@@ -143,7 +144,6 @@ function actualizarDatosEnPantalla(placa) {
             document.getElementById(`speed-${panelId}`).textContent = vehiculo.data.speed || 'No disponible';
         });
     } else {
-        // Imprimir datos de un solo vehículo
         const vehiculo = vehiculos[placa];
         document.getElementById('latitude-1').textContent = vehiculo.data.latitude || 'No disponible';
         document.getElementById('longitude-1').textContent = vehiculo.data.longitude || 'No disponible';
@@ -168,7 +168,7 @@ window.addEventListener('load', function () {
     inicializarDatos();
 
     plateSelect.addEventListener("change", function () {
-        const selectedPlaca = plateSelect.value.toLowerCase();
+        const selectedPlaca = plateSelect.value;
         actualizarDatosEnPantalla(selectedPlaca);
         actualizarPolilineas();
     });
