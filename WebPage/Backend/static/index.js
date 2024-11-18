@@ -128,6 +128,7 @@ async function inicializarDatos() {
     selectedPlaca = 'all'; // Asegúrate de que 'all' sea la selección inicial
     plateSelect.value = 'all';
     actualizarPolilineas(); // Actualiza el mapa con los datos cargados
+    actualizarDatosEnPantalla();
 }
 
 
