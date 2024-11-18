@@ -289,6 +289,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 
                 plateSelect.addEventListener("change", function () {
+
                     if (plateSelect.value.toLowerCase() === "all") {
                         selectPolyline_2.classList.add('activo');
                         console.log(plateSelect.value);
@@ -520,7 +521,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         const arrowMarker = L.marker([start.lat, start.lng], {
                             icon: L.divIcon({
                                 className: 'arrow-icon',
-                                html: '⚫', // Símbolo de flecha o contenido personalizada..
+                                html: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(${angleDeg})">
+                                        <path d="M12 19l7-7-7-7M5 12h14"></path>
+                                        </svg>`,
                                 iconSize: [20, 20],
                                 iconAnchor: [10, 10]
                             })
