@@ -34,6 +34,9 @@ async function fetchPlacas() {
 // Función para obtener los datos de un vehículo y actualizar su marcador y polilínea en el mapa
 async function fetchData() {
     try {
+
+        const coloresPredeterminados = ['blue', 'green', 'red', 'orange', 'purple', 'yellow'];
+
         const placas = selectedPlaca === 'all' 
             ? Array.from(plateSelect.options).map(option => option.value).filter(v => v !== 'all') 
             : [selectedPlaca];
@@ -53,12 +56,19 @@ async function fetchData() {
             const nuevaPosicion = [data3.latitude, data4.longitude];
 
             if (!vehiculos[placa]) {
+
+                const color = coloresPredeterminados[index % coloresPredeterminados.length];
+                const customIcon = L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%;"></div>`,
+                    iconSize: [12, 12]
+                });
                 // Crea una nueva entrada para el vehículo
                 vehiculos[placa] = {
                     routeCoords: [],
-                    color: '#' + Math.floor(Math.random() * 16777215).toString(16),
-                    marker: L.marker(nuevaPosicion).addTo(mapa),
-                    polyline: L.polyline([], { color: '#' + Math.floor(Math.random() * 16777215).toString(16) }).addTo(mapa),
+                    color: color,
+                    marker: L.marker(nuevaPosicion, { icon: customIcon }).addTo(mapa),
+                    polyline: L.polyline([], { color: color }).addTo(mapa),
                     data: {
                         latitude: data3.latitude,
                         longitude: data4.longitude,
@@ -85,6 +95,8 @@ async function fetchData() {
 
             if (selectedPlaca === placa) {
                 actualizarDatosEnPantalla(placa);
+                document.getElementById('vehicle-placa').textContent = placa;
+                document.getElementById('vehicle-color-box').style.backgroundColor = vehicle.color;
             }
         }
 
