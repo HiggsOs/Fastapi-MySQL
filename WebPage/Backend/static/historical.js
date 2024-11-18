@@ -287,10 +287,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 contenedor_info.classList.add('activo')
                 contenedor_btn.classList.add('activo')
 
-                let selectedOption = plateSelect.value;
+                
                 plateSelect.addEventListener("change", function () {
-                    if (selectedOption.toLowerCase() === "all") {
+                    if (plateSelect.value.toLowerCase() === "all") {
                         selectPolyline_2.classList.add('activo');
+                        console.log(plateSelect.value);
                     } else {
                         selectPolyline_2.classList.remove('activo');
                     }
