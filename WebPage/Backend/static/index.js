@@ -130,12 +130,24 @@ async function inicializarDatos() {
 
 
 function actualizarDatosEnPantalla(placa) {
-    if (plateSelect.value === "all") {
+
+    console.log(`Actualizando datos para: ${placa}`);
+    console.log(`Vehículos disponibles:`, vehiculos);
+    
+    const estas_i_es = plateSelect.value
+
+    if (estas_i_es === "all") {
+        Object.keys(vehiculos).forEach((key, index) => {
+            console.log(`Actualizando panel ${index + 1} para vehículo ${key}`);
+        });
+    } else {
+        console.log(`Actualizando panel para vehículo ${placa}`);
+    }
+
+    if (estas_i_es === "all") {
         Object.keys(vehiculos).forEach((key, index) => {
             const vehiculo = vehiculos[key];
-            console.log(vehiculo);
             const panelId = index + 1;
-            console.log(panelId);
             document.getElementById(`latitude-${panelId}`).textContent = vehiculo.data.latitude || 'No disponible';
             document.getElementById(`longitude-${panelId}`).textContent = vehiculo.data.longitude || 'No disponible';
             document.getElementById(`day-${panelId}`).textContent = vehiculo.data.day || 'No disponible';
