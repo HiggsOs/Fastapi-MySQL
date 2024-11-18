@@ -172,7 +172,17 @@ window.addEventListener('load', function () {
 
     plateSelect.addEventListener("change", function () {
         const selectedPlaca = plateSelect.value;
-        actualizarDatosEnPantalla(selectedPlaca);
+        if (plateSelect.value != "all") {
+            document.getElementById('latitude-2').textContent ='No disponible';
+            document.getElementById('longitude-2').textContent ='No disponible';
+            document.getElementById('day-2').textContent = 'No disponible';
+            document.getElementById('hour-2').textContent ='No disponible';
+            document.getElementById('RPM-2').textContent ='No disponible';
+            document.getElementById('speed-2').textContent ='No disponible';
+            actualizarDatosEnPantalla(selectedPlaca);
+        } else {
+            actualizarDatosEnPantalla(selectedPlaca);
+        }
         actualizarPolilineas();
     });
     
