@@ -110,7 +110,7 @@ function actualizarPolilineas() {
         const vehiculo = vehiculos[placa];
         if (!vehiculo) return;
 
-        if (selectedPlaca === 'all' || selectedPlaca === placa) {
+        if (plateSelect.value === 'all' || plateSelect.value === placa) {
             vehiculo.marker.addTo(mapa);
             vehiculo.polyline.addTo(mapa);
             console.log(`Añadido marcador y polilínea para: ${placa}`);
