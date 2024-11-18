@@ -75,6 +75,7 @@ body {
 /* Ajustes al mapa */
 #contenedor-mapa-x {
     flex: 1;
+    flex-direction: row;
     display: flex;
     padding: 15px;
     margin: 10px;
