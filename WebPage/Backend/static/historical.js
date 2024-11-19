@@ -582,8 +582,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         const vehicleData = vehiclePolylines[plate];
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
-                            //mapa_2.removeLayer(polylines);
-                            //mapa_2.removeLayer(arrowMarker);
+                            mapa_2.removeLayer(polylines);
+                            mapa_2.removeLayer(pointMarkers);
                             graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                         }
                     } else {
@@ -604,8 +604,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         const vehicleData = vehiclePolylines[plate];
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
-                            //mapa_2.removeLayer(polylines);
-                            //mapa_2.removeLayer(arrowMarker);
+                            mapa_2.removeLayer(polylines);
+                            mapa_2.removeLayer(pointMarkers);
                             graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                         }
                     } else {
