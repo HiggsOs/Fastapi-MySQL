@@ -440,7 +440,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 // Agregar las polilíneas al selector
                                 Object.entries(vehicleData.data).forEach(([key, polyline]) => {
                                     const dropdown = plate === 'MXL306' ? selectPolyline : selectPolyline_2; 
-                                    agregarOpcionPolilinea(plate, key, polyline, vehicleData.color); // Usar 'plate' en lugar de 'selectedPlate'
+                                    agregarOpcionPolilinea(plate, key, polyline, vehicleData.color, dropdown); // Usar 'plate' en lugar de 'selectedPlate'
                                 });
                     
                                 // Graficar la primera polilínea del vehículo
