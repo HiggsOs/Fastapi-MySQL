@@ -266,6 +266,16 @@ body {
     pointer-events: auto;
 }
 
+#polyline-select {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#polyline-select {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 #polyline-select-2 {
     opacity: 0;
     pointer-events: none;
