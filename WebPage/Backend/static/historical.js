@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const value = document.querySelector("#value");
     let polylines = []; // Almacenar polilíneas en el mapa
     const selectPolyline = document.getElementById('polyline-select'); // Usar el selector ya existente
-    const  selectPolyline_2 = document.getElementById('polyline-select-2');
+    const selectPolyline_2 = document.getElementById('polyline-select-2');
     let plateSelect = document.getElementById('plate-select');
     let vehiclePlates = [];
     let pointMarkers = []; //almacena el marker
@@ -601,6 +601,8 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 contenedor_info.classList.remove('activo')
                 contenedor_btn.classList.remove('activo')
+                selectPolyline.classList.remove('activo')
+                selectPolyline_2.classList.remove('activo')
 
                 if (lastMarker) {
                     mapa_2.removeLayer(lastMarker);
