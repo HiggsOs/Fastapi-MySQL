@@ -456,7 +456,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (vehicleData) {
                             // Agregar las polilíneas al selector
                             Object.entries(vehicleData.data).forEach(([key, polyline]) => {
-                                agregarOpcionPolilinea(selectedPlate, key, polyline, vehicleData.color);
+                                agregarOpcionPolilinea(selectedPlate, key, polyline, vehicleData.color, selectPolyline);
                             });
                             
                             // Graficar la primera polilínea del vehículo
