@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let pointMarkers = []; //almacena el marker
     let currentSearchMode = null;
     let arrows = []; // Variable global para almacenar los marcadores de flechas
+    const contenedor_switch = document.querySelector('.contenedor-switch');
 
 
     // Agregar evento de clic
@@ -92,6 +93,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Función para validar al enviar
     submitButton.addEventListener("click", function (event) {
+
+        contenedor_switch.classList.add('activo')
+
         if (endDateInput.value < startDateInput.value) {
             event.preventDefault();
             alert("La fecha final no puede ser anterior a la fecha de inicio.");
