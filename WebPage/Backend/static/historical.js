@@ -577,24 +577,41 @@ document.addEventListener("DOMContentLoaded", function() {
                 selectPolyline.addEventListener('change', function() {
                     if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
                     
-                    const [plate, polylineKey] = selectPolyline.value.split('-');
-                    const vehicleData = vehiclePolylines[plate];
-                    
-                    if (vehicleData && vehicleData.data[polylineKey]) {
-                        limpiarTodo();
-                        graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                    if (plateSelect.value === "all") {
+                        const [plate, polylineKey] = selectPolyline.value.split('-');
+                        const vehicleData = vehiclePolylines[plate];
+                        
+                        if (vehicleData && vehicleData.data[polylineKey]) {
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                        }
+                    } else {
+                        const [plate, polylineKey] = selectPolyline.value.split('-');
+                        const vehicleData = vehiclePolylines[plate];
+                        
+                        if (vehicleData && vehicleData.data[polylineKey]) {
+                            limpiarTodo();
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                        }
                     }
                 });
 
                 selectPolyline_2.addEventListener('change', function() {
                     if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
-                    
-                    const [plate, polylineKey] = selectPolyline_2.value.split('-');
-                    const vehicleData = vehiclePolylines[plate];
-                    
-                    if (vehicleData && vehicleData.data[polylineKey]) {
-                        limpiarTodo();
-                        graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                    if (plateSelect.value === "all") {
+                        const [plate, polylineKey] = selectPolyline_2.value.split('-');
+                        const vehicleData = vehiclePolylines[plate];
+                        
+                        if (vehicleData && vehicleData.data[polylineKey]) {
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                        }
+                    } else {
+                        const [plate, polylineKey] = selectPolyline_2.value.split('-');
+                        const vehicleData = vehiclePolylines[plate];
+                        
+                        if (vehicleData && vehicleData.data[polylineKey]) {
+                            limpiarTodo();
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                        }
                     }
                 });
             
