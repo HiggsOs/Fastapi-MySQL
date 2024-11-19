@@ -193,6 +193,7 @@ window.addEventListener('load', function () {
             document.getElementById('hour-2').textContent ='No disponible';
             document.getElementById('RPM-2').textContent ='No disponible';
             document.getElementById('speed-2').textContent ='No disponible';
+            document.getElementById(`vehicle-color-box-2`).style.backgroundColor ='#CCCCCC';
             actualizarDatosEnPantalla(selectedPlaca);
         } else {
             actualizarDatosEnPantalla(selectedPlaca);
