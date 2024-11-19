@@ -267,24 +267,30 @@ body {
 }
 
 #polyline-select {
-    opacity: 0;
-    pointer-events: none;
-}
-
-#polyline-select {
+    display: none; /* Al inicio está oculto */
     opacity: 1;
     pointer-events: auto;
 }
 
+#polyline-select.activo {
+    display: block; /* Muestra el contenedor */
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
 #polyline-select-2 {
-    opacity: 0;
-    pointer-events: none;
+    display: none; /* Al inicio está oculto */
+    opacity: 1;
+    pointer-events: auto;
 }
 
 #polyline-select-2.activo {
+    display: block; /* Muestra el contenedor */
     opacity: 1;
     pointer-events: auto;
 }
+
 
 .arrow-marker {
     width: 0;
