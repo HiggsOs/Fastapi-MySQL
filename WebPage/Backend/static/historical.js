@@ -444,7 +444,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                 // Graficar la primera polilínea del vehículo
                                 const firstKey = Object.keys(vehicleData.data)[0];
                                 if (firstKey) {
-                                    graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true);
+                                    const firstPolyline = vehicleData.data[firstKey];
+                                    graficarPolilinea(firstPolyline, vehicleData.color, true);
                                 }
                             }
                         });
