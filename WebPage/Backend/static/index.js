@@ -153,7 +153,8 @@ function actualizarDatosEnPantalla(placa) {
             document.getElementById(`hour-${panelId}`).textContent = vehiculo.data.hour || 'No disponible';
             document.getElementById(`RPM-${panelId}`).textContent = vehiculo.data.rpm || 'No disponible';
             document.getElementById(`speed-${panelId}`).textContent = vehiculo.data.speed || 'No disponible';
-            document.getElementById(`vehicle-color-box-${panelId}`).style.backgroundColor = vehiculo.color || '';
+            document.getElementById(`vehicle-color-box-${panelId}`).style.backgroundColor = vehiculo.color || '#CCCCCC'; // Gris claro por defecto
+
         });
     } else {
         const vehiculo = vehiculos[placa];
@@ -164,7 +165,8 @@ function actualizarDatosEnPantalla(placa) {
         document.getElementById('hour-1').textContent = vehiculo.data.hour || 'No disponible';
         document.getElementById('RPM-1').textContent = vehiculo.data.rpm || 'No disponible';
         document.getElementById('speed-1').textContent = vehiculo.data.speed || 'No disponible';
-        document.getElementById(`vehicle-color-box-1`).style.backgroundColor = vehiculo.color || '';
+        document.getElementById(`vehicle-color-box-1`).style.backgroundColor = vehiculo.color || '#CCCCCC'; // Gris claro por defecto
+
     }
 }
 
