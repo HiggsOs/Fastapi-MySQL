@@ -94,7 +94,14 @@ document.addEventListener("DOMContentLoaded", function() {
     // Función para validar al enviar
     submitButton.addEventListener("click", function (event) {
 
-        contenedor_switch.classList.add('activo')
+
+        if (!startDateInput.value || !endDateInput.value) {
+            event.preventDefault();
+            alert("Por favor, selecciona ambas fechas antes de presionar el botón.");
+            return;
+        } else {
+            contenedor_switch.classList.add('activo')
+        }
 
         if (endDateInput.value < startDateInput.value) {
             event.preventDefault();
