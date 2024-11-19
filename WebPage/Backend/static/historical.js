@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentSearchMode = null;
     let arrows = []; // Variable global para almacenar los marcadores de flechas
     const contenedor_switch = document.querySelector('.contenedor-switch');
+    const polilinea = document.querySelector('.polineas');
 
 
     // Agregar evento de clic
@@ -298,17 +299,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 contenedor_info.classList.add('activo')
                 contenedor_btn.classList.add('activo')
 
-                
-                plateSelect.addEventListener("change", function () {
-
-                    if (plateSelect.value.toLowerCase() === "all") {
-                        selectPolyline_2.classList.add('activo');
-                        console.log(plateSelect.value);
-                    } else {
-                        selectPolyline_2.classList.remove('activo');
-                    }
-                });
-
                 if (lastRoute) {
                     mapa_2.removeLayer(lastRoute);
                 }
@@ -364,6 +354,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 //Evento del botón de extracción
                 extractCoordsBtn.addEventListener("click", async function() {
                     if (lastCircle) {
+
+                        if (plateSelect.value.toLowerCase() === "all") {
+                            polilinea.classList.add('activo');
+                            selectPolyline_2.classList.add('activo');
+                            console.log(plateSelect.value);
+                        } else {
+                            selectPolyline_2.classList.remove('activo');
+                            polilinea.classList.add('activo');
+                        }
 
                         currentSearchMode = 'position';
                         

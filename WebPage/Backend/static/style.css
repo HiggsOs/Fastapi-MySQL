@@ -257,6 +257,13 @@ body {
 .polineas {
     display: flex;
     flex-direction: row;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.polineas.activo {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 #polyline-select-2 {
