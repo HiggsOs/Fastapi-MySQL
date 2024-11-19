@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 contenedor_btn.classList.add('activo')
 
                 if (lastRoute) {
-                    mapa_2.removeLayer(lastRoute);
+                    limpiarTodo();
                 }
 
                 mapa_2.on('click', function(e) {

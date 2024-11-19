@@ -89,9 +89,9 @@ async function fetchData() {
             vehicle.marker.setLatLng(nuevaPosicion);
             vehicle.polyline.setLatLngs(vehicle.routeCoords);
 
-            if (selectedPlaca === placa) {
-                actualizarDatosEnPantalla(placa);
-            }
+            
+            actualizarDatosEnPantalla(plateSelect.value);
+            
         }
 
         actualizarPolilineas();
