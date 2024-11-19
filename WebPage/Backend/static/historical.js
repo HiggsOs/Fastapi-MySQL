@@ -1,29 +1,28 @@
 document.addEventListener("DOMContentLoaded", function() {
+    let mapa_2;
+    let lastRoute = null; // Variable para almacenar la última polilínea
+    let lastMarker = null; // Variable para almacenar el último marcador
+    let lastCircle = null; // Variable para almacenar el último círculo
+    let currentSearchMode = null;
+    let polylines = []; // Almacenar polilíneas en el mapa
+    let vehiclePlates = [];
+    let pointMarkers = []; //almacena el marker
+    let arrows = []; // Variable global para almacenar los marcadores de flechas
     const startDateInput = document.getElementById("start-date");
     const endDateInput = document.getElementById("end-date");
     const submitButton = document.getElementById("enviar");
-    let mapa_2;
-    let lastRoute = null; // Variable para almacenar la última polilínea
     const indexBtn = document.getElementById("index-btn");
+    let plateSelect = document.getElementById('plate-select');
+    const radioInput = document.getElementById("radio"); // Obtener el input range
+    const filtro_posicion= document.getElementById("position-switch")
+    const extractCoordsBtn = document.getElementById("extract-coords-btn");
     const contenedor_info = document.querySelector('.contenedor-info')
     const contenedor_btn = document.querySelector('.contenedor-btn')
-    const filtro_posicion= document.getElementById("position-switch")
-    const radioInput = document.getElementById("radio"); // Obtener el input range
-    const extractCoordsBtn = document.getElementById("extract-coords-btn");
-    let lastMarker = null; // Variable para almacenar el último marcador
-    let lastCircle = null; // Variable para almacenar el último círculo
     const value = document.querySelector("#value");
-    let polylines = []; // Almacenar polilíneas en el mapa
-    const selectPolyline = document.getElementById('polyline-select'); // Usar el selector ya existente
-    const selectPolyline_2 = document.getElementById('polyline-select-2');
-    let plateSelect = document.getElementById('plate-select');
-    let vehiclePlates = [];
-    let pointMarkers = []; //almacena el marker
-    let currentSearchMode = null;
-    let arrows = []; // Variable global para almacenar los marcadores de flechas
+    const selectPolyline = document.querySelector('.polyline-select'); // Usar el selector ya existente
+    const selectPolyline_2 = document.querySelector('.polyline-select-2');
     const contenedor_switch = document.querySelector('.contenedor-switch');
     const polilinea = document.querySelector('.polineas');
-
 
     // Agregar evento de clic
     indexBtn.addEventListener("click", function() {
@@ -601,8 +600,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 contenedor_info.classList.remove('activo')
                 contenedor_btn.classList.remove('activo')
-                selectPolyline.classList.remove('activo')
-                selectPolyline_2.classList.remove('activo')
+                po
 
                 if (lastMarker) {
                     mapa_2.removeLayer(lastMarker);

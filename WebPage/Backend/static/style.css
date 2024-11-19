@@ -266,22 +266,22 @@ body {
     pointer-events: auto;
 }
 
-#polyline-select {
+.polyline-select {
     opacity: 0;
     pointer-events: none;
 }
 
-#polyline-select.activo {
+.polyline-select.activo {
     opacity: 1;
     pointer-events: auto;
 }
 
-#polyline-select-2 {
+.polyline-select-2 {
     opacity: 0;
     pointer-events: none;
 }
 
-#polyline-select-2.activo {
+.polyline-select-2.activo {
     opacity: 1;
     pointer-events: auto;
 }
