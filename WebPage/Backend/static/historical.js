@@ -588,7 +588,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 selectPolyline_2.addEventListener('change', function() {
                     if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
                     
-                    const [plate, polylineKey] = selectPolyline.value.split('-');
+                    const [plate, polylineKey] = selectPolyline_2.value.split('-');
                     const vehicleData = vehiclePolylines[plate];
                     
                     if (vehicleData && vehicleData.data[polylineKey]) {
