@@ -439,6 +439,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             if (vehicleData) {
                                 // Agregar las polilíneas al selector
                                 Object.entries(vehicleData.data).forEach(([key, polyline]) => {
+                                    const dropdown = plate === 'MXL306' ? selectPolyline : selectPolyline_2; 
                                     agregarOpcionPolilinea(plate, key, polyline, vehicleData.color); // Usar 'plate' en lugar de 'selectedPlate'
                                 });
                     
@@ -471,17 +472,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 
 
                 // Función para agregar una opción al selector de polilíneas
-                function agregarOpcionPolilinea(plate, key, polyline, color) {
+                function agregarOpcionPolilinea(plate, key, polyline, color, dropdown) {
                     const infostartDate = polyline[0].Day;
                     const infoendDay = polyline[polyline.length - 1].Day;
                     const infostartTime = polyline[0].Hour.substring(0, 5);
                     const infoendTime = polyline[polyline.length - 1].Hour.substring(0, 5);
-
+                
                     const option = document.createElement('option');
                     option.value = `${plate}-${key}`;
-
+                
                     let timeText;
-                    if (infoendDay == infostartDate) {
+                    if (infoendDay === infostartDate) {
                         timeText = `El día ${infostartDate}: desde ${infostartTime} hasta ${infoendTime}`;
                     } else {
                         timeText = `De: ${infostartDate} a ${infostartTime}, hasta: ${infoendDay} a ${infoendTime}`;
@@ -489,10 +490,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (convertirAHorasMinutos(infostartTime) > convertirAHorasMinutos(infoendTime)) {
                         timeText = `El día ${infostartDate}: desde ${infoendTime} hasta ${infostartTime}`;
                     }
-
+                
                     option.text = `Vehículo ${plate}: ${timeText}`;
-                    selectPolyline.appendChild(option);
-                }
+                    dropdown.appendChild(option); // Agrega la opción al dropdown específico
+                }                
 
                 // Función para graficar una polilínea
 
