@@ -603,6 +603,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 contenedor_info.classList.remove('activo')
                 contenedor_btn.classList.remove('activo')
                 polilinea.classList.remove('activo')
+                selectPolyline_2.classList.remove('activo');
+                selectPolyline.classList.remove('activo');
 
                 if (lastMarker) {
                     mapa_2.removeLayer(lastMarker);
