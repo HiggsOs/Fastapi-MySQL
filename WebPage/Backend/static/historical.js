@@ -357,6 +357,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (plateSelect.value.toLowerCase() === "all") {
                             polilinea.classList.add('activo');
                             selectPolyline_2.classList.add('activo');
+                            selectPolyline.classList.add('activo')
                             console.log(plateSelect.value);
                         } else {
                             selectPolyline_2.classList.remove('activo');
@@ -600,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 contenedor_info.classList.remove('activo')
                 contenedor_btn.classList.remove('activo')
-                po
+                polilinea.classList.remove('activo')
 
                 if (lastMarker) {
                     mapa_2.removeLayer(lastMarker);
