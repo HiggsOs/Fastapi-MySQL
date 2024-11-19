@@ -357,11 +357,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (plateSelect.value.toLowerCase() === "all") {
                             polilinea.classList.add('activo');
                             selectPolyline_2.classList.add('activo');
-                            selectPolyline.classList.add('activo')
+                            selectPolyline.classList.add('activo');
                             console.log(plateSelect.value);
                         } else {
                             selectPolyline_2.classList.remove('activo');
                             polilinea.classList.add('activo');
+                            selectPolyline.classList.add('activo');
                         }
 
                         currentSearchMode = 'position';
