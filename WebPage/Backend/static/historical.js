@@ -83,10 +83,8 @@ document.addEventListener("DOMContentLoaded", function() {
     function limpiarTodo() {
         mapa_2.eachLayer(layer => {
             // Mantener solo el tile layer (capa base del mapa) y los layers de lastMarker y lastCircle
-            if (!layer._url && !layer._radius && !layer.__latlng ) {
-                
+            if (layer !== lastCircle && layer !== lastMarker && !layer._url) {
                 mapa_2.removeLayer(layer);
-                
             }
         });
     }
@@ -417,7 +415,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
 
             
-
+                
                 // Función para actualizar la visualización según la selección actual
                 function actualizarVisualizacion() {
                     if (currentSearchMode !== 'position') return;
