@@ -586,6 +586,18 @@ document.addEventListener("DOMContentLoaded", function() {
                         graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                     }
                 });
+
+                selectPolyline_2.addEventListener('change', function() {
+                    if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
+                    
+                    const [plate, polylineKey] = selectPolyline.value.split('-');
+                    const vehicleData = vehiclePolylines[plate];
+                    
+                    if (vehicleData && vehicleData.data[polylineKey]) {
+                        limpiarTodo();
+                        graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                    }
+                });
             
                 // Función para calcular la distancia entre dos puntos (en metros)
                 function calcularDistancia(lat1, lon1, lat2, lon2) {
