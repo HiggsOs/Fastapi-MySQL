@@ -572,17 +572,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
 
-                const dropdownLayers = {
-                    selectPolyline: null,
-                    selectPolyline_2: null,
-                };
-
-                function limpiarCapasDropdown(dropdownKey) {
-                    if (dropdownLayers[dropdownKey]) {
-                        mapa_2.removeLayer(dropdownLayers[dropdownKey]);
-                        dropdownLayers[dropdownKey] = null;
-                    }
-                }
+                
 
                 selectPolyline.addEventListener('change', function() {
                     if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
@@ -592,9 +582,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         const vehicleData = vehiclePolylines[plate];
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
-                            limpiarCapasDropdown('selectPolyline');
-                            // Graficar la nueva polilínea y guardar su capa
-                            dropdownLayers.selectPolyline = graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                            mapa_2.removeLayer(polyline);
+                            mapa_2.removeLayer(arrowMarker);
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                         }
                     } else {
                         const [plate, polylineKey] = selectPolyline.value.split('-');
@@ -614,9 +604,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         const vehicleData = vehiclePolylines[plate];
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
-                            limpiarCapasDropdown('selectPolyline_2');
-                            // Graficar la nueva polilínea y guardar su capa
-                            dropdownLayers.selectPolyline_2 = graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                            mapa_2.removeLayer(polyline);
+                            mapa_2.removeLayer(arrowMarker);
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                         }
                     } else {
                         const [plate, polylineKey] = selectPolyline_2.value.split('-');
