@@ -196,6 +196,13 @@ body {
     display: flex;
     align-items: center;
     justify-items: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.contenedor-switch.activo {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .boton {
