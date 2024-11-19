@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentSearchMode = null;
     let arrows = []; // Variable global para almacenar los marcadores de flechas
     const contenedor_switch = document.querySelector('.contenedor-switch');
+    const polilinea = document.querySelector('.polineas');
 
 
     // Agregar evento de clic
@@ -94,7 +95,14 @@ document.addEventListener("DOMContentLoaded", function() {
     // Función para validar al enviar
     submitButton.addEventListener("click", function (event) {
 
-        contenedor_switch.classList.add('activo')
+
+        if (!startDateInput.value || !endDateInput.value) {
+            event.preventDefault();
+            alert("Por favor, selecciona ambas fechas antes de presionar el botón.");
+            return;
+        } else {
+            contenedor_switch.classList.add('activo')
+        }
 
         if (endDateInput.value < startDateInput.value) {
             event.preventDefault();
@@ -291,17 +299,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 contenedor_info.classList.add('activo')
                 contenedor_btn.classList.add('activo')
 
-                
-                plateSelect.addEventListener("change", function () {
-
-                    if (plateSelect.value.toLowerCase() === "all") {
-                        selectPolyline_2.classList.add('activo');
-                        console.log(plateSelect.value);
-                    } else {
-                        selectPolyline_2.classList.remove('activo');
-                    }
-                });
-
                 if (lastRoute) {
                     mapa_2.removeLayer(lastRoute);
                 }
@@ -357,6 +354,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 //Evento del botón de extracción
                 extractCoordsBtn.addEventListener("click", async function() {
                     if (lastCircle) {
+
+                        if (plateSelect.value.toLowerCase() === "all") {
+                            polilinea.classList.add('activo');
+                            selectPolyline_2.classList.add('activo');
+                            console.log(plateSelect.value);
+                        } else {
+                            selectPolyline_2.classList.remove('activo');
+                            polilinea.classList.add('activo');
+                        }
 
                         currentSearchMode = 'position';
                         
