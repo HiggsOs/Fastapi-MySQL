@@ -582,7 +582,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         const vehicleData = vehiclePolylines[plate];
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
-                            mapa_2.removeLayer(polyline);
+                            mapa_2.removeLayer(polylines);
                             mapa_2.removeLayer(arrowMarker);
                             graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                         }
@@ -604,7 +604,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         const vehicleData = vehiclePolylines[plate];
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
-                            mapa_2.removeLayer(polyline);
+                            mapa_2.removeLayer(polylines);
                             mapa_2.removeLayer(arrowMarker);
                             graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
                         }
