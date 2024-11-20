@@ -446,6 +446,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 if (firstKey) {
                                     const firstPolyline = vehicleData.data[firstKey];
                                     graficarPolilinea(firstPolyline, vehicleData.color, true, 'selectPolyline');
+                                    graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true, 'selectPolyline_2');
                                 }
                             }
                         });
@@ -464,7 +465,6 @@ document.addEventListener("DOMContentLoaded", function() {
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
                                 graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true, 'selectPolyline');
-                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true, 'selectPolyline_2');
                             }
                         }
                     }
