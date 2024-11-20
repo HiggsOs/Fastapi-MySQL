@@ -445,7 +445,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 const firstKey = Object.keys(vehicleData.data)[0];
                                 if (firstKey) {
                                     const firstPolyline = vehicleData.data[firstKey];
-                                    graficarPolilinea(firstPolyline, vehicleData.color, true, selectPolyline);
+                                    graficarPolilinea(firstPolyline, vehicleData.color, true, 'selectPolyline');
                                 }
                             }
                         });
@@ -463,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             // Graficar la primera polilínea del vehículo
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
-                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true, selectPolyline);
+                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true, 'selectPolyline');
                             }
                         }
                     }
@@ -603,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
                             limpiarTodo();
-                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true, selectPolyline);
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true, 'selectPolyline');
                         }
                     }
                 });
@@ -625,7 +625,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
                             limpiarTodo();
-                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true, selectPolyline);
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true, 'selectPolyline');
                         }
                     }
                 });
