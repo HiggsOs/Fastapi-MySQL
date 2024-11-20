@@ -107,6 +107,13 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("La fecha final no puede ser anterior a la fecha de inicio.");
             return;
         }
+
+        if (plateSelect.value === "all") {
+            document.getElementById("vehicle-info").classList.add("activo");
+        } else {
+            document.getElementById("vehicle-info").classList.remove("activo");
+        }
+        
     
         const startDateTime = startDateInput.value;
         const endDateTime = endDateInput.value;
@@ -169,6 +176,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             drawRouteOnMap(filteredRoute.results, plateSelect.value,"linea 268");
                         }
                     } else {
+
                         // Si no hay placa seleccionada, mostrar todas las rutas
                         allRoutes.forEach(route => {
                             drawRouteOnMap(route.results, route.plate,"Linea 273");
@@ -296,6 +304,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (event.target.checked){
                 contenedor_info.classList.add('activo')
                 contenedor_btn.classList.add('activo')
+                document.getElementById("vehicle-info").classList.remove("activo");
 
                 if (lastRoute) {
                     limpiarTodo();
