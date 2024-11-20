@@ -88,32 +88,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-
-    function actualizarVehicleInfo() {
-        const vehicleInfo = document.getElementById('vehicle-info');
-        vehicleInfo.innerHTML = ''; // Limpia el contenido previo
-    
-        allRoutes.forEach(route => {
-            const { plate } = route;
-            const color = getVehicleColor(plate);
-    
-            // Crear un elemento para mostrar la placa y el color
-            const item = document.createElement('div');
-            item.classList.add('item');
-    
-            const colorBox = document.createElement('div');
-            colorBox.classList.add('color-box');
-            colorBox.style.backgroundColor = color;
-    
-            const text = document.createElement('span');
-            text.textContent = plate;
-    
-            item.appendChild(colorBox);
-            item.appendChild(text);
-    
-            vehicleInfo.appendChild(item);
-        });
-    }
     
     
     // Función para validar al enviar
@@ -201,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         });
                     }
                 }
-                actualizarVehicleInfo();
+        
             } catch (error) {
                 console.error("Error al obtener los datos:", error);
             }
