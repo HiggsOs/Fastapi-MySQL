@@ -110,8 +110,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (plateSelect.value === "all") {
             document.getElementById("vehicle-info").classList.add("activo");
+            document.getElementById("color-box-1").style.backgroundColor = "blue";  // Color azul
+            document.getElementById("color-box-2").style.backgroundColor = "green";
         } else {
             document.getElementById("vehicle-info").classList.remove("activo");
+            document.getElementById("color-box-1").style.backgroundColor = ""; // Color por defecto
+            document.getElementById("color-box-2").style.backgroundColor = "";
         }
         
     
@@ -305,6 +309,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 contenedor_info.classList.add('activo')
                 contenedor_btn.classList.add('activo')
                 document.getElementById("vehicle-info").classList.remove("activo");
+                document.getElementById("color-box-1").style.backgroundColor = ""; // Color por defecto
+                document.getElementById("color-box-2").style.backgroundColor = "";
+                
 
                 if (lastRoute) {
                     limpiarTodo();
@@ -367,10 +374,17 @@ document.addEventListener("DOMContentLoaded", function() {
                             selectPolyline_2.classList.add('activo');
                             selectPolyline.classList.add('activo');
                             console.log(plateSelect.value);
+                            document.getElementById("vehicle-info").classList.add("activo");
+                            document.getElementById("color-box-1").style.backgroundColor = "blue";  // Color azul
+                            document.getElementById("color-box-2").style.backgroundColor = "red";
+
                         } else {
                             selectPolyline_2.classList.remove('activo');
                             polilinea.classList.add('activo');
                             selectPolyline.classList.add('activo');
+                            document.getElementById("vehicle-info").classList.remove("activo");
+                            document.getElementById("color-box-1").style.backgroundColor = "";  // Color azul
+                            document.getElementById("color-box-2").style.backgroundColor = "";
                         }
 
                         currentSearchMode = 'position';
