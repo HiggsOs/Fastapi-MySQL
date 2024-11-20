@@ -185,14 +185,14 @@ body {
     flex-direction: row;
 }
 
-.vehicle-info .item {
+.vehicle-info #item {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 }
-.vehicle-info .color-box {
-    width: 20px;
-    height: 20px;
+[id^="color-box-"] {
+    width: 16px;
+    height: 16px;
     margin-right: 10px;
     border: 1px solid #000;
 }
