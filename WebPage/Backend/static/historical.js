@@ -437,7 +437,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             console.log(vehicleData);
                             if (vehicleData) {
                                 // Agregar las polilíneas al selector
-                                const dropdownx = index === 0 ? selectPolyline : selectPolyline_2;
+                                const dropdownx = index === 0 ? 'selectPolyline' : 'selectPolyline_2';
                                 Object.entries(vehicleData.data).forEach(([key, polyline]) => {
                                     const dropdown = plate === 'MXL306' ? selectPolyline : selectPolyline_2; 
                                     agregarOpcionPolilinea(plate, key, polyline, vehicleData.color, dropdown); // Usar 'plate' en lugar de 'selectedPlate'
