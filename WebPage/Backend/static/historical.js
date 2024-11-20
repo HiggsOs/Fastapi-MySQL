@@ -424,6 +424,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                     // Limpiar el selector de polilíneas
                     selectPolyline.innerHTML = '';
+                    selectPolyline_2.innerHTML = '';
                 
                     // Limpiar el mapa solo una vez antes de agregar nuevas polilíneas
                     limpiarTodo();
@@ -431,22 +432,24 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (selectedPlate == 'all') {
                         const listPlate = ["MXL306", "LOK123"];
                         console.log("Se cumplio");
-                        listPlate.forEach(plate => { // Recorrer todos los vehículos y sus polilíneas
+                        listPlate.forEach((plate, index) => { // Recorrer todos los vehículos y sus polilíneas
                             const vehicleData = vehiclePolylines[plate];
                             console.log(vehicleData);
                             if (vehicleData) {
                                 // Agregar las polilíneas al selector
+                                const dropdown = index === 0 ? selectPolyline : selectPolyline_2;
                                 Object.entries(vehicleData.data).forEach(([key, polyline]) => {
                                     const dropdown = plate === 'MXL306' ? selectPolyline : selectPolyline_2; 
                                     agregarOpcionPolilinea(plate, key, polyline, vehicleData.color, dropdown); // Usar 'plate' en lugar de 'selectedPlate'
                                 });
                     
                                 // Graficar la primera polilínea del vehículo
-                                const firstKey = Object.keys(vehicleData.data)[0];
-                                if (firstKey) {
-                                    const firstPolyline = vehicleData.data[firstKey];
-                                    graficarPolilinea(firstPolyline, vehicleData.color, true, 'selectPolyline');
-                                    graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true, 'selectPolyline_2');
+                                const keys = Object.keys(vehicleData.data);
+                                if (keys.length > 0) {
+                                    graficarPolilinea(vehicleData.data[keys[0]], vehicleData.color, true, dropdown.id);
+                                }
+                                if (keys.length > 1) {
+                                    graficarPolilinea(vehicleData.data[keys[1]], vehicleData.color, false, dropdown.id);
                                 }
                             }
                         });
