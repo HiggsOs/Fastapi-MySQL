@@ -614,6 +614,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (plateSelect.value === "all") {
                         const dropdownKey = 'selectPolyline_2';
                         const [plate, polylineKey] = selectPolyline_2.value.split('-');
+                        console.log(selectPolyline_2.value.split('-'));
                         const vehicleData = vehiclePolylines[plate];
 
                         if (vehicleData && vehicleData.data[polylineKey]) {
