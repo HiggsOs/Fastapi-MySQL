@@ -445,7 +445,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 const firstKey = Object.keys(vehicleData.data)[0];
                                 if (firstKey) {
                                     const firstPolyline = vehicleData.data[firstKey];
-                                    graficarPolilinea(firstPolyline, vehicleData.color, true);
+                                    graficarPolilinea(firstPolyline, vehicleData.color, true, selectPolyline);
                                 }
                             }
                         });
@@ -463,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             // Graficar la primera polilínea del vehículo
                             const firstKey = Object.keys(vehicleData.data)[0];
                             if (firstKey) {
-                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true);
+                                graficarPolilinea(vehicleData.data[firstKey], vehicleData.color, true, selectPolyline);
                             }
                         }
                     }
@@ -496,7 +496,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Función para graficar una polilínea
 
-                function graficarPolilinea(coordinates, color = 'blue', ajustarVista = true) {
+                function graficarPolilinea(coordinates, color = 'blue', ajustarVista = true, dropdownKey) {
                     const latLngs = coordinates
                         .map(coord => {
                             const lat = parseFloat(coord.Latitude.trim());
@@ -514,37 +514,27 @@ document.addEventListener("DOMContentLoaded", function() {
                         });
                 
                     // Dibujar la polilínea
-                    let polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color }).addTo(mapa_2);
-                    polylines.push(polyline);
+                    const polyline = L.polyline(latLngs.map(coord => [coord.lat, coord.lng]), { color }).addTo(mapa_2);
+                    layersDropdowns[dropdownKey].polylines.push(polyline);
                 
                     // Añadir flechas de dirección
                     for (let i = 0; i < latLngs.length - 1; i++) {
                         const start = latLngs[i];
                         const end = latLngs[i + 1];
                 
-                        // Calcular el ángulo en radianes entre los puntos
                         const angleRad = Math.atan2(end.lat - start.lat, end.lng - start.lng);
-                
-                        // Convertir el ángulo a grados para la rotación CSS
                         const angleDeg = (angleRad * 180) / Math.PI;
                 
-                        // Crear un marcador de flecha
                         const arrowMarker = L.marker([start.lat, start.lng], {
                             icon: L.divIcon({
                                 className: 'arrow-icon',
-                                html: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(${angleDeg})">
-                                        <path d="M12 19l7-7-7-7M5 12h14"></path>
+                                html: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 19l7-7-7-7M5 12h14"></path>
                                         </svg>`,
                                 iconSize: [20, 20],
                                 iconAnchor: [10, 10]
                             })
                         }).addTo(mapa_2);
-                
-                        // Aplicar la rotación al marcador usando CSS
-                        const arrowElement = arrowMarker.getElement();
-                        if (arrowElement) {
-                            arrowElement.style.transform = `rotate(${angleDeg}deg)`;
-                        }
                 
                         // Agregar popups con velocidad y RPM
                         arrowMarker.bindPopup(`Velocidad: ${start.speed} km/h<br>RPM: ${start.rpm}`, {
@@ -558,33 +548,54 @@ document.addEventListener("DOMContentLoaded", function() {
                         arrowMarker.on('mouseout', function () {
                             this.closePopup();
                         });
-                
                         arrowMarker.on('click', function () {
                             this.openPopup();
                         });
                 
-                        pointMarkers.push(arrowMarker);
+                        layersDropdowns[dropdownKey].pointMarkers.push(arrowMarker);
                     }
                 
-                    // Ajustar la vista del mapa para mostrar la polilínea
                     if (ajustarVista && latLngs.length > 0) {
                         mapa_2.fitBounds(polyline.getBounds());
                     }
                 }
 
-                
+                // Arreglos para almacenar las polilíneas y flechas de cada dropdown
+                const layersDropdowns = {
+                    selectPolyline: {
+                        polylines: [],
+                        pointMarkers: []
+                    },
+                    selectPolyline_2: {
+                        polylines: [],
+                        pointMarkers: []
+                    }
+                };
+
+                // Función para limpiar capas de un dropdown específico
+                function limpiarCapasDropdown(dropdownKey) {
+                    const dropdownLayers = layersDropdowns[dropdownKey];
+
+                    // Eliminar las polilíneas
+                    dropdownLayers.polylines.forEach(polyline => mapa_2.removeLayer(polyline));
+                    dropdownLayers.polylines = [];
+
+                    // Eliminar los puntos (flechas)
+                    dropdownLayers.pointMarkers.forEach(marker => mapa_2.removeLayer(marker));
+                    dropdownLayers.pointMarkers = [];
+                }
 
                 selectPolyline.addEventListener('change', function() {
                     if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
                     
                     if (plateSelect.value === "all") {
+                        const dropdownKey = 'selectPolyline';
                         const [plate, polylineKey] = selectPolyline.value.split('-');
                         const vehicleData = vehiclePolylines[plate];
-                        
+                    
                         if (vehicleData && vehicleData.data[polylineKey]) {
-                            mapa_2.removeLayer(polylines);
-                            mapa_2.removeLayer(pointMarkers);
-                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                            limpiarCapasDropdown(dropdownKey); // Limpia las capas anteriores del dropdown
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true, dropdownKey);
                         }
                     } else {
                         const [plate, polylineKey] = selectPolyline.value.split('-');
@@ -592,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
                             limpiarTodo();
-                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true, selectPolyline);
                         }
                     }
                 });
@@ -600,13 +611,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 selectPolyline_2.addEventListener('change', function() {
                     if (currentSearchMode !== 'position') return; // Solo procesar si estamos en modo posición
                     if (plateSelect.value === "all") {
+                        const dropdownKey = 'selectPolyline_2';
                         const [plate, polylineKey] = selectPolyline_2.value.split('-');
                         const vehicleData = vehiclePolylines[plate];
-                        
+
                         if (vehicleData && vehicleData.data[polylineKey]) {
-                            mapa_2.removeLayer(polylines);
-                            mapa_2.removeLayer(pointMarkers);
-                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                            limpiarCapasDropdown(dropdownKey); // Limpia las capas anteriores del dropdown
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true, dropdownKey);
                         }
                     } else {
                         const [plate, polylineKey] = selectPolyline_2.value.split('-');
@@ -614,7 +625,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         if (vehicleData && vehicleData.data[polylineKey]) {
                             limpiarTodo();
-                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true);
+                            graficarPolilinea(vehicleData.data[polylineKey], vehicleData.color, true, selectPolyline);
                         }
                     }
                 });
