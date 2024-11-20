@@ -448,6 +448,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                     // Limpiar el selector de polilíneas
                     selectPolyline.innerHTML = '';
+                    selectPolyline_2.innerHTML = '';
                 
                     // Limpiar el mapa solo una vez antes de agregar nuevas polilíneas
                     limpiarTodo();
